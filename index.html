@@ -27,6 +27,8 @@
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color-scheme: dark;
+  --chiefs-red: #d92030;
+  --chiefs-mask: url("data:image/png;base64,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");
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
@@ -46,10 +48,17 @@ h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
   padding: 0 max(16px, env(safe-area-inset-left)); border-bottom: 1px solid var(--border);
   background: rgba(10,10,11,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
 }
-.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+#brand-mark { display: flex; align-items: center; color: var(--text); }
+.logo-mark { display: inline-block; height: 26px; aspect-ratio: 420 / 355; background: currentColor;
+  -webkit-mask: var(--chiefs-mask) center / contain no-repeat; mask: var(--chiefs-mask) center / contain no-repeat; }
+.brand .logo-img { height: 30px; max-width: 120px; object-fit: contain; display: block; }
+.lang-switch { display: flex; gap: 2px; border: 1px solid var(--border); border-radius: 999px; padding: 3px; background: var(--surface); }
+.lang-switch button { border: 0; background: transparent; color: var(--muted); font-size: 11px; font-weight: 600; letter-spacing: .06em; padding: 5px 9px; border-radius: 999px; cursor: pointer; }
+.lang-switch button.on { background: var(--surface-2); color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
 .brand-logo { font-weight: 800; letter-spacing: .22em; text-transform: uppercase; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
 .brand-sub { color: var(--faint); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
-.nav { margin-left: auto; display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+.nav { margin-left: auto; display: flex; flex: none; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
 .nav button { border: 0; background: transparent; color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 13px; }
 .nav button:hover { color: var(--text); }
 .nav button.active { background: var(--text); color: var(--bg); font-weight: 600; }
@@ -217,7 +226,9 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   .head-actions { width: 100%; }
   .head-actions .btn { flex: 1 1 auto; }
   .brand-sub { display: none; }
-  .nav button { padding: 6px 11px; }
+  .topbar { gap: 8px; }
+  .nav button { padding: 6px 9px; font-size: 12px; }
+  .lang-switch button { padding: 5px 6px; }
 }
 
 /* Saved */
@@ -259,6 +270,12 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 .client-toolbar .hint { flex: 1; min-width: 160px; }
 .doc { max-width: 860px; margin: 0 auto; background: #faf9f6; color: #16161a; border-radius: 6px; padding: 56px 60px; box-shadow: 0 40px 100px rgba(0,0,0,.5); font-size: 13.5px; line-height: 1.5; }
 .doc-head { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; flex-wrap: wrap; padding-bottom: 28px; border-bottom: 2px solid #16161a; }
+.doc-logo-img { display: block; height: 84px; width: auto; max-width: 260px; object-fit: contain; }
+.doc-logo-img.custom { height: auto; max-height: 84px; }
+.logo-setting { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.logo-preview { background: #faf9f6; color: #16161a; border-radius: 10px; padding: 12px; min-width: 84px; min-height: 84px; display: flex; align-items: center; justify-content: center; }
+.logo-preview .doc-logo-img { height: 60px; }
+.logo-preview .doc-logo { font-size: 20px; }
 .doc-logo { font-size: 30px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; line-height: 1; }
 .doc-tagline { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #6b6b72; margin-top: 8px; }
 .doc-contact { text-align: right; color: #45454c; font-size: 12px; line-height: 1.6; white-space: pre-line; }
@@ -288,10 +305,13 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   .topbar, .client-toolbar, .mobile-bar, .toast, #modal-root, .no-print { display: none !important; }
   main { padding: 0 !important; max-width: none; }
   .doc { box-shadow: none; padding: 0; max-width: none; background: #fff; border-radius: 0; font-size: 12.5px; }
-  .doc-head { padding-bottom: 18px; }
-  .doc-title { padding: 18px 0 8px; }
-  .doc-table th.sect { padding: 14px 0 6px; }
-  .doc-table td { padding: 7px 0; }
+  .doc-head { padding-bottom: 14px; }
+  .doc-logo-img { height: 58px; }
+  .doc-logo-img.custom { max-height: 58px; }
+  .doc-tagline { margin-top: 6px; }
+  .doc-title { padding: 14px 0 4px; }
+  .doc-table th.sect { padding: 10px 0 5px; }
+  .doc-table td { padding: 5px 0; }
   .doc-totals { margin-top: 14px; }
   .doc-totals .tr { padding: 4px 0; }
   .doc-terms { margin-top: 18px; padding-top: 12px; }
@@ -302,17 +322,19 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 </head>
 <body>
 <header class="topbar no-print">
-  <div class="brand"><span class="brand-logo" id="brand-logo">Chiefs</span><span class="brand-sub">Estimate calculator</span></div>
+  <div class="brand"><span id="brand-mark"></span><span class="brand-sub" id="brand-sub">Estimate calculator</span></div>
   <nav class="nav" id="nav">
     <button data-nav="estimate">Estimate</button>
     <button data-nav="saved">Saved</button>
     <button data-nav="settings">Settings</button>
   </nav>
+  <div class="lang-switch" id="lang-switch" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="ru">RU</button></div>
 </header>
 <main id="app"><noscript>This calculator needs JavaScript enabled.</noscript></main>
 <div id="modal-root"></div>
 <div class="toast" id="toast"></div>
 <input type="file" id="import-file" accept="application/json,.json" hidden>
+<input type="file" id="logo-file" accept="image/*" hidden>
 
 <!-- ===================================================================
      ENGINE: pure data & calculation logic (no DOM). Also loaded by tests/calc.test.mjs.
@@ -323,6 +345,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 
   var CATEGORIES = ['Video', 'Image', 'Audio', 'Upscale', 'Other'];
   var CURRENCIES = ['USD', 'EUR', 'CZK'];
+  var LANGS = ['en', 'ru'];
   var SERVICE_DEFS = [
     { key: 'preprod',      name: 'Pre-production',                          desc: 'Moodboard, concept, storyboard' },
     { key: 'references',   name: 'Reference creation',                      desc: 'Character, location and prop sheets for consistency' },
@@ -364,16 +387,17 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
   }
 
-  function fmtMoney(amount, currency) {
+  function locale(lang) { return lang === 'ru' ? 'ru-RU' : 'en-US'; }
+  function fmtMoney(amount, currency, lang) {
     var dp = currencyDp(currency);
     var v = roundTo(num(amount), dp);
     if (v === 0) v = 0; // no "-0"
     try {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD', minimumFractionDigits: dp, maximumFractionDigits: dp }).format(v);
+      return new Intl.NumberFormat(locale(lang), { style: 'currency', currency: currency || 'USD', minimumFractionDigits: dp, maximumFractionDigits: dp }).format(v);
     } catch (e) { return (currency || '') + ' ' + v.toFixed(dp); }
   }
-  function fmtNum(n, maxDp) {
-    return num(n).toLocaleString('en-US', { maximumFractionDigits: maxDp === undefined ? 2 : maxDp });
+  function fmtNum(n, maxDp, lang) {
+    return num(n).toLocaleString(locale(lang), { maximumFractionDigits: maxDp === undefined ? 2 : maxDp });
   }
 
   function mergeDefaults(def, val) {
@@ -423,7 +447,14 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
         { id: 'u_ads', name: 'Advertising', type: 'mult', value: 1.5 }
       ],
       prepayPct: 50,
-      studio: { logo: 'Chiefs', tagline: 'AI Production Studio', name: '', email: '', phone: '', website: '', address: '', footer: 'This estimate is valid for 30 days. Prices exclude VAT.' }
+      defaultDocLang: 'en',
+      studio: {
+        logoMode: 'builtin', logoImage: '', logo: 'Chiefs',
+        tagline: 'AI Production Studio', taglineRu: 'Студия AI-продакшна',
+        name: '', email: '', phone: '', website: '', address: '',
+        footer: 'This estimate is valid for 30 days. Prices exclude VAT.',
+        footerRu: 'Смета действительна 30 дней. Цены указаны без НДС.'
+      }
     };
   }
 
@@ -450,6 +481,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     });
     if (!isObj(out.serviceRates)) out.serviceRates = {};
     if (CURRENCIES.indexOf(out.defaultCurrency) < 0) out.defaultCurrency = 'USD';
+    if (LANGS.indexOf(out.defaultDocLang) < 0) out.defaultDocLang = 'en';
+    if (['builtin', 'image', 'text'].indexOf(out.studio.logoMode) < 0) out.studio.logoMode = 'builtin';
     return out;
   }
 
@@ -485,6 +518,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     return {
       id: uid('e'), createdAt: now, updatedAt: now,
       name: '', client: '', date: today(), deadline: '', currency: settings.defaultCurrency || 'USD',
+      docLang: LANGS.indexOf(settings.defaultDocLang) >= 0 ? settings.defaultDocLang : 'en',
       rates: { creditPrice: num(settings.creditPrice), EUR: num(settings.fx.EUR), CZK: num(settings.fx.CZK) },
       wastePct: num(settings.wastePct),
       lines: [],
@@ -509,6 +543,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     out.services = Array.isArray(e.services) ? e.services.filter(isObj).map(function (s) { var x = mergeDefaults(SERVICE_DEFAULT, s); if (!x.id) x.id = uid('s'); return x; }) : d.services;
     out.fixedCosts = Array.isArray(e.fixedCosts) ? e.fixedCosts.filter(isObj).map(function (f) { return { id: f.id || uid('f'), name: String(f.name == null ? '' : f.name), amount: num(f.amount) }; }) : [];
     if (CURRENCIES.indexOf(out.currency) < 0) out.currency = 'USD';
+    if (LANGS.indexOf(out.docLang) < 0) out.docLang = 'en';
     if (!out.id) out.id = uid('e');
     return out;
   }
@@ -547,59 +582,44 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 
   /**
    * Re-snapshot prices from current settings (models, credit price, FX, hourly rates,
-   * format & revision prices). Returns a NEW estimate plus a list of human-readable changes.
+   * format & revision prices). Returns a NEW estimate plus a list of changes:
+   *   { type: 'model'|'creditPrice'|'fxEUR'|'fxCZK'|'rate'|'formatPrice'|'revisionPrice', name?, key?, from, to, perSecond?, newName? }
    */
   function refreshPrices(est, settings) {
     var e = clone(est), changes = [], seen = {};
-    function note(msg) { if (!seen[msg]) { seen[msg] = 1; changes.push(msg); } }
+    function note(c) { var k = JSON.stringify(c); if (!seen[k]) { seen[k] = 1; changes.push(c); } }
     (e.lines || []).forEach(function (l) {
       if (l.modelId === 'custom') return;
       var m = findModel(settings, l.modelId);
       if (!m) return;
       if (l.modelName !== m.name || num(l.credits) !== num(m.credits) || !!l.perSecond !== !!m.perSecond) {
-        note((l.modelName || m.name) + ': ' + fmtNum(l.credits, 4) + ' → ' + fmtNum(m.credits, 4) + ' credits/' + (m.perSecond ? 'sec' : 'gen') + (l.modelName !== m.name ? ' (renamed to ' + m.name + ')' : ''));
+        note({ type: 'model', name: l.modelName || m.name, from: num(l.credits), to: num(m.credits), perSecond: !!m.perSecond, newName: l.modelName !== m.name ? m.name : '' });
         applyModel(l, m);
       }
     });
     var r = e.rates || (e.rates = {});
-    [['creditPrice', num(settings.creditPrice), 'Credit price (USD)'], ['EUR', num(settings.fx.EUR), 'USD → EUR rate'], ['CZK', num(settings.fx.CZK), 'USD → CZK rate']].forEach(function (x) {
-      if (num(r[x[0]]) !== x[1]) { note(x[2] + ': ' + fmtNum(r[x[0]], 6) + ' → ' + fmtNum(x[1], 6)); r[x[0]] = x[1]; }
+    [['creditPrice', num(settings.creditPrice), 'creditPrice'], ['EUR', num(settings.fx.EUR), 'fxEUR'], ['CZK', num(settings.fx.CZK), 'fxCZK']].forEach(function (x) {
+      if (num(r[x[0]]) !== x[1]) { note({ type: x[2], from: num(r[x[0]]), to: x[1] }); r[x[0]] = x[1]; }
     });
     (e.services || []).forEach(function (s) {
       if (s.custom || !s.key) return;
       var rate = serviceRate(settings, s.key);
-      if (num(s.rate) !== rate) { note(s.name + ' hourly rate: $' + fmtNum(s.rate) + ' → $' + fmtNum(rate)); s.rate = rate; }
+      if (num(s.rate) !== rate) { note({ type: 'rate', key: s.key, name: s.name, from: num(s.rate), to: rate }); s.rate = rate; }
     });
-    if (e.formats && num(e.formats.price) !== num(settings.formatPrice)) { note('Price per extra format: $' + fmtNum(e.formats.price) + ' → $' + fmtNum(settings.formatPrice)); e.formats.price = num(settings.formatPrice); }
-    if (e.revisions && num(e.revisions.price) !== num(settings.revisionPrice)) { note('Price per extra revision round: $' + fmtNum(e.revisions.price) + ' → $' + fmtNum(settings.revisionPrice)); e.revisions.price = num(settings.revisionPrice); }
+    if (e.formats && num(e.formats.price) !== num(settings.formatPrice)) { note({ type: 'formatPrice', from: num(e.formats.price), to: num(settings.formatPrice) }); e.formats.price = num(settings.formatPrice); }
+    if (e.revisions && num(e.revisions.price) !== num(settings.revisionPrice)) { note({ type: 'revisionPrice', from: num(e.revisions.price), to: num(settings.revisionPrice) }); e.revisions.price = num(settings.revisionPrice); }
     return { estimate: e, changes: changes };
   }
 
-  function duplicateEstimate(est) {
+  function duplicateEstimate(est, suffix) {
     var e = clone(est), now = new Date().toISOString();
     e.id = uid('e'); e.createdAt = now; e.updatedAt = now;
-    e.name = (e.name || 'Untitled') + ' (copy)';
+    e.name = (e.name || 'Untitled') + (suffix == null ? ' (copy)' : suffix);
     return e;
   }
 
   function modelUsageCount(modelId, estimates) {
     return (estimates || []).filter(function (e) { return (e.lines || []).some(function (l) { return l.modelId === modelId; }); }).length;
-  }
-
-  function joinAnd(arr) {
-    if (arr.length <= 1) return arr.join('');
-    return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
-  }
-  function aiDetail(categories) {
-    function has(c) { return categories.some(function (x) { return x.category === c && x.credits > 0; }); }
-    var kinds = [];
-    if (has('Video')) kinds.push('video');
-    if (has('Image')) kinds.push('images');
-    if (has('Audio')) kinds.push('audio');
-    if (has('Other')) kinds.push('additional assets');
-    var incl = ['iterations'];
-    if (has('Upscale')) incl.push('upscaling');
-    return (kinds.length ? 'AI-generated ' + joinAnd(kinds) : 'AI generation') + ', incl. ' + joinAnd(incl);
   }
 
   /**
@@ -626,7 +646,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var cv = function (usd) { return usd * fx; };
     var sum = function (arr, k) { return arr.reduce(function (a, x) { return a + x[k]; }, 0); };
     var warnings = [];
-    if (currency !== 'USD' && fx <= 0) warnings.push('Exchange rate USD → ' + currency + ' is not set — totals will be 0.');
+    if (currency !== 'USD' && fx <= 0) warnings.push({ code: 'fx', currency: currency });
 
     // --- AI generation
     var cats = {};
@@ -648,26 +668,26 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var categories = CATEGORIES.filter(function (c) { return cats[c].lines > 0; }).map(function (c) {
       return { category: c, credits: cats[c].credits, lines: cats[c].lines, cost: cv(cats[c].credits * cp) };
     });
-    if (rawCredits > 0 && cp <= 0) warnings.push('Credit price is 0 — set it in Settings and press “Refresh prices”, or edit the estimate rates.');
+    if (rawCredits > 0 && cp <= 0) warnings.push({ code: 'creditPrice' });
 
     // --- Labor
     var services = (est.services || []).map(function (s) {
-      return { id: s.id, name: String(s.name || '').trim() || 'Custom service', desc: String(s.desc || ''), enabled: !!s.enabled, mode: s.mode === 'fixed' ? 'fixed' : 'hours', hours: num(s.hours), rate: cv(num(s.rate)), amount: cv(serviceAmountUSD(s)) };
+      return { id: s.id, key: s.custom ? '' : String(s.key || ''), name: String(s.name || '').trim(), desc: String(s.desc || ''), enabled: !!s.enabled, mode: s.mode === 'fixed' ? 'fixed' : 'hours', hours: num(s.hours), rate: cv(num(s.rate)), amount: cv(serviceAmountUSD(s)) };
     });
     var laborItems = services.filter(function (s) { return s.enabled; }).map(function (s) {
-      return { kind: 'service', name: s.name, desc: s.desc, mode: s.mode, hours: s.hours, rate: s.rate, amount: s.amount };
+      return { kind: 'service', key: s.key, name: s.name, desc: s.desc, mode: s.mode, hours: s.hours, rate: s.rate, amount: s.amount };
     });
     var fm = est.formats || {};
     var formats = fm.enabled ? cv(num(fm.count) * num(fm.price)) : 0;
-    if (fm.enabled) laborItems.push({ kind: 'formats', name: 'Extra delivery formats', desc: String(fm.label || ''), count: num(fm.count), price: cv(num(fm.price)), amount: formats });
+    if (fm.enabled) laborItems.push({ kind: 'formats', desc: String(fm.label || ''), count: num(fm.count), price: cv(num(fm.price)), amount: formats });
     var rv = est.revisions || {};
     var revisions = cv(num(rv.extra) * num(rv.price));
-    if (num(rv.extra) > 0) laborItems.push({ kind: 'revisions', name: 'Additional revision rounds', count: num(rv.extra), price: cv(num(rv.price)), amount: revisions });
+    if (num(rv.extra) > 0) laborItems.push({ kind: 'revisions', count: num(rv.extra), price: cv(num(rv.price)), amount: revisions });
     var labor = sum(laborItems, 'amount');
 
     // --- Fixed costs
     var fixedItems = (est.fixedCosts || []).map(function (f) {
-      return { id: f.id, name: String(f.name || '').trim() || 'Fixed cost', amount: cv(num(f.amount)) };
+      return { id: f.id, name: String(f.name || '').trim(), amount: cv(num(f.amount)) };
     });
     var fixed = sum(fixedItems, 'amount');
 
@@ -678,20 +698,18 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var markupBase = (mk.credits ? genCost : 0) + (mk.labor ? labor : 0) + (mk.fixed ? fixed : 0);
     var markupRaw = genCost * mC + labor * mL + fixed * mF;
 
-    // --- Client lines (rounded to currency precision; the subtotal is their exact sum)
+    // --- Client lines (rounded to currency precision; the subtotal is their exact sum).
+    // Language-neutral: the UI turns kind/key/name/desc/count into English or Russian text.
     var clientLines = [];
-    if (genCost !== 0) clientLines.push({ section: 'AI production', name: 'AI production', detail: aiDetail(categories), amount: R(genCost * (1 + mC)) });
+    if (genCost !== 0) clientLines.push({ section: 'ai', kind: 'ai', cats: categories.filter(function (x) { return x.credits > 0; }).map(function (x) { return x.category; }), amount: R(genCost * (1 + mC)) });
     laborItems.forEach(function (it) {
       var amt = R(it.amount * (1 + mL));
       if (amt === 0) return;
-      var detail = it.desc;
-      if (it.kind === 'formats') detail = it.count + ' additional format' + (it.count === 1 ? '' : 's') + (it.desc ? ' (' + it.desc + ')' : '');
-      if (it.kind === 'revisions') detail = it.count + ' round' + (it.count === 1 ? '' : 's') + ' beyond the included revisions';
-      clientLines.push({ section: it.kind === 'revisions' ? 'Revisions' : 'Services', name: it.name, detail: detail, amount: amt });
+      clientLines.push({ section: it.kind === 'revisions' ? 'revisions' : 'services', kind: it.kind, key: it.key || '', name: it.name || '', desc: it.desc || '', count: it.count || 0, amount: amt });
     });
     fixedItems.forEach(function (f) {
       var amt = R(f.amount * (1 + mF));
-      if (amt !== 0) clientLines.push({ section: 'Licenses & third-party costs', name: f.name, detail: '', amount: amt });
+      if (amt !== 0) clientLines.push({ section: 'third', kind: 'fixed', name: f.name, desc: '', amount: amt });
     });
     var subtotal = R(sum(clientLines, 'amount'));
     var markup = subtotal - genCost - labor - fixed; // effective markup incl. rounding
@@ -742,7 +760,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   }
 
   root.Engine = {
-    CATEGORIES: CATEGORIES, CURRENCIES: CURRENCIES, SERVICE_DEFS: SERVICE_DEFS,
+    CATEGORIES: CATEGORIES, CURRENCIES: CURRENCIES, LANGS: LANGS, SERVICE_DEFS: SERVICE_DEFS,
     uid: uid, clone: clone, num: num, roundTo: roundTo, currencyDp: currencyDp, today: today,
     fmtMoney: fmtMoney, fmtNum: fmtNum,
     defaultSettings: defaultSettings, normalizeSettings: normalizeSettings,
@@ -763,6 +781,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   'use strict';
   var E = window.Engine;
   var KEYS = { settings: 'aiest.settings.v1', estimates: 'aiest.estimates.v1', draft: 'aiest.draft.v1', ui: 'aiest.ui.v1' };
+  var CHIEFS_LOGO = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAQDAwMDAgQDAwMEBAQFBgoGBgUFBgwICQcKDgwPDg4MDQ0PERYTDxAVEQ0NExoTFRcYGRkZDxIbHRsYHRYYGRj/2wBDAQQEBAYFBgsGBgsYEA0QGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBj/wAARCAFAAUADASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAEIBgcJAgUDBP/EAFcQAAECBAIECAgGDAwHAQEAAAEAAgMEBREGBwgSITFBUWF0dbGysxMiNjc4cXKBFCMyMzSRFRcnUlZlc4KUlcPSGCUmKDVCRVViZKHBFiRDU1SSotHT/8QAHAEBAAIDAQEBAAAAAAAAAAAAAAEEBQYHAwII/8QARREAAQIEAgQLAwsCBQUAAAAAAAECAwQFEQYhEjFxsQcTMjM0NUFRcoHRNsHCFBUiI0Jhc4KRobIXUhZUg+HwJERikvH/2gAMAwEAAhEDEQA/ANYoiLUT9a3CIiC4REQXCIiC4REQXCIiC4REQXCIiC4REQXCIiAIiILhERCLhERCbhERAEREFwiIguEREFwiIguFPIoRBcIiILhERCAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIgCIiAIiIAiIhIREQgIiITYIiILBERAEREGQREQWCIiCwREQBERAEREAREQBERBYIiIAiIgCIiCwREQgIiISEREFgiIgsEREIsEUFLofRKKAVOxCQoupuvJtxoLHpFG/hSyCxKKNlrKUFgig7kugJRRdShAREQWCIoBQmxKglSnrQWIBupXmynhQWJRRfeoQWJupXnhUk8SAlRcJv2IN6CwvyJfah3pZBYlFFiEO7egsSi8qR60FiVBKbwoQHpF55FI3ILEqCVB3qQgsDuS2xSiEkWS21SiEKCLryvSIAiXTcLlBYgm20kAcq/vl6LWpuX+ESlGqUxB3+EgykR7frDbK3WR2QNIodBlcUY0psKercywRoUpMsD4ci0i7RqnYYltpJ+TuG4k2BaxrAGMFmgWAGwBZODTXObpPWxzKr8JMGWjrBlIXGImSuVbJ5ZLdPvOW0Rj4cV0OIxzHt2Oa4WI9YO0KAF0SzFynwnmPRYkvVpKHAqAafg9UgMAjwXcBv/XbxtOw8h2qg+LMMVTBmNJ/DNYY1s5JRNRzm31YjSLte2/8AVcCCPWq8zKOgZ60Njw1iyXriOY1uhEbmrdeXei9v6ZHxdg3kD3qbjjH1q2ei9hDC2IMp6lN13DVJqUwyqxIbYs5KMiuDfBQzqguBNrk7OVZtnHgLBFLyIxRP03CFDlJqDIPfCjwJGGx8M3G1rgLgr0bIOdD4y/Zcx01juDL1FacsFVVHI2907VRLlFlGzhIXo/KKtjovYRwrX8qalN13DdJqUwyqvhtizkoyK5rfBQzqguBNrk7OVV5eAsZ+gi2Nir9ZZR5RZt7Fcl0SyZayptxxj60uOEhXnznwHgmlZC4oqFNwhQ5SbgyRdCjwJGGx7DrN2tcBcFad0VsOUDENfxRCr1Ep9TZBgS7obZyXbGDCXxL6usDa9h9S9nyStithX1mElcaQZimRqmkJUSGqJa6XW9vUrzccY+tT610Vq2W+X0KgzsSFgfDrHtl4jmuFPhAghpsfkqn+jbS6XXc8pSQrVNlKhKup8w90CahNisLg1tjquBFxcpFklhvaxV1imY0gz8pMTbYSokFEVUumd7+hqm44x9aXHGPrXSP7WmXX4C4c/V0L91R9rPLv8BMN/q6F+6rHzW7+4wX9UZb/AC7v1T0Obtxxj61OwrpF9rPLr8BMOfq6F+6qbaRdJpdDz7jSFHpkpISgk5Vwl5WC2Ey51rnVaLXK8JiSWC3SVbmaoGNoNYmVlmQlatlW6qi6rGpbt4x9abL7x9a6QQMtcvHS0NxwLhy5aP7OhcXsr39rTLr8BcOfq6F+6vb5rd/cYX+qEt/l3fqnoc3LjjH1psPCCukf2s8uvwEw5+roX7q0jpQ4Swph/KWnTdDw1SadMPqsOG6NJyjITy3wcQ2JaAbXA2ci+ItOdDYr1dqL9L4QoFQm4co2AqK9bXumX7FSrL3ChRY0VsGDCfFiHcyG0ucfUBtWXZa5e1PMrHsvh6nxPg8EDw05N6usJeCCLutwuNwGjhJ4gVfTBmX2EsB0dlPw1SIMsQ20SZc0OjxjwufEO0n/AE4gF5S0k6NnqQyWJcYy9FckFG6cRc7XsiJ965/pY50zVFrMlL+HnKPUZaF/3I8rEY36y0BfwbxcG9+FdSnw2RIbocRoexwsWu2gjlBVeM8NH2k1eizWKsD0+FI1eXY6NHkZdobCnGgXdqtGxsS20W2O3HbYr3jU1zG6TFuYOkcJECajpBm4XFouSOvdPPJLJ95Ty9lPBsTYRdFjDpgAsiIhJFgpAsiIBZRZSiAi2xNqngUHYgF9iWUhRuQEqDxIboEAss/yVw3CxXnrh6lzMMRJVkczkdrhcOZCBfY8hcGj3rAVvnRLk4cxnXUJl4u6XpEQt5C6LDb1L3lm6cVqL3mExJNOlqXMRWrmjVt55e8ulwLSeMtJrBWD8dR8NGnVOpulIngpuZkwzUhP/rNAcQXlvDbh2Lc05G+C0+PM2v4KG59vUCf9ly+mpmLOz0eejvL4seI6M9x3lziXE/WVmJ6ZdBRNDWpx3A+G5asxIzpq+ixEyRbZrfdY6d0qqyFbocpWKXMNmJKbgtjwIrNz2OFwVVjS+w3Dg1rDuLYMMAzEOJT5hwG8s8eGT7nPHuWztGCpRqjo8yEKM4u+BTcxKsvwND9YD/7X8GljKw42RMGYIGvL1WA5p9oPYe0vqYXjZZXfdc8aAx1KxI2Xat0R6s2ot09FP5tEcD7TFT6Yid1CWeZ5+jti7o5/WFgWiN5mqp0xE7qEs9zy26O+Luj39YSF0VNh8Vb2md+Km9DnqRdxVzNEcfccqvTETuYSpoflFXL0RvM5VemIncwljadz3kdM4Rep18TfeZ5nt6OmLeYO7TVo/Q98osW83lu3EW8M9vR0xdzB3aatIaHvlFi3m8t24ivxulM2epoVJ9lZ3xN3sLSVnZh2f5tE7BVJdFsAaQMl0bM9lqu1WvJyf5tF7BVJNFo/zgpPo2Z7LUm+ehbfQYU6mqfhTc4vQtdVHPjKekVibpVQxdBgTcpGdAjwjLRjqPabOFwyxsQdy2PwLm3mQfuy4s2/2xNd65ek5MOgNRWprMfg7DsvW48SFMOVEal8rd9u1FLp/wAIrJy3lnB/RI/7iqnnvinD+M86n1zDdQbPyDpWXhCM1jmAubfWFnAHZcLWC9Q/nme0OtYmPOvjN0XIh1ai4Mk6PHWZgPcrrKmdrZ7ETuOosv8ARYfsjqWK4vzPwNgSflpPFdeh06PMwzFgsdBiP12g2J8Vp4VlUv8ARYfsjqVRdL/y+w10fG70LNTMZYUNXtOMYZpMKq1FkpGVUat9Vr5Iq9qKbt/hE5N38tIP6JH/AHFqHSMzTwDjvK+RpeFsQw6hOQqlDjuhNgxGEMEOICbuaBvcPrVYvzkuQ4G6xESoPiNViollOu07g/kZCZhzUOI9XMW6XVLfxLm6JuGIdNymm8SRYVpqrzjg15G3wMLxGgcmt4Q+9blxZiqi4JwjOYkr8wYMlKtu4tbrPeSbNY1vC4kgALGcj5Vspo84ShMFg6nsin1vJef9XLVmmDUpiBgvDVJY8iDNT0WNEHH4OHZv+sQrJo7iJZFTsQ5i+XWuYidBiLk96p9+i2/woZVgLSVwfjnGUHDZptRpE1NOLJR82WOZGdwMu0nVcRuB2Hde9lug7ti5e0ydjUytyVRl3lkaVmIcdjhvBa8OHUuoEF4iwWxRuc0O+vavmRmXRmrp60LeOMOS9HjQllbo16Lkq3sqW33Q55Zy4ah4TzyxDSZeGIcq6Y+Fy7W7hDijwgA5AS4e5YIt86WklDl866fNM3zNIhud62xYjepaGWGmW6EVzU7zsmHJp01S5eM9c1al9qZLuI3qbBLovAzQUWCKUAUFSiAjellKIAoN+NCVPAgIvsUqDdLIBv4VYPRDH3Wq50Oe/Yq+qwWiHf7bVc6HPfw1ak+eaazjLqWZ2JvQt3W/Jyoc2i9grl+w/FN9kdS6f1rycqHNovYK5fs+aZ7I6lcqn2fM0zgs5M1+T4i7uif5hInSsx1MX66VXo/ROkZXtFflooH7gkTpWY6mL9dKn0fovSUr2irKdE8jW19rf9b4j52iN5man0xE7qEs+zy9HfF3R7+sLAdEUWyZqnTETuoSz7PL0d8XdHv6wvqF0VNhWq3tM78Vu9Dno7eVczRG8zdU6YidzCVMnfKKubojeZuqdMRO5hLG07nvI6Zwi9Tr4m+8zzPb0dMW8wd2mrR+h75RYt5vLduIt357+jpi7mDu01aQ0PB/KTFvN5btxFei9LZs9TQqT7KzvjbvYWlrXk7P82i9gqkui16QMl0bM9lqu1WvJyf5tF7BVJNFr0gpLo2Z7LVM3z0Lb6DCnU1T8KbnF6SVzazI88mLLf3xNd65dJbLm3mQPuyYsP44mu9cvOqchpf4L+lx/Cm8xfavUM/Hs9odahTDHxzPaHWsMdmfyVOo0v8ARYfsjqVRdMDy8w10fG70K3Uv9Fh+yOpVF0wPLzDXR8bvQtgn+YXy3n59wD13C2O/ipXBSAbbSpRa8foQ6K5PeYTCHRMDsBaU0yPoGDvys32YS3Vk+PuC4Q6JgdgLSumP/R+Dvy032YS2CZ6KuxPccAw17Tt8b9ziqlrFdRZE/wAWS/5JvZC5dbV1DkP6Ml/yTOyFWpX2vI2PhS1Sv5/hKf6XnnaofRA756r7wKwel552aH0QO+eq+KlOc843bBvUsvsXepGwKOHYpttUqqbMRdSoIQBANqhelFtqAlERSBYIicKWAREQBWD0Q/O1XOhz37FXu6sJoh+dqudDnv4asyfPNNZxl1LM7E3oW6rXk5P82i9grmA0fEt9kdS6f1vycqHNovYK5fsPxTLfejqVyqfZ8zTOC3kzX5PiLuaKA+4JEv8A3rMdTF+ulT6P0TpGV7RX56KHmEidKzHUxfrpVej/ABOkZXtFWU6J5Gtr7W/63xHzdEbzNVTpiJ3UJZ7nl6O+Luj39YWBaI3maqfTETuoSz3PLZo74u6Of1hfULoqbCtVvaZ34rd6HPV1tYq5miNb7TdU6YidzCVMnGzjtVzdEXzN1S/98RO5hLG07nvI6Zwi9Tr4m+8zzPf0dMXcwd2mrSGh75R4s5vLduIt357+jni7mDu01aQ0PT/KTFvN5btxFfi9KZs9TQqT7KzvibvYWlrXk7P82idgqkmi0P5wUl0bM9liu1WduHZ/m0TsFUm0W/SBk+jZnstSb56Ft9BhTqap+FNzi9C5tZkj7suLOmJrvXLpJdc28yfPJizpia71y86pyGl/gv6XH8KbzGF6h/PM9oda8qYe2Mz2h1rDodmfyVOo0v8ARYfsjqVRtL/y8w10fG70K3Mv9Fh+wOpVG0v/AC8w10fG70LPz/Mr5bz8+4B67hbHfxUrinCm9BvWv2P0IdFcnvMLhDoqX7AWldMf6Bg78tN9mGtg4NzFwZgXR6whGxPXpWSe6kQCyW1tePE8T+rDbdx9drcqrjntnHTc1Z2mS1IpEzJydMfFdDjzTx4SPrho+QLho8XjJ28Czc1FYkvo3zshw/C1Lm4lf+VthrxbXvu7s+0mvtz7jUA37VbnGGlZQqRT2yGCKW+szbIYYZua1oMs0gDaG/Lf/wDI5VUW19it3gDRToEnLwKhjmpvrEdzQ/4FK3gy7b7bOd8t/wD8hUZLjV0mwu3tN6xj8zs4mNVbro6Wi1Ptar/pl2oVoxnjzEeYWIRWcTTsOYmYcPwMNsKG2GyCy5Oo1o4LknaSeVY6t5aUVBo2HMxcP0yhUuUp0nDpA1YErCENoPhn7bDeeU7Vo1V47VY9WuW6mfoMzBmpCFGl4egxUyb3JdU7AiIvIy4REugCIiWAREuFCAIiL6AREUICLBWD0Q/O1XOhz37FX1WD0Q9mbdc6HPfsVmT55prOMupZjYm9C3Va8nZ/m0TsFcwIfzTPZHUuoFa8nJ/m0TsFcv2fNN9kdSu1TW3z9xpnBbyZr8nxFg8mM/MNZaZbOw5VqPVpuYM5FmfCSgh6mq8NsPGcDfxeJes5NIDDOZGWT8N0qjVeUmXTUGOIk0IepZhJI8VxN9vEq+JYcSp/K4mhxfZqNz/wjTvl3zhorxmlpa8r3vqLm6I3mZqnTETuoSz3PP0d8XdHv6wsC0RtmTNU6Yid1CWe55C+jvi4fi9/WFl4XRk2HH6t7TO/FbvQ56O2uPrVzdEbzN1TpiJ3MJUzcPGPrVzdEfZk5VNn9sRO5hLGU7nvI6ZwjdTr4m+8zrPf0dMXcwd2mrSGh55R4t5vLduIt4Z7+jpi0f5B3aatIaHnlJi3m8t24ivxels2epoVJ9lZ3xt3sLS1rydn+bROwVSPRa9IKS6Nmey1XbrXk7P82idgqkui0P5wUl0bM9lqTXPQtvoMKdTVPwpucXosubmZPnlxZ0xNd65dJFzbzJ882LOmJrvXL4qfJaX+C/pcfwpvMXXqH88z2h1rypY8MisJ3aw61hjsz+Sp1Gl/okP2R1Koul/5e4a6Pjd6FsTGWlFgnD0oZTDEKJiSfY3V1oJ8FLNNuGIRd35oPrVWswsycR5mYkhVbEJlIZl4ZhS8vKw9RkFhNyLkkuN+ElZiemYaw+LRbqcawLhyoQZ9k9Gh6ENEXXkq3RUyTX29tjEha6FLhNl1htZ2c2bgDIfHmYktAq0pAg06kxR4lSnn7IjRs+LYLucBa3AOVZZnNkVR8sMrKZV5GfnKjPvnxLzc1Gsxmq6G4gNhjY0azd5JPKt2aLtXbUdH2Uk9fWfTZuPKkcIBd4Rv+kRZVnLhCLjjJet0OVh6874ITMoOExoZ12j32LfzlmWScNYGk1LqqHGpzGM/CriS8dyNgsiWVEyu29rqutcs+77jnfuKuFL6W+CIMlChHDmIS5jGtJAg8At9+qfkEHaCDxHYQixsGYfBvodp0ms4ek6xofK0VdG9rLbXa+42dnhmXSc0Ma06s0iQnZODKyPwVzJvV1i7wjnXGqSLWcFrFEXnEesRyudrUyEhIwpCXZLQOS3V2hERfJcCIigBERMgE4UUX41AJUbVKbFICIoQDbdWE0Q/O3XOiD30NV8Vg9EPztVzoj9uxWZPnmms4y6lmNib0LdVrydn+bROwVzAZ80y33o6l0/rPk7P82idgrmAz5pvsjqV2qa2+fuNL4LeTNfk+I9KCbKSoCxJ1oubojbcman0xE7qEt316h0zEuHJyg1mXMeQnIZhR4QeWa7TwXBBG7gWkdEfbk1VOmIndQlvibm5WRk4k3OzMGWl4Q1okaM8MYwcZcdgC2SVssFt+4/NeKXObWphzFsqPytruasOjZk8XX/4Yi/p8f8AfWb4OwPhrAVFi0nC8g6SlIsYzD4ZiviXeQGk3cSdzQvf/G+C9xxdQf1hB/eX1KdVaXV5Z0xSqlKT0FrtR0SVjNitDrXsS0kX2jYvRkOG1btRLlCbn6jGh6E1Ee5vc5XKn7mD57ejpi3mDu01aQ0PfKPFp/y8t24i3fnt6OmLuYO7TVpDQ+8osW83lu3EVON0tmz1NspHsrO+Ju9haSs+Ts/f/wAaJ2CqTaLfpAyR/Fsz2Wq7VZ24dnwN5l4nYKoJkdjOi4BzSg4ixDEjsk4UhHh2gQzEe57g3VaAOOx32HKonHI2LDVdX/w9MHQXxqVUYUJqq5WtRETWq2cdCLqsmYOQWXNPrVUxZi7Miao8Ofmos0WRWwR4z3FxawW1n2vwAlYhjnSrxVVvCSuC5CFQZPd8Lj6saZcOMX8Rn1OPKsFw7lnmlm5U/swJaemmxT41YrEVzYZH+Fzrlw5GAhRHmWRV0GN0lLtCwzP0pqzc3MpLMXXqVy9ts8k/dfuMaxZAwLJzvwfBtQr1SYD403UYUKCxw/wMaNb3ut6ljgHhHBo3k2VzMD6KuEKK2HNYxm4mIpwWPgLGDKtPFqg6z/zjbkVO47Gw6vFYwANbMOaANlgHlY6Yl3Q7Oclr9h0Cg1+UqKxIEo9z+LRLud23vs7u5CzuBNEoasOex/XdcEB32OpZsPU6MRc/mgetf3ZraNkzWJ6jQstaZQ6VISktEhx2Rorob4kQvBDidVxebcJKsrL/AESH7I6l+llmUkoWhoWOLrjOrLNJNOi3VL2T7OeWrV5rmUjGilmjf5/D/wCmv/8A5rWWNsF1fAOL4uGq6+VfOQ4TIrjKxC9mq8XG0gbdnEulJ2BUV0nfSKqHMpXsFUJyUhwYek3Wb5g3FtQq0+svMqmjoquSWzRU9TJdE3GDKbjup4PmoobCqsETEsCdnhoQOs0cpYSfzFcTeFzBpFUnqFXpOtUqOYE7Jxmx4EUf1XtNx6xwEcIJXRDLTH1MzGwBKYip5bDiuHgpuWvcy8YDxmHk4QeEEFe9Njo5vFrrQwvCPRHwJpKjDT6D7Iv3OT1T90UqjpIZYvwfjx2KaXL2olZil51B4svMna9nIHbXN/OHAtIrpnirC9IxjhGdw5W5cRpObhljgPlMO9r2ngc02IPGFzux1gyq4Bx5PYYqzbxJd2tBjgWbMQj8iI3kI3jgII4FUn5bi3abdSm14DxIlQl0ko6/Ww0y/wDJvftTUvkveY6iIqB0EX2oospQBERSAiITZRcBQbFCNqWUAcNkO5SovfgUgAbFKKCVFgSrB6IfnarnRH7Zir2FYTRD87Vc6H/bsVqT55prOMupZnYm9C3da8nZ/m0TsFcv2fNN9kdS6f1o/wAnJ/m0XsFcwGfNM9kdSuVT7Hn7jTOCzkzX5PiPSJcDeQo2HhCxJ1qxc7RG8zVU6Yid1CWfZ5AHR3xcCAR9jn7D6wsB0R/M1VOmIndQlnueJto74u6Of1hbDC6L5H54q3tM78Vu9DnoWM1j8Wz/ANQrm6I1m5OVUBoH8cRNwt/0YSpoflFblyuz2bldljO0KRoLqjVJmffMsiRompAhtMNjRe3jON2nYLetYmSiNhxNJy5WOtY1psxUab8nlW6Tlc3/AJmWiz1Gto6YtA/8B3aaqo5JZsUjKqNiKdqVPnJ+POwoMOWl5ezQ5zXPJ1nn5I8YcBPIsexfmbmNmG6ZNYq05HkITfCxJGSYYctBYDve1vAON5K+1kjlNI5rYhqUGpVeYkJWnMhRIjZdgMSNrucLBztjfknbY71YiR3RozXQUzTvMFT6BBo9Fjwas9FYqo52jfLk2TvzVE9e0/bG2kHmRjWK+Qk5z7C0+NdgkqWD4SIOJ0T5btm8Cw5FimWuA42ZOP5fDEtUoVPMSE+O6YfDMTVYy17NBFzt2bQFeGi5ZYJwFhOdh4coUCXjfBYgfORB4WYf4h3xHbfcLDkVU9FxobpByWru+xsz2WqYsByRWJFW9yKZX5V1NnXUmDxSQm3Rcrqqoua69Vu1VLI4H0esu8GeCmYtPNcqTLH4ZUwIgaeNkP5DfqJ5VoTGmkJmlQ8yK/RqbWJGHJSNQjy0BhkIbi2Gx5a0XI27AFdHeVzdzJ2Zy4s6Ymu9cvae+oY1IWWwwGB0StTsZ1T+tVGpbSztn2X1eRm38JnN/wDvyn/q6EtS+EdFnPCvN3Piazjyl1yvz4F6h/PM9odaxLor320ludalqXJySOWVhNZfXZES9jqLL7ZWH7I6lXvSJzYxvl5iyiSOFqhLS0Cak4kaKIsqyKS4RA0WLt2xWEl/okP2B1KoumB5fYa6Ojd6Fnp17mQVVq2U4HgqVgzVXhwphiOaqOyVLpyVMP8A4TWcF7fZyQ/V0Ja+xbi2uY3xPExBiKYhR5+JDZCc+HCEJpa0WHijYvhbCpWCfGiPSzlud6lKNIyb+Ml4LWO1XRERbBbIyWzNj5Z5gMm5iI91Eni2DUYI22bfxYoH3zLk8oLhxLW6HcvmG9Ybkc3Wh7z0jBnpd8tHS7XJZf8AnemtDqPLTECblIU1LRWRYMVgiQ4jDdr2kXBB4QRtWlNJjL2FijLJ2JpKX1qrQ2ujhzR40SX/AOqzlt8seyeNfF0U8wIlYwbNYHqMcvmqOBElC47XSzjbV/Mds9TmjgVhJmBCmpSJLTDGxIMVhZEY4XDmkWIPuK2NFbMwdp+cojJjDlWsi/Shu/VP90OXNxwIvs4toD8LY9rOHH3/AIvnIsu0nhY1x1T726pXxlraporZT9JworY0NsVmpyIqbFzCKLqVB6BES6XAUFEKAk7lF1KWQmwREUEBERAFYLRD87Vd6H/bsVfVYPRD87VcP4n/AG7Fak+eaazjLqWY2JvQt1WfJ2f5tE7BXMBnzTfZHUuoFa8nZ/m0TsFcvmECEz2R1K5VPs+fuNM4LOTNfk+It/oz4MwjX8lnz1cwxSKjNfZKPDEeblGRX6oDLC7hewudi96SWCMHYfyRfUaHhaj06b+yEuzw8pKMhP1STcXAvYrGcls5MFZa5Cvlq1Nxo9TfUJiNDp0ozXiuaQ2xJNmtBtvJ+tYBmnn5XszqWaEaTKUqjCM2MIIJixnub8kuibAPUB7ypdGhNl0autUPmXpFWmMQvmWo5ILYl7qqoioi9idvkljZ2jrmBhDAuRlTmsU12VkA6rxTDgudrRYvxUP5ENt3O9wssczZ0l2YwwzUcJ4XoLoNNnYZgRp2fPxr2Ej5ENps3dvJPqWu8ucl8X5nNiTtEZKSlNhRfARqhNPs1rgAS0NF3ONiDwDbvW6cTaO+D8v8isSVyamJmtVqXkHvhzUf4uHBds2shtO/lcXL5Ysd8LRalmomvvLk7L0CTq6xpl6xI73pZqamqqpa+z718iqt7m6sHo/ZJ4VzDw5NYlxPHnI8KWnTKtkIL/BMfqsY7We4eMb61rAjdvVfT8o2Vy9EbzO1XpiJ3MJV5FjXxbOS6GwY6nZiTpToks9WuuiXTXZTKM18N0DC+i/iumYfpEnTZRtPPxUtCDAfGbtNtpPKblaj0PRbEWLeby3biLeGe3o64t5g7tNWkND0fyhxbzeW7cRZCKlppiJ3epzmmPdEwvPPet1V7c12sLSVrycn+bRewVSXRb9IKSH4tmey1XarXk5P82i9gqk2i36QUl0bM9lqma56FtPnCnU1T8KbnF57Bc3MyfPLizpia71y6SLm3mT55cWdMTXeuXxVOQ3aX+C7pcfwpvMXXqH88z2h1ryvTPnme0OtYVNZ2d/JU6iy/wBFh+yOpVF0v/L7DXR8XvQrdS/0WH7I6lUXS/8AL3DR/F8bvQtgqHML5bz8+YA67hbHfxUrkiJwrXj9DH6CBHc0ObAjEHcQxxB/0Xl8KLDt4SFEZfdrNIv9a6JZQMachsIEtH9FS/B/gC0rpjACQwdYAfGzfZhLIxZHQhcZpHPaZjp09VEp3EWurkvpX1IvZbtt3mlckMRPwzn3h2cETUgTMwJCOOAsjeJt9Tiw+5dCmjxdq5fU2ZdJ1qSnWEh0vMQ4wI4C14d/suoLHh8IPbucLj3qzS33a5vcaxwoSzWTUCOmtzVT/wBV/wByiekzTW0/SIqUZjA1s7Ky81s4SWahP1w1qFWA0uYLWZv0eM0eNEpDdbltGif/AKq/rGzaWjOT7zo+FIqxaPLOX+1E/TL3BCUUHavBDYCUQIoAUFTwqChJPAoBUqNymwsOFLHjQbVKgKFG1TwIpBG1b+0TZqVkczsQTc7MwZeBDoxc+LGeGMYPDM2knYFoJfWw7hbEmL6x9iMM0maqU05us+FAGxrb/KeSQA25G07Lr1gPVkRHIlzE16TZOyEWXiREY1yZuXUiXRe9N5bvMTSawLRZKapWHmxsRzsSG6EXyp1JZhIIuYpHjW/wg+tUrAAYANthZWbwxoozEOixqpjutiE+HBdEFOphuQQ0kB8YjjG5o96rIy5a08JCszjorlR0RLdxgMHQKTLpGg0t6vVNHScvbrtbUnfqTzU3DlDkNVczqW6vRqzL0yisjul3Oa0xY73NtrBrdjQNo2k+5bCzqydwPlxkHEm6BTnxKi6flob6jNvMSM5pJuAdgaDxNAWcaKAtkLE6VmOpi/bSp9H+J0lK9oq22BDSWV9s7GnzOIJ+PiRkm6IqQ2xUTRTJLIvbbX5nzdEbzNVTpiJ3UJZ9nnt0d8XD8XP6wsC0RRbJqqdMRO6hLPc8vR4xd0c/rCsQujJsNdq3tM78Vu9DnoQdYq5uiN5naqfxxE7mEqZkWcVczRG8ztV6YidzCWMp3PeR03hF6nXxN95nme3o6Yt5g7tNWkND7yixbzeW7cRbuz29HTF3MHdpq0loe+UeLeby3biK/F6UzZ6mg0n2VnfG3ewtHWfJyf5tF7BVJdFv0gpLo2Z7LVdqteTk/wA2i9gqkui36QUl0bM9lqTXPQtvoThTqap+FNzi9G1c3MyfPNizpia71y6Rrm5mV55sWdMTXeuXxU+Q0vcF3S4/hTeYupZtis9oda82C9QxaMy33w61hk1nZ38lTqNL/RYfsjqVRNL/AMvcNdHxu9Ct3L/RYfsDqVRNL/bj7DWz+zovehZ+f5lfI/PuAOu4Wx38VK5bbJcgKUvZa+foU6K5QeYbCHRMv2AtKaY9/gGDvys32YS3Zk/5hcIdEy/YC0ppj/QMHflZvswln5no3knuPz9hn2nb437nFVRvHrXUOSuadL/k29kLl2OC/GuokiP4ul/yTeyFWpf2vI2ThT/7X8/wlP8AS8869Cv/AHR+2eq92VhNLzzr0Loj9s9V69SpTnPON2wZ1LL7F3qCTdRY8S9Iqxs1iL7FO8KOSyWQklQVKIAottupUFLEKSovyoCoSwJttUncvKklSSAdqsJoh7c166D/AHR+2Yq9Le+ibPMlc75yVcbGapMVreUtiQ3dV1YlOeaa1jBquo0yif27lRS49b2YbqB/y0XsFcwYZ+JZ7I6l1HmYLZqTiy7/AJMRhYfURb/dcxKnTZmkVydpE3DMOPJzESWiMI2hzHFp6leqacldpo/BZEb/ANSzt+iv8i5+ih5hInSsx1MX6aVWzIB/SUt2nL+/RmpMxStHmmRJlhY6ejx51oOzxHPs0+9rQfeviaWs4yDkpIyhdZ8zVoNhfeGsiOP+ysKlpXPuNchOSLiy7M/rtzj89Ec/caqfTETuoSz7PL0d8XdHP6wsA0RgftN1TpiJ3UJZ/nl6O+Lujn9YX1C6Mmwr1b2md+K3ehz0J2lXM0RvM5VemIncwlTI7yrm6IvmcqvTETuYSxtO57yOm8IvU6+Jpnme/o6Yt5g7tNWkND3yhxbzeW7cRbuz39HTF3MD2mrSGh55Q4tP+Xlu3EV6L0pmz1NCpHsrO+Nu9haWtH+Tk/zaL2CqS6LR/nAyXRsz2Wq7Va2Ycn+bRewVSTRa9IKR6Nmey1JrnoW0YU6mqfhTc4vSVzczJ88uLOmJrvXLpGubWZT2DObFoL2C1YmuEf8Adcvip8hu0v8ABd0uP4U3mMpDPxzL/fDrXjwjDuiM/wDYL3Cs6IwggjWG0G/CsOms7O9PoqdR5f6LD9gdSqLpf+X2Guj4vehW6lvosP2B1KommB5fYaH4vi96Fnp/mV8j8+YA68hbHfxUrmo3hFI3rAH6FOi2T/mFwh0TL9gLSemOf+Qwd+Vm+zCW2sh59tQ0dcKRWuuYcp8HdyGG9zCP/la80u6LHmsuqHXITC5khPuhxSP6rYrLAnk1mNHvCz8f6Utl3Ifn2gKkDFDUfl9Y9PNdJN5T4bwuokj/AEbL/k29kLmXh+lTNfxbTKJJwy+POzcKXY0cOs8A/ULn3Lpyxohw2sb8loAHqValpk5dhsXCnEarpaHfNEcv66PopTrS9869C6I/bPVe1vXSxnmTWd8nKtcCZSkwmOHEXRIjuqy0SVRm84zje8HsVtGlkX+3eqqSii6lVzZQiFQDtQhSURQdyEkqLgqVFghBKhSh3ICNqWslypQArMMqcUw8F5yUHEMw/wAHKwpjwUy7igxAWPPuDtb3LDrqd42hfTXK1yOTsPCblmTUB8CJyXIqLsVLHUlj2RIQcxzXNcLhw2gjjWvcTZHZbYuxWcRVugCJPPIMZ0KO+E2YsLDwjWkBxsLX3kb1pHJDSLkKHQpbCGP48VkvLNEKSquqYgZDG6HFA22G4OF9lgd11Y6UzDwJPSjZqUxlQYkIi+uJ+ELeu7ti2FkWFHbdbbD85TtKqlBmXNZpN7Ec26IqbU3dh9+XloEnJQpSVgw4MCEwQ4cKG3VaxoFgABuACqFpa4rh1DHFIwlLRWubTILpmZA4IsW2q08oY2/562zmPpH4KwpSo8thuflsQ1otLYUKVfrwITvvokQbLD71pJPJvVKatVahXK5N1iqzL5mem4ro0eM/e9xNyeTiA4AAFUn5luhxbVNvwBhqY+VfOU0xWtai6N8lVVyvbuRL59+ouFoj+Zmp9MRO6hLPM8vR3xd0e/rC0To8ZuYDwBltP0nFNYiSc3GqT5hkNsrEi3YYbGg3a0je07Fl2aee+WOJ8m8RUGjV+JHn5yTdCgQnScZms4kbLuaAPevSHFYkujVcl7GOqdHnn4hdHbAcrOMRb6K2tdM72tYp6d5VzNEbZk5VemIncwlTPhVlNHjNzAmAsuKhSMU1eJJzcapPmGQ2y0WKCww2NBu1pG9p2LHyLkbFu5bHQ8eSsaapSw4DFc7SbkiXX9jeme3o6Yt5g7tNWkdD3yhxbzeW7cRZPmtntllijJrENAo1eix5+clDCgQjJxmBzrg21i0AbuFau0ccxMJZe1fEUxiupOkmTkGAyAWwHxdctc8n5ANvlDersWKxZljkVLW9TSaZSp1mGpyA6C5Huclk0VuubdSWuXNrXk5UObROwVSTRa9IKS2/2bM9lisLUtI7KKbo03LQcSRjEiQHsaDIxxclpA/qKr+Q2K6FgfN+VruJJwysjDko0F0RsJ0Q6zg0AWaCeApMxWLFhqipkThqlTsGlVCHFguRzmpZFaqKuTtWWZ0FXxY+EMKTMxEmJjDNGjRYji98SJJQnOc47ySW7StffwlsnuHEsb9Aj/uINJXJ/wDCaN+gR/3FdWPCXW5P1NJZQqszNsvET8rvQz3/AIJwd+CdD/QIX7qpxpM0+n0vPWDKUyQlZKAKdLu8FLQmwm3L4lzZoAvsCsX/AAlcnvwmjfoEf9xVgz6xjh3HOb0KvYannTcgJGBBMR0J8Mh7XvJFnAHc4KlOxIbodmqms3PA9PqUCpaczDe1ui7NyORL+ZfSX+iw/ZHUqiaX/l/hro6L3oW4oWkpk/DgsYcSx7hoB/5CPxewq8aReP8ACuYGLKJPYVqL52BKycSFFc6C+FquMQECzwL7F9TsZjoKo1yKV8EUielqxDix4DmtRHZq1UTkr2qhphQVKjlssIdzQt9oj4rgTWCKpg6PGHwqQmTNwWE7XQYtr29Twb+0FYGs0amYgoczR6zJQZ2QmmGHGl4wu17Tx/8A7vB2rm3hHFtawTjGTxJQY4hzcs75L9rIrD8qG8cLXD/YjaArs4I0hsusW06CJ2sQKDUiPjJKpRBDAdw6kQ2a8e8HjAWakplrmcW9c0OIY3wzNS886oSrVcx63W2tru3VnmuaKfWwjkll1gfEJrtBobmz4BbDjTEd8cwQdh1NYnVuNl99uFbAiRGQoLokV7WMaCXOcbBoG8lY3PZjYBpsm6anMaUCFCaL3M/DN/UAST7lWzO/SLlcRUaYwhgGLG+AzAMOdqjmmGYzOGHCB2hp4XG1xsA23Vl8aFAblbYa3I0iqV6aaj9J3YrnXVETav7IaazQxS3Gmb1dxHCeXy0xMlksT/2WAMhn3ht/esSUcila85yuVXL2n6LlZdktBZAh8lqIibESwRRs3pv4V8lgHepUbypJsgCjbfYlzdChJK83K9JZCCLoEsh40BKjfwoLnhUoCAFK8qd6EjZxqNRhNy1pPGQvSg7kIJUWUogUiylEQgiylEQBRblUogFkREBFlNkRARcJZLXUoSFB2qUQgiylEsgINksN3BxKUQHkNY03DWg8gsp2E71KWQm5FlJRQboCN6myAJblQElRblUogIso4V64FBKEkoiIfIUXHGpTg2oBuREQEe5SiIAijbdSgCEIottQDbdSiIAiIgCIeRRt40BKIiAIiIAijaUCAlERARdSoAUoAovtUogCIott2IBdSiIAoCWupQBQl9tk28aAb0OwWUqDvQklERCAiIgCIiAJ70RAERN6AIiIAiIgCJdBxoBZEuiAIikcaAhFJN1CAIiIAiW2IgCKCpQBE4EQBERAEREAREQBERQgCgbFKKSQiIBdCAiIgCW2qdihAERSEBCL0vKgBAiW2oBsROHapHIgIU22JZNm5AQll64Nii/GgG5N6bxsQIABxpZSo23sgIRTbjCWHEpBF03op3BQBZQvSIgPKJwqbKQQiWU7EBCWThU22WQEKbKOVOC6gDhRFNrBSCERFACkFSW8iix4lJFwd+5Qp1SpsRwISeeVFOrtU6vIgPKkBTY8SWPEgIIugspseJLHiUAgbU2bVOryJqkIDyVNrKbciixUkXJUXCapTVKgXB9ahTqlNU8qC5CketTqniKjVPKguSoBKnV5E1eRSLkb1CnVKapQXIU3KmxUap5UFxdSo1SlkFxdRtU6pU6pCXFyLpa6nVN9xTVJ4EFyAEup1eQqNUoLi6bwmqVNigueUU2Km3IgPNkXoglRYoLn/9k=';
   var app = document.getElementById('app');
 
   function $(s, r) { return (r || document).querySelector(s); }
@@ -775,10 +794,284 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   }
   function store(key, val) {
     try { localStorage.setItem(key, JSON.stringify(val)); return true; }
-    catch (e) { toast('Could not write to browser storage (full or blocked).', 'error'); return false; }
+    catch (e) { toast(t('toast.storage'), 'error'); return false; }
   }
 
-  /* ---------------- State ---------------- */
+  /* ================= i18n ================= */
+  /** forms: en [one, other]; ru [one, few, many] */
+  function plural(lang, n, forms) {
+    n = Math.abs(n);
+    if (lang !== 'ru') return n === 1 ? forms[0] : forms[1];
+    if (n % 1 !== 0) return forms[1];
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return forms[0];
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return forms[1];
+    return forms[2];
+  }
+  function joinAnd(lang, arr) {
+    if (arr.length <= 1) return arr.join('');
+    return arr.slice(0, -1).join(', ') + (lang === 'ru' ? ' и ' : ' and ') + arr[arr.length - 1];
+  }
+
+  var I18N = {
+    en: {
+      'nav.estimate': 'Estimate', 'nav.saved': 'Saved', 'nav.settings': 'Settings', 'brand.sub': 'Estimate calculator',
+      'est.eyebrow': 'Estimate', 'est.untitled': 'Untitled estimate', 'untitled': 'Untitled', 'copySuffix': ' (copy)',
+      'status.notSaved': 'Not saved yet', 'status.unsaved': 'Unsaved changes', 'status.saved': 'Saved · {d}',
+      'btn.new': 'New', 'btn.duplicate': 'Duplicate', 'btn.refresh': 'Refresh prices', 'btn.client': 'Client version', 'btn.save': 'Save',
+      'drift.notice': function (v) { return v.n + ' price' + (v.n === 1 ? '' : 's') + ' in this estimate differ' + (v.n === 1 ? 's' : '') + ' from your current Settings. The estimate keeps its own snapshot until you refresh.'; },
+      'drift.btn': 'Review & refresh',
+      'sec.project': 'Project', 'f.projectName': 'Project name', 'ph.projectName': 'e.g. Spring campaign teaser', 'f.client': 'Client', 'ph.client': 'Client name',
+      'f.date': 'Date', 'f.deadline': 'Deadline', 'f.currency': 'Output currency', 'f.docLang': 'Client document language',
+      'f.creditPrice': 'Credit price (USD)', 'f.usdEur': '1 USD → EUR', 'f.usdCzk': '1 USD → CZK',
+      'hint.rates': 'Rates are a snapshot taken from Settings when the estimate was created. All money inputs below are in USD; totals are shown in {c}.',
+      'sec.gen': 'AI generation', 'gen.waste': 'waste buffer', 'gen.empty': 'No generation lines yet. Add a shot or asset below.', 'gen.add': 'Add line:',
+      'ph.lineName': 'Shot / asset name (optional)', 'a.lineName': 'Line name', 't.dupLine': 'Duplicate line', 't.delLine': 'Remove line',
+      'f.category': 'Category', 'f.model': 'Model', 'opt.custom': 'Custom…', 'f.customName': 'Custom name', 'ph.customName': 'e.g. Veo',
+      'f.crPerSec': 'Credits / sec', 'f.crPerGen': 'Credits / gen', 'f.pricing': 'Pricing', 'chk.perSecond': 'Per second',
+      'f.snapshot': 'Price (snapshot)', 't.snapshot': 'Saved with this estimate. Use Refresh prices to update.',
+      'f.gens': 'Generations', 'f.duration': 'Duration', 'u.sec': 'sec', 'u.gen': 'gen', 'u.cr': 'cr', 'u.h': 'h',
+      'gen.driftLine': 'settings now {v}', 'gen.durInfo': 'duration is informational (priced per generation)',
+      'model.archived': '(archived)', 'model.otherCat': '(other category)', 'model.removed': '(removed)',
+      'th.category': 'Category', 'th.credits': 'Credits', 'th.cost': 'Cost',
+      'gen.lines': function (v) { return v.n + ' line' + (v.n === 1 ? '' : 's'); },
+      'gen.subtotal': 'Subtotal', 'gen.wasteRow': 'Waste buffer {p}', 'gen.total': 'Total',
+      'cat.Video': 'Video', 'cat.Image': 'Image', 'cat.Audio': 'Audio', 'cat.Upscale': 'Upscale', 'cat.Other': 'Other',
+      'sec.services': 'Services', 'svc.include': 'Include {n}', 'ph.svcName': 'Custom service name', 'ph.svcDesc': 'Short description for the client (optional)',
+      't.delSvc': 'Remove service', 'seg.hours': 'Hours', 'seg.fixed': 'Fixed', 'f.fixedPrice': 'Fixed price', 'f.hours': 'Hours', 'f.rate': 'Rate / hour',
+      'svc.formats': 'Extra delivery formats', 'svc.formatsDesc': 'Count × price per format', 'f.formats': 'Formats', 'f.count': 'Count', 'f.pricePerFormat': 'Price / format',
+      'btn.addService': '+ Custom service', 'svc.unnamed': 'Custom service',
+      'sec.fixed': 'Fixed costs', 'ph.fixedName': 'Music license, voice actor, stock…', 'a.costName': 'Cost name', 'a.amount': 'Amount', 't.remove': 'Remove',
+      'fixed.empty': 'No fixed costs. Music licenses, voice actors, stock footage…', 'btn.addFixed': '+ Fixed cost', 'fixed.total': 'Total', 'fixed.unnamed': 'Fixed cost',
+      'sec.revisions': 'Revisions', 'f.included': 'Included rounds', 'f.extraRounds': 'Extra paid rounds expected', 'f.pricePerRound': 'Price / extra round', 'f.extraTotal': 'Extra rounds total',
+      'sec.usage': 'Usage rights', 'f.license': 'License', 'f.name': 'Name', 'ph.usageName': 'e.g. Broadcast, 1 year', 'f.type': 'Type', 'seg.mult': 'Multiplier',
+      'f.multiplier': 'Multiplier on subtotal', 'f.surcharge': 'Surcharge', 'f.usageAmt': 'Usage surcharge', 'usage.included': 'Included', 'opt.saved': '(saved)',
+      'sec.rush': 'Rush fee', 'f.timeline': 'Timeline', 'f.rushFee': 'Rush fee', 'f.rushAmt': 'Rush amount',
+      'hint.rush': 'Applied to labor + markup only — never to raw credit or fixed costs.',
+      'sec.discount': 'Discount', 'f.discount': 'Discount', 'f.discountAmt': 'Discount amount',
+      'sec.markup': 'Markup & payment', 'f.markup': 'Markup', 'f.markupOn': 'Markup applies to', 'chk.credits': 'AI credits', 'chk.fixed': 'Fixed costs', 'chk.labor': 'Labor',
+      'f.markupAmt': 'Markup amount', 'markup.on': 'on {v}', 'f.prepay': 'Prepayment', 'f.prepayAmt': 'Prepayment amount',
+      'sec.notes': 'Notes', 'f.clientNotes': 'Notes for the client (shown on client version)', 'ph.clientNotes': 'Scope, assumptions, delivery details…',
+      'f.internalNotes': 'Internal notes (never shown to client)', 'ph.internalNotes': 'Anything for yourself…',
+      'sum.clientTotal': 'Client total', 'sum.prepay': 'Prepayment {p}', 'sum.gen': 'AI generation', 'sum.noLines': 'No generation lines',
+      'sum.waste': 'Waste buffer {p} · {c}', 'sum.creditsTotal': 'AI credits total · {c}', 'sum.labor': 'Labor', 'sum.noServices': 'No services enabled',
+      'u.fixedWord': 'fixed', 'sum.laborTotal': 'Labor total', 'sum.fixed': 'Fixed costs', 'sum.none': 'None', 'sum.fixedTotal': 'Fixed costs total',
+      'sum.pricing': 'Pricing', 'sum.markup': 'Markup {p}', 'sum.subtotal': 'Subtotal', 'sum.rush': 'Rush fee · {n} +{p}', 'sum.usage': 'Usage rights · {n} {v}',
+      'sum.discount': 'Discount', 'sum.balance': 'Balance on delivery', 'sum.realCost': 'Real cost', 'sum.realCostNote': '(credits + fixed)',
+      'sum.margin': 'Margin', 'sum.marginEx': 'Margin excl. your labor', 'mb.breakdown': 'Breakdown ↓', 'mb.sub': 'Prepay {p} · margin {m}',
+      'warn.fx': 'Exchange rate USD → {c} is not set — totals will be 0.',
+      'warn.creditPrice': 'Credit price is 0 — set it in Settings and press “Refresh prices”, or edit the estimate rates.',
+      'client.back': '← Back to estimate', 'client.hint': 'Client version — internal costs, credits, model names and margin are hidden.',
+      'client.lang': 'Document', 'client.print': 'Print / Save PDF',
+      'saved.eyebrow': 'Library', 'saved.title': 'Saved estimates', 'btn.export': 'Export data', 'btn.import': 'Import data', 'btn.newEstimate': 'New estimate',
+      'ph.search': 'Search by project or client…', 'saved.empty': 'No saved estimates yet. Build one on the Estimate tab and press Save.',
+      'saved.noMatch': 'Nothing matches “{q}”.', 'saved.open': 'open', 'saved.noClient': 'No client', 'saved.meta': 'Margin {m} · {p} · updated {d}',
+      'btn.open': 'Open', 'btn.delete': 'Delete',
+      'set.eyebrow': 'Configuration', 'set.title': 'Settings', 'set.status': 'Changes save automatically. Existing estimates keep their own price snapshots.',
+      'set.models': 'Models & tools', 'set.noModels': 'No models.', 'set.archivedTag': 'archived',
+      'set.used': function (v) { return 'used in ' + v.n + ' estimate' + (v.n === 1 ? '' : 's'); },
+      'btn.edit': 'Edit', 'btn.archive': 'Archive', 'btn.restore': 'Restore', 'btn.addModel': '+ Add model', 'set.showArchived': 'Show archived ({n})',
+      'set.modelsHint': 'Archived models are hidden from selection but stay in old estimates. Models used in a saved estimate can only be archived, not deleted.',
+      'set.pricing': 'Pricing, currency & language', 'f.creditPriceSet': 'Price of 1 credit (USD)', 'f.defCurrency': 'Default output currency', 'f.defDocLang': 'Default client document language',
+      'set.rates': 'Hourly rates', 'f.hourly': 'Default hourly rate', 'set.perService': 'Per-service rates', 'set.perServiceHint': '— leave empty to use the default', 'ph.default': 'default',
+      'set.defaults': 'Estimate defaults', 'f.waste': 'Waste buffer', 'f.includedRev': 'Included revisions', 'f.revPrice': 'Price / extra revision', 'f.formatPrice': 'Price / extra format',
+      'set.rushOpts': 'Rush fee options', 'btn.addRush': '+ Rush option', 'set.usageOpts': 'Usage rights options', 'btn.addUsage': '+ Usage option',
+      'set.usageHint': 'A “Custom…” option is always available in the estimate.', 'opt.multType': 'Multiplier', 'opt.fixedType': 'Fixed $',
+      'set.studio': 'Studio & client version', 'f.logo': 'Logo', 'logo.builtin': 'Chiefs logo', 'logo.image': 'Own image', 'logo.text': 'Text',
+      'btn.uploadLogo': 'Upload image…', 'logo.noImage': 'No image uploaded yet — the Chiefs logo is used.', 'f.logoText': 'Text logo',
+      'f.tagline': 'Tagline (EN)', 'f.taglineRu': 'Tagline (RU)', 'f.studioName': 'Studio / legal name', 'f.email': 'Email', 'f.phone': 'Phone', 'f.website': 'Website',
+      'f.address': 'Address / company details', 'ph.address': 'Street, city, company ID, VAT ID…', 'f.footer': 'Footer note (EN)', 'f.footerRu': 'Footer note (RU)',
+      'set.data': 'Data', 'set.dataHint': 'Everything is stored in this browser (localStorage). Export a JSON backup to move settings and saved estimates to another device.',
+      'btn.exportJson': 'Export data (JSON)', 'btn.importDots': 'Import data…', 'btn.resetSettings': 'Reset settings', 'btn.wipe': 'Delete all data',
+      'm.cancel': 'Cancel', 'm.ok': 'OK', 'm.discardTitle': 'Discard changes?', 'm.discardMsg': 'The current estimate has unsaved changes. Continue without saving?', 'm.discard': 'Discard',
+      'm.saveTitle': 'Save estimate', 'm.projectName': 'Project name', 'm.existsTitle': 'Project name already exists', 'm.existsMsg': 'A saved estimate called “{n}” already exists.',
+      'm.keepBoth': 'Keep both', 'm.overwrite': 'Overwrite', 'toast.saved': 'Saved “{n}”', 'toast.pricesOk': 'All prices already match your settings',
+      'm.refreshTitle': 'Refresh prices from Settings', 'm.refreshIntro': 'These snapshot values will be updated to your current settings:', 'm.refreshTotal': 'Client total:',
+      'toast.refreshed': 'Prices refreshed',
+      'change.creditPrice': 'Credit price (USD)', 'change.fxEUR': 'USD → EUR rate', 'change.fxCZK': 'USD → CZK rate', 'change.rate': '{n} hourly rate',
+      'change.formatPrice': 'Price per extra format', 'change.revisionPrice': 'Price per extra revision round', 'change.renamed': '(renamed to {n})', 'change.credits': 'credits',
+      'm.editModel': 'Edit model', 'm.addModel': 'Add model', 'f.costCredits': 'Cost in credits', 'm.perSecLabel': 'Price is per second of video (credits × duration × generations)',
+      'f.notes': 'Notes', 'ph.modelName': 'e.g. Veo 3', 'ph.modelNotes': 'Resolution, mode, plan…',
+      'm.modelHint': 'Changing the price affects new lines only. Existing estimates keep their snapshot until you press “Refresh prices” in that estimate.',
+      'toast.modelUpdated': 'Model updated', 'toast.modelAdded': 'Model added', 'toast.archived': 'Archived — hidden from selection', 'toast.restored': 'Restored',
+      'toast.modelInUse': 'Model is used in an estimate — archive it instead', 'm.delModelTitle': 'Delete model?', 'm.delModelMsg': 'Delete “{n}”? It is not used in any estimate.',
+      'm.unsavedTitle': 'Unsaved estimate', 'm.unsavedMsg': 'The estimate you are editing has unsaved changes and will not be included. Export anyway?', 'm.export': 'Export',
+      'toast.exported': function (v) { return 'Exported ' + v.n + ' estimate' + (v.n === 1 ? '' : 's') + ' + settings'; },
+      'toast.badJson': 'Not a valid JSON file', 'toast.badBackup': 'This file is not an estimate-calculator backup',
+      'm.importTitle': 'Import data',
+      'm.importMsg': function (v) { return 'File contains <b>' + v.n + ' estimate' + (v.n === 1 ? '' : 's') + '</b>' + (v.m != null ? ' and settings with <b>' + v.m + ' models</b>' : '') + '.'; },
+      'm.importHelp': '<li><b>Merge</b> — keep your settings, add missing models, add estimates (same estimate → newer version wins).</li><li><b>Replace all</b> — overwrite settings and saved estimates on this device.</li>',
+      'm.importMerge': 'Merge', 'm.importReplace': 'Replace all',
+      'toast.merged': function (v) { return 'Merged · ' + v.n + ' estimate' + (v.n === 1 ? '' : 's') + ' added/updated'; }, 'toast.replaced': 'Data replaced from backup',
+      'm.delEstTitle': 'Delete estimate?', 'm.delEstMsg': 'Delete “{n}” permanently? This cannot be undone.', 'toast.deleted': 'Deleted',
+      'toast.duplicated': 'Duplicated as “{n}”', 'toast.dupCurrent': 'Duplicated — this copy is not saved yet',
+      'm.resetTitle': 'Reset settings?', 'm.resetMsg': 'Restore all settings (models, rates, options, studio details) to defaults? Saved estimates are not affected.', 'm.reset': 'Reset',
+      'toast.reset': 'Settings reset', 'm.wipeTitle': 'Delete all data?', 'm.wipeMsg': 'This permanently deletes all settings and saved estimates from this browser. Export a backup first if you need it.',
+      'm.wipe': 'Delete everything', 'toast.storage': 'Could not write to browser storage (full or blocked).', 'toast.logoBad': 'Could not read this image', 'toast.logoSet': 'Logo updated',
+
+      // client document
+      'doc.estimate': 'Estimate', 'doc.untitled': 'Untitled project', 'doc.client': 'Client', 'doc.date': 'Date', 'doc.deadline': 'Deadline', 'doc.currency': 'Currency',
+      'doc.noItems': 'No line items yet.', 'doc.sec.ai': 'AI production', 'doc.sec.services': 'Services', 'doc.sec.revisions': 'Revisions', 'doc.sec.third': 'Licenses & third-party costs',
+      'doc.ai': 'AI production', 'doc.formats': 'Extra delivery formats', 'doc.revisions': 'Additional revision rounds', 'doc.fixed': 'Third-party cost',
+      'doc.subtotal': 'Subtotal', 'doc.rush': 'Rush fee', 'doc.usage': 'Usage rights', 'doc.discount': 'Discount', 'doc.total': 'Total',
+      'doc.prepay': 'Prepayment {p} — due before start', 'doc.balance': 'Balance on delivery', 'doc.usageTerms': 'Usage rights:', 'doc.included': '(included)',
+      'doc.revTitle': 'Revisions:', 'doc.timelineTitle': 'Timeline:'
+    },
+    ru: {
+      'nav.estimate': 'Смета', 'nav.saved': 'Сохранённые', 'nav.settings': 'Настройки', 'brand.sub': 'Калькулятор смет',
+      'est.eyebrow': 'Смета', 'est.untitled': 'Смета без названия', 'untitled': 'Без названия', 'copySuffix': ' (копия)',
+      'status.notSaved': 'Ещё не сохранена', 'status.unsaved': 'Есть несохранённые изменения', 'status.saved': 'Сохранена · {d}',
+      'btn.new': 'Новая', 'btn.duplicate': 'Дублировать', 'btn.refresh': 'Обновить цены', 'btn.client': 'Версия для клиента', 'btn.save': 'Сохранить',
+      'drift.notice': function (v) {
+        return v.n + ' ' + plural('ru', v.n, ['цена', 'цены', 'цен']) + ' в этой смете ' + plural('ru', v.n, ['отличается', 'отличаются', 'отличаются']) +
+          ' от текущих настроек. Смета хранит свои цены, пока вы их не обновите.';
+      },
+      'drift.btn': 'Проверить и обновить',
+      'sec.project': 'Проект', 'f.projectName': 'Название проекта', 'ph.projectName': 'например, Тизер весенней кампании', 'f.client': 'Клиент', 'ph.client': 'Имя клиента',
+      'f.date': 'Дата', 'f.deadline': 'Дедлайн', 'f.currency': 'Валюта сметы', 'f.docLang': 'Язык документа для клиента',
+      'f.creditPrice': 'Цена кредита (USD)', 'f.usdEur': '1 USD → EUR', 'f.usdCzk': '1 USD → CZK',
+      'hint.rates': 'Цена кредита и курсы взяты из настроек в момент создания сметы. Все суммы ниже вводятся в USD, итоги показываются в {c}.',
+      'sec.gen': 'AI-генерация', 'gen.waste': 'буфер на брак', 'gen.empty': 'Пока нет строк генерации. Добавьте шот или ассет ниже.', 'gen.add': 'Добавить строку:',
+      'ph.lineName': 'Название шота / ассета (необязательно)', 'a.lineName': 'Название строки', 't.dupLine': 'Дублировать строку', 't.delLine': 'Удалить строку',
+      'f.category': 'Категория', 'f.model': 'Модель', 'opt.custom': 'Своя…', 'f.customName': 'Название', 'ph.customName': 'например, Veo',
+      'f.crPerSec': 'Кредиты / сек', 'f.crPerGen': 'Кредиты / генерация', 'f.pricing': 'Тарификация', 'chk.perSecond': 'За секунду',
+      'f.snapshot': 'Цена (снимок)', 't.snapshot': 'Сохранена в смете. Обновляется кнопкой «Обновить цены».',
+      'f.gens': 'Генерации', 'f.duration': 'Длительность', 'u.sec': 'сек', 'u.gen': 'ген.', 'u.cr': 'кр.', 'u.h': 'ч',
+      'gen.driftLine': 'в настройках сейчас {v}', 'gen.durInfo': 'длительность справочно (оплата за генерацию)',
+      'model.archived': '(в архиве)', 'model.otherCat': '(другая категория)', 'model.removed': '(удалена)',
+      'th.category': 'Категория', 'th.credits': 'Кредиты', 'th.cost': 'Стоимость',
+      'gen.lines': function (v) { return v.n + ' ' + plural('ru', v.n, ['строка', 'строки', 'строк']); },
+      'gen.subtotal': 'Промежуточно', 'gen.wasteRow': 'Буфер на брак {p}', 'gen.total': 'Итого',
+      'cat.Video': 'Видео', 'cat.Image': 'Изображения', 'cat.Audio': 'Аудио', 'cat.Upscale': 'Апскейл', 'cat.Other': 'Другое',
+      'sec.services': 'Услуги', 'svc.include': 'Включить: {n}', 'ph.svcName': 'Название услуги', 'ph.svcDesc': 'Краткое описание для клиента (необязательно)',
+      't.delSvc': 'Удалить услугу', 'seg.hours': 'Часы', 'seg.fixed': 'Фикс.', 'f.fixedPrice': 'Фиксированная цена', 'f.hours': 'Часы', 'f.rate': 'Ставка / час',
+      'svc.formats': 'Дополнительные форматы', 'svc.formatsDesc': 'Количество × цена за формат', 'f.formats': 'Форматы', 'f.count': 'Количество', 'f.pricePerFormat': 'Цена / формат',
+      'btn.addService': '+ Своя услуга', 'svc.unnamed': 'Своя услуга',
+      'sec.fixed': 'Фиксированные расходы', 'ph.fixedName': 'Лицензия на музыку, актёр озвучки, стоки…', 'a.costName': 'Название расхода', 'a.amount': 'Сумма', 't.remove': 'Удалить',
+      'fixed.empty': 'Нет фиксированных расходов. Лицензии на музыку, актёры озвучки, стоки…', 'btn.addFixed': '+ Расход', 'fixed.total': 'Итого', 'fixed.unnamed': 'Расход',
+      'sec.revisions': 'Правки', 'f.included': 'Включено раундов', 'f.extraRounds': 'Ожидается платных доп. раундов', 'f.pricePerRound': 'Цена доп. раунда', 'f.extraTotal': 'Сумма доп. раундов',
+      'sec.usage': 'Права использования', 'f.license': 'Лицензия', 'f.name': 'Название', 'ph.usageName': 'например, ТВ, 1 год', 'f.type': 'Тип', 'seg.mult': 'Множитель',
+      'f.multiplier': 'Множитель к промежуточному итогу', 'f.surcharge': 'Надбавка', 'f.usageAmt': 'Надбавка за права', 'usage.included': 'Включено', 'opt.saved': '(из сметы)',
+      'sec.rush': 'Срочность', 'f.timeline': 'Сроки', 'f.rushFee': 'Надбавка за срочность', 'f.rushAmt': 'Сумма надбавки',
+      'hint.rush': 'Начисляется только на работу и наценку — не на стоимость кредитов и не на фиксированные расходы.',
+      'sec.discount': 'Скидка', 'f.discount': 'Скидка', 'f.discountAmt': 'Сумма скидки',
+      'sec.markup': 'Наценка и оплата', 'f.markup': 'Наценка', 'f.markupOn': 'Наценка начисляется на', 'chk.credits': 'AI-кредиты', 'chk.fixed': 'Фикс. расходы', 'chk.labor': 'Работу',
+      'f.markupAmt': 'Сумма наценки', 'markup.on': 'с {v}', 'f.prepay': 'Предоплата', 'f.prepayAmt': 'Сумма предоплаты',
+      'sec.notes': 'Заметки', 'f.clientNotes': 'Заметки для клиента (видны в версии для клиента)', 'ph.clientNotes': 'Объём работ, допущения, детали сдачи…',
+      'f.internalNotes': 'Внутренние заметки (клиент их не увидит)', 'ph.internalNotes': 'Что угодно для себя…',
+      'sum.clientTotal': 'Итого для клиента', 'sum.prepay': 'Предоплата {p}', 'sum.gen': 'AI-генерация', 'sum.noLines': 'Нет строк генерации',
+      'sum.waste': 'Буфер на брак {p} · {c}', 'sum.creditsTotal': 'Итого AI-кредиты · {c}', 'sum.labor': 'Работа', 'sum.noServices': 'Услуги не выбраны',
+      'u.fixedWord': 'фикс.', 'sum.laborTotal': 'Итого работа', 'sum.fixed': 'Фиксированные расходы', 'sum.none': 'Нет', 'sum.fixedTotal': 'Итого фикс. расходы',
+      'sum.pricing': 'Ценообразование', 'sum.markup': 'Наценка {p}', 'sum.subtotal': 'Промежуточный итог', 'sum.rush': 'Срочность · {n} +{p}', 'sum.usage': 'Права · {n} {v}',
+      'sum.discount': 'Скидка', 'sum.balance': 'Остаток при сдаче', 'sum.realCost': 'Себестоимость', 'sum.realCostNote': '(кредиты + фикс.)',
+      'sum.margin': 'Маржа', 'sum.marginEx': 'Маржа без учёта вашей работы', 'mb.breakdown': 'Детали ↓', 'mb.sub': 'Предоплата {p} · маржа {m}',
+      'warn.fx': 'Курс USD → {c} не задан — итоги будут 0.',
+      'warn.creditPrice': 'Цена кредита равна 0 — задайте её в настройках и нажмите «Обновить цены» или исправьте курсы в смете.',
+      'client.back': '← Назад к смете', 'client.hint': 'Версия для клиента — себестоимость, кредиты, названия моделей и маржа скрыты.',
+      'client.lang': 'Документ', 'client.print': 'Печать / PDF',
+      'saved.eyebrow': 'Библиотека', 'saved.title': 'Сохранённые сметы', 'btn.export': 'Экспорт данных', 'btn.import': 'Импорт данных', 'btn.newEstimate': 'Новая смета',
+      'ph.search': 'Поиск по проекту или клиенту…', 'saved.empty': 'Сохранённых смет пока нет. Соберите смету на вкладке «Смета» и нажмите «Сохранить».',
+      'saved.noMatch': 'Ничего не найдено по запросу «{q}».', 'saved.open': 'открыта', 'saved.noClient': 'Без клиента', 'saved.meta': 'Маржа {m} · {p} · изменена {d}',
+      'btn.open': 'Открыть', 'btn.delete': 'Удалить',
+      'set.eyebrow': 'Конфигурация', 'set.title': 'Настройки', 'set.status': 'Изменения сохраняются автоматически. Существующие сметы хранят свои цены.',
+      'set.models': 'Модели и инструменты', 'set.noModels': 'Нет моделей.', 'set.archivedTag': 'в архиве',
+      'set.used': function (v) { return 'используется в ' + v.n + ' ' + plural('ru', v.n, ['смете', 'сметах', 'сметах']); },
+      'btn.edit': 'Изменить', 'btn.archive': 'В архив', 'btn.restore': 'Восстановить', 'btn.addModel': '+ Добавить модель', 'set.showArchived': 'Показать архив ({n})',
+      'set.modelsHint': 'Модели в архиве скрыты из выбора, но остаются в старых сметах. Модель, которая используется в сохранённой смете, можно только архивировать, но не удалить.',
+      'set.pricing': 'Цены, валюта и язык', 'f.creditPriceSet': 'Цена 1 кредита (USD)', 'f.defCurrency': 'Валюта по умолчанию', 'f.defDocLang': 'Язык документа по умолчанию',
+      'set.rates': 'Почасовые ставки', 'f.hourly': 'Ставка по умолчанию', 'set.perService': 'Ставки по услугам', 'set.perServiceHint': '— пусто = ставка по умолчанию', 'ph.default': 'по умолч.',
+      'set.defaults': 'Значения по умолчанию', 'f.waste': 'Буфер на брак', 'f.includedRev': 'Включено правок', 'f.revPrice': 'Цена доп. правки', 'f.formatPrice': 'Цена доп. формата',
+      'set.rushOpts': 'Варианты срочности', 'btn.addRush': '+ Вариант срочности', 'set.usageOpts': 'Варианты прав использования', 'btn.addUsage': '+ Вариант прав',
+      'set.usageHint': 'В смете всегда доступен вариант «Свои условия…».', 'opt.multType': 'Множитель', 'opt.fixedType': 'Фикс. $',
+      'set.studio': 'Студия и версия для клиента', 'f.logo': 'Логотип', 'logo.builtin': 'Логотип Chiefs', 'logo.image': 'Своя картинка', 'logo.text': 'Текст',
+      'btn.uploadLogo': 'Загрузить картинку…', 'logo.noImage': 'Картинка ещё не загружена — используется логотип Chiefs.', 'f.logoText': 'Текстовый логотип',
+      'f.tagline': 'Подпись (EN)', 'f.taglineRu': 'Подпись (RU)', 'f.studioName': 'Название студии / юрлица', 'f.email': 'Email', 'f.phone': 'Телефон', 'f.website': 'Сайт',
+      'f.address': 'Адрес / реквизиты', 'ph.address': 'Улица, город, IČO, DIČ…', 'f.footer': 'Примечание внизу (EN)', 'f.footerRu': 'Примечание внизу (RU)',
+      'set.data': 'Данные', 'set.dataHint': 'Всё хранится в этом браузере (localStorage). Сделайте резервную копию в JSON, чтобы перенести настройки и сметы на другое устройство.',
+      'btn.exportJson': 'Экспорт данных (JSON)', 'btn.importDots': 'Импорт данных…', 'btn.resetSettings': 'Сбросить настройки', 'btn.wipe': 'Удалить все данные',
+      'm.cancel': 'Отмена', 'm.ok': 'OK', 'm.discardTitle': 'Не сохранять изменения?', 'm.discardMsg': 'В текущей смете есть несохранённые изменения. Продолжить без сохранения?', 'm.discard': 'Не сохранять',
+      'm.saveTitle': 'Сохранить смету', 'm.projectName': 'Название проекта', 'm.existsTitle': 'Проект с таким названием уже есть', 'm.existsMsg': 'Сохранённая смета «{n}» уже существует.',
+      'm.keepBoth': 'Оставить обе', 'm.overwrite': 'Перезаписать', 'toast.saved': 'Сохранено: «{n}»', 'toast.pricesOk': 'Все цены уже совпадают с настройками',
+      'm.refreshTitle': 'Обновить цены из настроек', 'm.refreshIntro': 'Эти значения будут обновлены по текущим настройкам:', 'm.refreshTotal': 'Итог для клиента:',
+      'toast.refreshed': 'Цены обновлены',
+      'change.creditPrice': 'Цена кредита (USD)', 'change.fxEUR': 'Курс USD → EUR', 'change.fxCZK': 'Курс USD → CZK', 'change.rate': '{n}: ставка в час',
+      'change.formatPrice': 'Цена доп. формата', 'change.revisionPrice': 'Цена доп. раунда правок', 'change.renamed': '(переименована в {n})', 'change.credits': 'кр.',
+      'm.editModel': 'Изменить модель', 'm.addModel': 'Добавить модель', 'f.costCredits': 'Стоимость в кредитах', 'm.perSecLabel': 'Цена за секунду видео (кредиты × длительность × генерации)',
+      'f.notes': 'Заметки', 'ph.modelName': 'например, Veo 3', 'ph.modelNotes': 'Разрешение, режим, тариф…',
+      'm.modelHint': 'Новая цена применяется только к новым строкам. Существующие сметы сохраняют свою цену, пока вы не нажмёте в них «Обновить цены».',
+      'toast.modelUpdated': 'Модель обновлена', 'toast.modelAdded': 'Модель добавлена', 'toast.archived': 'В архиве — скрыта из выбора', 'toast.restored': 'Восстановлена',
+      'toast.modelInUse': 'Модель используется в смете — её можно только архивировать', 'm.delModelTitle': 'Удалить модель?', 'm.delModelMsg': 'Удалить «{n}»? Она не используется ни в одной смете.',
+      'm.unsavedTitle': 'Несохранённая смета', 'm.unsavedMsg': 'В открытой смете есть несохранённые изменения, они не попадут в экспорт. Всё равно экспортировать?', 'm.export': 'Экспортировать',
+      'toast.exported': function (v) { return 'Экспортировано: ' + v.n + ' ' + plural('ru', v.n, ['смета', 'сметы', 'смет']) + ' + настройки'; },
+      'toast.badJson': 'Это не JSON-файл', 'toast.badBackup': 'Этот файл не является резервной копией калькулятора',
+      'm.importTitle': 'Импорт данных',
+      'm.importMsg': function (v) { return 'В файле <b>' + v.n + ' ' + plural('ru', v.n, ['смета', 'сметы', 'смет']) + '</b>' + (v.m != null ? ' и настройки с <b>' + v.m + ' ' + plural('ru', v.m, ['моделью', 'моделями', 'моделями']) + '</b>' : '') + '.'; },
+      'm.importHelp': '<li><b>Объединить</b> — ваши настройки остаются, недостающие модели и сметы добавляются (если смета есть в обоих местах — побеждает более новая).</li><li><b>Заменить всё</b> — настройки и сметы на этом устройстве будут перезаписаны.</li>',
+      'm.importMerge': 'Объединить', 'm.importReplace': 'Заменить всё',
+      'toast.merged': function (v) { return 'Объединено · добавлено/обновлено смет: ' + v.n; }, 'toast.replaced': 'Данные заменены из резервной копии',
+      'm.delEstTitle': 'Удалить смету?', 'm.delEstMsg': 'Удалить «{n}» навсегда? Это действие нельзя отменить.', 'toast.deleted': 'Удалено',
+      'toast.duplicated': 'Создана копия «{n}»', 'toast.dupCurrent': 'Создана копия — она ещё не сохранена',
+      'm.resetTitle': 'Сбросить настройки?', 'm.resetMsg': 'Вернуть все настройки (модели, ставки, варианты, данные студии) к значениям по умолчанию? Сохранённые сметы не изменятся.', 'm.reset': 'Сбросить',
+      'toast.reset': 'Настройки сброшены', 'm.wipeTitle': 'Удалить все данные?', 'm.wipeMsg': 'Все настройки и сохранённые сметы будут навсегда удалены из этого браузера. Если нужно, сначала сделайте экспорт.',
+      'm.wipe': 'Удалить всё', 'toast.storage': 'Не удалось записать в хранилище браузера (переполнено или заблокировано).', 'toast.logoBad': 'Не удалось прочитать картинку', 'toast.logoSet': 'Логотип обновлён',
+
+      'doc.estimate': 'Смета', 'doc.untitled': 'Проект без названия', 'doc.client': 'Клиент', 'doc.date': 'Дата', 'doc.deadline': 'Дедлайн', 'doc.currency': 'Валюта',
+      'doc.noItems': 'Пока нет позиций.', 'doc.sec.ai': 'AI-продакшн', 'doc.sec.services': 'Услуги', 'doc.sec.revisions': 'Правки', 'doc.sec.third': 'Лицензии и сторонние расходы',
+      'doc.ai': 'AI-продакшн', 'doc.formats': 'Дополнительные форматы', 'doc.revisions': 'Дополнительные раунды правок', 'doc.fixed': 'Сторонний расход',
+      'doc.subtotal': 'Промежуточный итог', 'doc.rush': 'Надбавка за срочность', 'doc.usage': 'Права использования', 'doc.discount': 'Скидка', 'doc.total': 'Итого',
+      'doc.prepay': 'Предоплата {p} — до начала работ', 'doc.balance': 'Остаток при сдаче', 'doc.usageTerms': 'Права использования:', 'doc.included': '(включены в стоимость)',
+      'doc.revTitle': 'Правки:', 'doc.timelineTitle': 'Сроки:'
+    }
+  };
+
+  /** Built-in service names in both languages (estimates store the English name). */
+  var SVC_I18N = {
+    preprod: { ru: ['Препродакшн', 'Мудборд, концепт, раскадровка'] },
+    references: { ru: ['Создание референсов', 'Листы персонажей, локаций и реквизита для консистентности'] },
+    previz: { ru: ['3D-превиз', 'Блокинг, лейаут и превиз камеры в Blender'] },
+    prompting: { ru: ['Промптинг и контроль генераций', 'Составление промптов, генерация и отбор'] },
+    editing: { ru: ['Монтаж', 'Сборка ролика'] },
+    grading: { ru: ['Цветокоррекция', ''] },
+    sound_design: { ru: ['Саунд-дизайн', 'Звук'] },
+    music: { ru: ['Музыка', 'Звук'] },
+    voiceover: { ru: ['Озвучка / липсинк', 'Звук'] },
+    delivery: { ru: ['Апскейл и финальная сдача', 'Финальный апскейл, мастеринг и экспорт'] },
+    direction: { ru: ['Креативное руководство / управление проектом', ''] }
+  };
+  /** Default option/model names that are translated as long as the user hasn't renamed them. */
+  var DATA_I18N = {
+    r_standard: ['Standard', 'Стандарт'], r_fast: ['Fast', 'Быстро'], r_urgent: ['Urgent', 'Срочно'],
+    u_social: ['Social media', 'Соцсети'], u_commercial: ['Commercial', 'Коммерческое использование'], u_ads: ['Advertising', 'Реклама'],
+    custom: ['Custom', 'Свои условия'],
+    m_upscale_video: ['Video upscale', 'Апскейл видео'], m_upscale_image: ['Image upscale', 'Апскейл изображений']
+  };
+
+  function tr(lang, key, vars) {
+    var v = (I18N[lang] && I18N[lang][key]);
+    if (v === undefined) v = I18N.en[key];
+    if (v === undefined) { console.error('i18n: missing key ' + key); return key; }
+    if (typeof v === 'function') return v(vars || {});
+    return vars ? v.replace(/\{(\w+)\}/g, function (m, k) { return vars[k] != null ? vars[k] : m; }) : v;
+  }
+  function t(key, vars) { return tr(ui.lang, key, vars); }
+  function dataName(lang, id, name) {
+    var d = DATA_I18N[id];
+    if (d && (!name || name === d[0])) return lang === 'ru' ? d[1] : d[0];
+    return name || (lang === 'ru' ? DATA_I18N.custom[1] : DATA_I18N.custom[0]);
+  }
+  function svcName(lang, s) {
+    var x = !s.custom && s.key && SVC_I18N[s.key];
+    if (x && lang === 'ru') return x.ru[0];
+    return s.name || tr(lang, 'svc.unnamed');
+  }
+  function svcDesc(lang, s) {
+    var x = !s.custom && s.key && SVC_I18N[s.key];
+    if (x && lang === 'ru') return x.ru[1];
+    return s.desc || '';
+  }
+  function catName(c) { return t('cat.' + c); }
+
+  /* ================= State ================= */
   var settings = E.normalizeSettings(load(KEYS.settings, null));
   var estimates = (load(KEYS.estimates, []) || []).map(E.normalizeEstimate);
   var est, baseJson;
@@ -787,13 +1080,15 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     if (d && d.est) { est = E.normalizeEstimate(d.est); baseJson = typeof d.baseJson === 'string' ? d.baseJson : ''; }
     else { est = E.newEstimate(settings); baseJson = JSON.stringify(est); }
   })();
-  var ui = Object.assign({ view: 'estimate', showArchived: false, search: '' }, load(KEYS.ui, {}) || {});
+  var browserLang = (navigator.language || 'en').toLowerCase().indexOf('ru') === 0 ? 'ru' : 'en';
+  var ui = Object.assign({ view: 'estimate', showArchived: false, search: '', lang: browserLang }, load(KEYS.ui, {}) || {});
   if (['estimate', 'saved', 'settings', 'client'].indexOf(ui.view) < 0) ui.view = 'estimate';
+  if (E.LANGS.indexOf(ui.lang) < 0) ui.lang = 'en';
 
-  function saveSettings() { store(KEYS.settings, settings); $('#brand-logo').textContent = settings.studio.logo || 'Studio'; }
+  function saveSettings() { store(KEYS.settings, settings); renderBrand(); }
   function saveEstimates() { store(KEYS.estimates, estimates); }
   function saveDraft() { store(KEYS.draft, { est: est, baseJson: baseJson }); }
-  function saveUi() { store(KEYS.ui, { view: ui.view, showArchived: ui.showArchived }); }
+  function saveUi() { store(KEYS.ui, { view: ui.view, showArchived: ui.showArchived, lang: ui.lang }); }
   function isSaved() { return estimates.some(function (x) { return x.id === est.id; }); }
   function isDirty() { return JSON.stringify(est) !== baseJson; }
   /** A blank, never-saved estimate follows Settings (so filling in Settings first just works). */
@@ -804,17 +1099,17 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     baseJson = JSON.stringify(est); saveDraft();
   }
 
-  /* ---------------- Helpers ---------------- */
-  function money(x) { return E.fmtMoney(x, est.currency); }
-  function credits(x) { return E.fmtNum(x, 2) + ' cr'; }
-  function pct(x) { return E.fmtNum(x, 2) + '%'; }
-  function fmtDate(iso) {
+  /* ================= Helpers ================= */
+  function money(x, lang) { return E.fmtMoney(x, est.currency, lang || ui.lang); }
+  function nf(x, dp, lang) { return E.fmtNum(x, dp, lang || ui.lang); }
+  function credits(x) { return nf(x, 2) + ' ' + t('u.cr'); }
+  function pct(x, lang) { return nf(x, 2, lang) + '%'; }
+  function fmtDate(iso, lang, long) {
     if (!iso) return '';
     var d = new Date(iso.length === 10 ? iso + 'T00:00:00' : iso);
     if (isNaN(d)) return iso;
-    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return d.toLocaleDateString((lang || ui.lang) === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: long ? 'long' : 'short', year: 'numeric' });
   }
-  function getPath(obj, path) { return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj); }
   function setPath(obj, path, val) {
     var ks = path.split('.'), o = obj;
     for (var i = 0; i < ks.length - 1; i++) { if (o[ks[i]] == null) o[ks[i]] = {}; o = o[ks[i]]; }
@@ -822,15 +1117,15 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   }
   function readVal(el) {
     if (el.type === 'checkbox') return el.checked;
-    var t = el.dataset.type;
-    if (t === 'num') return E.num(el.value);
-    if (t === 'int') return Math.max(0, Math.round(E.num(el.value)));
-    if (t === 'numOrNull') return el.value.trim() === '' ? null : E.num(el.value);
+    var ty = el.dataset.type;
+    if (ty === 'num') return E.num(el.value);
+    if (ty === 'int') return Math.max(0, Math.round(E.num(el.value)));
+    if (ty === 'numOrNull') return el.value.trim() === '' ? null : E.num(el.value);
     return el.value;
   }
   function numStr(v) { return v === null || v === undefined ? '' : String(v); }
 
-  /** Text/number input. opts: {bind|sbind, type, pre, suf, ph, cls, label, mode} */
+  /** Text/number input. opts: {scope, type, pre, suf, ph, cls, label, fcls, aria, html} */
   function input(path, value, opts) {
     opts = opts || {};
     var isNum = opts.type === 'num' || opts.type === 'int' || opts.type === 'numOrNull';
@@ -840,7 +1135,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       (opts.cls ? ' class="' + opts.cls + '"' : '') + (opts.aria ? ' aria-label="' + esc(opts.aria) + '"' : '') +
       ' value="' + esc(isNum ? numStr(value) : value) + '">';
     if (opts.pre || opts.suf) {
-      html = '<div class="ctl' + (opts.pre ? ' has-pre' : '') + (opts.suf ? ' has-suf' : '') + '">' + (opts.pre ? '<span class="pre">' + esc(opts.pre) + '</span>' : '') + html + (opts.suf ? '<span class="suf">' + esc(opts.suf) + '</span>' : '') + '</div>';
+      html = '<div class="ctl' + (opts.pre ? ' has-pre' : '') + (opts.suf ? ' has-suf' : '') + '"' + (opts.width ? ' style="width:' + opts.width + '"' : '') + '>' + (opts.pre ? '<span class="pre">' + esc(opts.pre) + '</span>' : '') + html + (opts.suf ? '<span class="suf">' + esc(opts.suf) + '</span>' : '') + '</div>';
     }
     return opts.label ? field(opts.label, html, opts.fcls) : html;
   }
@@ -850,11 +1145,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       return '<option value="' + esc(o.value) + '"' + (String(o.value) === String(value) ? ' selected' : '') + '>' + esc(o.label) + '</option>';
     }).join('') + '</select>';
   }
-  function toggle(path, checked, scope, label) {
-    return '<label class="switch" title="' + esc(label || 'Toggle') + '"><input type="checkbox" ' + (scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '" data-rerender' + (checked ? ' checked' : '') + ' aria-label="' + esc(label || 'Toggle') + '"><span class="sl"></span></label>';
+  function toggle(path, checked, label) {
+    return '<label class="switch" title="' + esc(label) + '"><input type="checkbox" data-bind="' + esc(path) + '" data-rerender' + (checked ? ' checked' : '') + ' aria-label="' + esc(label) + '"><span class="sl"></span></label>';
   }
-  function checkbox(path, checked, label, scope) {
-    return '<label class="check"><input type="checkbox" ' + (scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '"' + (checked ? ' checked' : '') + '> ' + esc(label) + '</label>';
+  function checkbox(path, checked, label, scope, rerender) {
+    return '<label class="check"><input type="checkbox" ' + (scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '"' + (rerender ? ' data-rerender' : '') + (checked ? ' checked' : '') + '> ' + esc(label) + '</label>';
   }
   function seg(path, value, options, scope) {
     return '<div class="seg" role="group">' + options.map(function (o) {
@@ -865,13 +1160,36 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     return '<section class="card"><div class="sec-head"><span class="sec-num">' + n + '</span><h2>' + esc(title) + '</h2>' + (extra ? '<div class="sec-extra">' + extra + '</div>' : '') + '</div>' + body + '</section>';
   }
   function out(key, html, cls) { return '<div class="' + (cls || 'out') + '" data-out="' + esc(key) + '">' + (html || '') + '</div>'; }
+  var LANG_OPTS = [{ value: 'en', label: 'English' }, { value: 'ru', label: 'Русский' }];
 
-  /* ---------------- Toast & modal ---------------- */
+  /* ================= Logo ================= */
+  function logoMode() {
+    var st = settings.studio;
+    if (st.logoMode === 'image' && st.logoImage) return 'image';
+    if (st.logoMode === 'text') return 'text';
+    return 'builtin';
+  }
+  function renderBrand() {
+    var mode = logoMode(), st = settings.studio, h;
+    if (mode === 'builtin') h = '<span class="logo-mark" role="img" aria-label="Chiefs"></span>';
+    else if (mode === 'image') h = '<img class="logo-img" src="' + esc(st.logoImage) + '" alt="' + esc(st.logo || 'Logo') + '">';
+    else h = '<span class="brand-logo">' + esc(st.logo || 'Studio') + '</span>';
+    $('#brand-mark').innerHTML = h;
+    $('#brand-sub').textContent = t('brand.sub');
+  }
+  function docLogo() {
+    var mode = logoMode(), st = settings.studio;
+    if (mode === 'builtin') return '<img class="doc-logo-img" src="' + CHIEFS_LOGO + '" alt="Chiefs">';
+    if (mode === 'image') return '<img class="doc-logo-img custom" src="' + esc(st.logoImage) + '" alt="' + esc(st.logo || 'Logo') + '">';
+    return '<div class="doc-logo">' + esc(st.logo || 'Studio') + '</div>';
+  }
+
+  /* ================= Toast & modal ================= */
   var toastTimer;
   function toast(msg, kind) {
-    var t = $('#toast');
-    t.textContent = msg; t.className = 'toast show' + (kind ? ' ' + kind : '');
-    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.className = 'toast'; }, 2600);
+    var el = $('#toast');
+    el.textContent = msg; el.className = 'toast show' + (kind ? ' ' + kind : '');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.className = 'toast'; }, 2600);
   }
   function openModal(o) {
     var root = $('#modal-root');
@@ -897,16 +1215,16 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   function confirmDialog(title, message, okLabel, danger) {
     return new Promise(function (resolve) {
       openModal({ title: title, body: '<div>' + message + '</div>', onCancel: function () { resolve(false); }, actions: [
-        { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(false); } },
-        { label: okLabel || 'OK', kind: danger ? 'danger solid primary' : 'primary', onClick: function () { resolve(true); } }
+        { label: t('m.cancel'), kind: 'ghost', onClick: function () { resolve(false); } },
+        { label: okLabel || t('m.ok'), kind: danger ? 'danger solid primary' : 'primary', onClick: function () { resolve(true); } }
       ] });
     });
   }
   function promptDialog(title, label, value, okLabel) {
     return new Promise(function (resolve) {
       openModal({ title: title, body: field(label, '<input type="text" id="prompt-input" value="' + esc(value || '') + '">'), onCancel: function () { resolve(null); }, actions: [
-        { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(null); } },
-        { label: okLabel || 'OK', kind: 'primary', onClick: function (root) {
+        { label: t('m.cancel'), kind: 'ghost', onClick: function () { resolve(null); } },
+        { label: okLabel || t('m.ok'), kind: 'primary', onClick: function (root) {
           var v = root.querySelector('#prompt-input').value.trim();
           if (!v) { root.querySelector('#prompt-input').focus(); return false; }
           resolve(v);
@@ -916,16 +1234,19 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   }
 
   /* ================= ESTIMATE VIEW ================= */
+  function unitPer(perSecond) { return t('u.cr') + '/' + (perSecond ? t('u.sec') : t('u.gen')); }
   function lineFormula(l) {
     var c = E.num(l.credits), g = E.num(l.gens);
-    return l.perSecond ? E.fmtNum(c, 4) + ' cr/s × ' + E.fmtNum(l.duration) + ' s × ' + E.fmtNum(g) + ' gen' : E.fmtNum(c, 4) + ' cr × ' + E.fmtNum(g) + ' gen';
+    return l.perSecond
+      ? nf(c, 4) + ' ' + unitPer(true) + ' × ' + nf(l.duration) + ' ' + t('u.sec') + ' × ' + nf(g) + ' ' + t('u.gen')
+      : nf(c, 4) + ' ' + t('u.cr') + ' × ' + nf(g) + ' ' + t('u.gen');
   }
 
   function outputs(c) {
     var o = {};
-    o.title = esc(est.name || 'Untitled estimate');
+    o.title = esc(est.name || t('est.untitled'));
     var saved = isSaved(), dirty = isDirty();
-    o.status = !saved ? '<span class="dot warn"></span>Not saved yet' : dirty ? '<span class="dot warn"></span>Unsaved changes' : '<span class="dot ok"></span>Saved · ' + esc(fmtDate(est.updatedAt));
+    o.status = !saved ? '<span class="dot warn"></span>' + esc(t('status.notSaved')) : dirty ? '<span class="dot warn"></span>' + esc(t('status.unsaved')) : '<span class="dot ok"></span>' + esc(t('status.saved', { d: fmtDate(est.updatedAt) }));
     est.lines.forEach(function (l, i) {
       var r = c.lines[i] || { credits: 0, cost: 0 };
       o['line-' + i] = credits(r.credits) + ' <small>· ' + money(r.cost) + '</small>';
@@ -935,83 +1256,87 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     o.formats = est.formats.enabled ? money(c.formats) : '';
     o.revisions = money(c.revisions);
     o.rush = c.rush ? '+' + money(c.rush) : '—';
-    o.usage = c.usage ? (c.usage > 0 ? '+' : '') + money(c.usage) : 'Included';
+    o.usage = c.usage ? (c.usage > 0 ? '+' : '') + money(c.usage) : esc(t('usage.included'));
     o.discount = c.discount ? '−' + money(c.discount) : '—';
-    o.markup = money(c.markupRaw) + ' <small>&nbsp;on ' + money(c.markupBase) + '</small>';
+    o.markup = money(c.markupRaw) + ' <small>&nbsp;' + esc(t('markup.on', { v: money(c.markupBase) })) + '</small>';
     o.prepay = money(c.prepay);
     o['fixed-total'] = money(c.fixed);
     o['gen-summary'] = renderGenSummary(c);
     o.summary = renderSummary(c);
     o['mb-total'] = money(c.total);
-    o['mb-sub'] = 'Prepay ' + money(c.prepay) + ' · margin ' + pct(c.marginPct);
+    o['mb-sub'] = esc(t('mb.sub', { p: money(c.prepay), m: pct(c.marginPct) }));
     return o;
   }
 
   function renderGenSummary(c) {
     if (!est.lines.length) return '';
     var rows = c.categories.map(function (x) {
-      return '<tr><td>' + esc(x.category) + ' <span class="muted">· ' + x.lines + ' line' + (x.lines === 1 ? '' : 's') + '</span></td><td>' + credits(x.credits) + '</td><td>' + money(x.cost) + '</td></tr>';
+      return '<tr><td>' + esc(catName(x.category)) + ' <span class="muted">· ' + esc(t('gen.lines', { n: x.lines })) + '</span></td><td>' + credits(x.credits) + '</td><td>' + money(x.cost) + '</td></tr>';
     }).join('');
-    return '<table class="mini-table"><thead><tr><th>Category</th><th>Credits</th><th>Cost</th></tr></thead><tbody>' + rows +
-      '<tr class="sub"><td>Subtotal</td><td>' + credits(c.rawCredits) + '</td><td>' + money(c.creditsCost) + '</td></tr>' +
-      '<tr class="sub"><td>Waste buffer ' + pct(c.wastePct) + '</td><td>+' + credits(c.wasteCredits) + '</td><td>+' + money(c.wasteCost) + '</td></tr>' +
-      '<tr class="total"><td>Total</td><td>' + credits(c.totalCredits) + '</td><td>' + money(c.genCost) + '</td></tr></tbody></table>';
+    return '<table class="mini-table"><thead><tr><th>' + t('th.category') + '</th><th>' + t('th.credits') + '</th><th>' + t('th.cost') + '</th></tr></thead><tbody>' + rows +
+      '<tr class="sub"><td>' + t('gen.subtotal') + '</td><td>' + credits(c.rawCredits) + '</td><td>' + money(c.creditsCost) + '</td></tr>' +
+      '<tr class="sub"><td>' + esc(t('gen.wasteRow', { p: pct(c.wastePct) })) + '</td><td>+' + credits(c.wasteCredits) + '</td><td>+' + money(c.wasteCost) + '</td></tr>' +
+      '<tr class="total"><td>' + t('gen.total') + '</td><td>' + credits(c.totalCredits) + '</td><td>' + money(c.genCost) + '</td></tr></tbody></table>';
   }
 
   function sr(label, value, cls) { return '<div class="sr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
+  function warningText(w) { return w.code === 'fx' ? t('warn.fx', { c: w.currency }) : t('warn.creditPrice'); }
 
   function renderSummary(c) {
-    var h = '<div class="sum-label">Client total</div><div class="sum-total">' + money(c.total) + '</div>' +
-      '<div class="sum-pre">Prepayment ' + pct(c.prepayPct) + ' · <b>' + money(c.prepay) + '</b></div>';
-    if (c.warnings.length) h += '<ul class="warn-list">' + c.warnings.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>';
+    var h = '<div class="sum-label">' + t('sum.clientTotal') + '</div><div class="sum-total">' + money(c.total) + '</div>' +
+      '<div class="sum-pre">' + esc(t('sum.prepay', { p: pct(c.prepayPct) })) + ' · <b>' + money(c.prepay) + '</b></div>';
+    if (c.warnings.length) h += '<ul class="warn-list">' + c.warnings.map(function (w) { return '<li>' + esc(warningText(w)) + '</li>'; }).join('') + '</ul>';
 
-    h += '<div class="sum-group"><h4>AI generation</h4>';
-    if (!c.categories.length) h += sr('<span class="muted">No generation lines</span>', money(0), 'sub');
-    c.categories.forEach(function (x) { h += sr(esc(x.category) + ' · ' + credits(x.credits), money(x.cost), 'sub'); });
-    h += sr('Waste buffer ' + pct(c.wastePct) + ' · ' + credits(c.wasteCredits), money(c.wasteCost), 'sub');
-    h += sr('AI credits total · ' + credits(c.totalCredits), money(c.genCost), 'strong') + '</div>';
+    h += '<div class="sum-group"><h4>' + t('sum.gen') + '</h4>';
+    if (!c.categories.length) h += sr('<span class="muted">' + t('sum.noLines') + '</span>', money(0), 'sub');
+    c.categories.forEach(function (x) { h += sr(esc(catName(x.category)) + ' · ' + credits(x.credits), money(x.cost), 'sub'); });
+    h += sr(esc(t('sum.waste', { p: pct(c.wastePct), c: credits(c.wasteCredits) })), money(c.wasteCost), 'sub');
+    h += sr(esc(t('sum.creditsTotal', { c: credits(c.totalCredits) })), money(c.genCost), 'strong') + '</div>';
 
-    h += '<div class="sum-group"><h4>Labor</h4>';
-    if (!c.laborItems.length) h += sr('<span class="muted">No services enabled</span>', money(0), 'sub');
+    h += '<div class="sum-group"><h4>' + t('sum.labor') + '</h4>';
+    if (!c.laborItems.length) h += sr('<span class="muted">' + t('sum.noServices') + '</span>', money(0), 'sub');
     c.laborItems.forEach(function (it) {
-      var d = it.kind === 'service' ? (it.mode === 'fixed' ? 'fixed' : E.fmtNum(it.hours) + ' h × ' + money(it.rate)) : it.count + ' × ' + money(it.price);
-      h += sr(esc(it.name) + ' <span class="muted">· ' + d + '</span>', money(it.amount), 'sub');
+      var name = it.kind === 'service' ? svcName(ui.lang, it) : it.kind === 'formats' ? t('svc.formats') : tr(ui.lang, 'doc.revisions');
+      var d = it.kind === 'service' ? (it.mode === 'fixed' ? t('u.fixedWord') : nf(it.hours) + ' ' + t('u.h') + ' × ' + money(it.rate)) : it.count + ' × ' + money(it.price);
+      h += sr(esc(name) + ' <span class="muted">· ' + esc(d) + '</span>', money(it.amount), 'sub');
     });
-    h += sr('Labor total', money(c.labor), 'strong') + '</div>';
+    h += sr(t('sum.laborTotal'), money(c.labor), 'strong') + '</div>';
 
-    h += '<div class="sum-group"><h4>Fixed costs</h4>';
-    if (!c.fixedItems.length) h += sr('<span class="muted">None</span>', money(0), 'sub');
-    c.fixedItems.forEach(function (f) { h += sr(esc(f.name), money(f.amount), 'sub'); });
-    h += sr('Fixed costs total', money(c.fixed), 'strong') + '</div>';
+    h += '<div class="sum-group"><h4>' + t('sum.fixed') + '</h4>';
+    if (!c.fixedItems.length) h += sr('<span class="muted">' + t('sum.none') + '</span>', money(0), 'sub');
+    c.fixedItems.forEach(function (f) { h += sr(esc(f.name || t('fixed.unnamed')), money(f.amount), 'sub'); });
+    h += sr(t('sum.fixedTotal'), money(c.fixed), 'strong') + '</div>';
 
-    h += '<div class="sum-group"><h4>Pricing</h4>';
-    h += sr('Markup ' + pct(c.markupPct), money(c.markup));
-    h += sr('Subtotal', money(c.subtotal), 'strong');
-    if (c.rush) h += sr('Rush fee · ' + esc(c.rushName || 'Rush') + ' +' + pct(c.rushPct), '+' + money(c.rush));
-    if (c.usage) h += sr('Usage rights · ' + esc(c.usageName || 'Custom') + ' ' + (c.usageType === 'mult' ? '×' + E.fmtNum(c.usageValue, 3) : 'fixed'), (c.usage > 0 ? '+' : '') + money(c.usage));
-    if (c.discount) h += sr('Discount' + (c.discountType === 'pct' ? ' ' + pct(c.discountValue) : ''), '−' + money(c.discount), 'neg');
-    h += sr('Client total', money(c.total), 'big');
-    h += sr('Prepayment ' + pct(c.prepayPct), money(c.prepay), 'sub');
-    h += sr('Balance on delivery', money(c.balance), 'sub') + '</div>';
+    h += '<div class="sum-group"><h4>' + t('sum.pricing') + '</h4>';
+    h += sr(esc(t('sum.markup', { p: pct(c.markupPct) })), money(c.markup));
+    h += sr(t('sum.subtotal'), money(c.subtotal), 'strong');
+    if (c.rush) h += sr(esc(t('sum.rush', { n: dataName(ui.lang, est.rush.optionId, c.rushName), p: pct(c.rushPct) })), '+' + money(c.rush));
+    if (c.usage) h += sr(esc(t('sum.usage', { n: dataName(ui.lang, est.usage.optionId, c.usageName), v: c.usageType === 'mult' ? '×' + nf(c.usageValue, 3) : t('u.fixedWord') })), (c.usage > 0 ? '+' : '') + money(c.usage));
+    if (c.discount) h += sr(t('sum.discount') + (c.discountType === 'pct' ? ' ' + pct(c.discountValue) : ''), '−' + money(c.discount), 'neg');
+    h += sr(t('sum.clientTotal'), money(c.total), 'big');
+    h += sr(esc(t('sum.prepay', { p: pct(c.prepayPct) })), money(c.prepay), 'sub');
+    h += sr(t('sum.balance'), money(c.balance), 'sub') + '</div>';
 
     h += '<div class="margin-box">' +
-      sr('Real cost <span class="muted">(credits + fixed)</span>', money(c.realCost)) +
-      sr('Margin', money(c.margin) + ' · ' + pct(c.marginPct), 'big') +
-      sr('Margin excl. your labor', money(c.marginExLabor) + ' · ' + pct(c.marginExLaborPct), 'sub') + '</div>';
+      sr(t('sum.realCost') + ' <span class="muted">' + t('sum.realCostNote') + '</span>', money(c.realCost)) +
+      sr(t('sum.margin'), money(c.margin) + ' · ' + pct(c.marginPct), 'big') +
+      sr(t('sum.marginEx'), money(c.marginExLabor) + ' · ' + pct(c.marginExLaborPct), 'sub') + '</div>';
 
-    h += '<div class="sum-actions"><button class="btn" data-action="client">Client version</button><button class="btn primary" data-action="save">Save</button></div>';
+    h += '<div class="sum-actions"><button class="btn" data-action="client">' + t('btn.client') + '</button><button class="btn primary" data-action="save">' + t('btn.save') + '</button></div>';
     return h;
   }
 
+  function modelLabel(m) { return dataName(ui.lang, m.id, m.name); }
   function modelOptions(l) {
-    var opts = E.activeModels(settings, l.category).map(function (m) { return { value: m.id, label: m.name }; });
+    var opts = E.activeModels(settings, l.category).map(function (m) { return { value: m.id, label: modelLabel(m) }; });
     if (l.modelId !== 'custom' && !opts.some(function (o) { return o.value === l.modelId; })) {
       var m = E.findModel(settings, l.modelId);
-      opts.unshift({ value: l.modelId, label: (l.modelName || (m && m.name) || 'Model') + (m ? (m.archived ? ' (archived)' : ' (other category)') : ' (removed)') });
+      opts.unshift({ value: l.modelId, label: (l.modelName || (m && m.name) || 'Model') + ' ' + (m ? (m.archived ? t('model.archived') : t('model.otherCat')) : t('model.removed')) });
     }
-    opts.push({ value: 'custom', label: 'Custom…' });
+    opts.push({ value: 'custom', label: t('opt.custom') });
     return opts;
   }
+  function catOptions() { return E.CATEGORIES.map(function (c) { return { value: c, label: catName(c) }; }); }
 
   function renderLine(l, i, o) {
     var isCustom = l.modelId === 'custom';
@@ -1020,39 +1345,40 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var drift = m && (E.num(m.credits) !== E.num(l.credits) || !!m.perSecond !== !!l.perSecond || m.name !== l.modelName);
     var p = 'lines.' + i + '.';
     var h = '<div class="line"><div class="line-top"><span class="idx">' + String(i + 1).padStart(2, '0') + '</span>' +
-      input(p + 'label', l.label, { ph: 'Shot / asset name (optional)', aria: 'Line name' }) +
-      '<button class="icon-btn" title="Duplicate line" data-action="line-dup" data-i="' + i + '">⧉</button>' +
-      '<button class="icon-btn del" title="Remove line" data-action="line-del" data-i="' + i + '">✕</button></div><div class="line-grid">';
-    h += field('Category', selectEl('data-change="line-category" data-i="' + i + '"', E.CATEGORIES.map(function (c) { return { value: c, label: c }; }), l.category));
-    h += field('Model', selectEl('data-change="line-model" data-i="' + i + '"', modelOptions(l), l.modelId), 'model');
+      input(p + 'label', l.label, { ph: t('ph.lineName'), aria: t('a.lineName') }) +
+      '<button class="icon-btn" title="' + esc(t('t.dupLine')) + '" data-action="line-dup" data-i="' + i + '">⧉</button>' +
+      '<button class="icon-btn del" title="' + esc(t('t.delLine')) + '" data-action="line-del" data-i="' + i + '">✕</button></div><div class="line-grid">';
+    h += field(t('f.category'), selectEl('data-change="line-category" data-i="' + i + '"', catOptions(), l.category));
+    h += field(t('f.model'), selectEl('data-change="line-model" data-i="' + i + '"', modelOptions(l), l.modelId), 'model');
     if (isCustom) {
-      h += input(p + 'modelName', l.modelName, { label: 'Custom name', ph: 'e.g. Veo' });
-      h += input(p + 'credits', l.credits, { label: l.perSecond ? 'Credits / sec' : 'Credits / gen', type: 'num' });
-      h += '<div class="fld"><span class="lbl">Pricing</span><div class="snap" style="border-style:solid">' + checkbox(p + 'perSecond', l.perSecond, 'Per second').replace('<input', '<input data-rerender') + '</div></div>';
+      h += input(p + 'modelName', l.modelName, { label: t('f.customName'), ph: t('ph.customName') });
+      h += input(p + 'credits', l.credits, { label: l.perSecond ? t('f.crPerSec') : t('f.crPerGen'), type: 'num' });
+      h += '<div class="fld"><span class="lbl">' + t('f.pricing') + '</span><div class="snap" style="border-style:solid">' + checkbox(p + 'perSecond', l.perSecond, t('chk.perSecond'), null, true) + '</div></div>';
     } else {
-      h += '<div class="fld"><span class="lbl">Price (snapshot)</span><div class="snap" title="Saved with this estimate. Use Refresh prices to update.">' + E.fmtNum(l.credits, 4) + ' cr/' + (l.perSecond ? 'sec' : 'gen') + '</div></div>';
+      h += '<div class="fld"><span class="lbl">' + t('f.snapshot') + '</span><div class="snap" title="' + esc(t('t.snapshot')) + '">' + nf(l.credits, 4) + ' ' + unitPer(l.perSecond) + '</div></div>';
     }
-    h += input(p + 'gens', l.gens, { label: 'Generations', type: 'num', ph: '0' });
-    if (showDur) h += input(p + 'duration', l.duration, { label: 'Duration', type: 'num', suf: 'sec' });
+    h += input(p + 'gens', l.gens, { label: t('f.gens'), type: 'num', ph: '0' });
+    if (showDur) h += input(p + 'duration', l.duration, { label: t('f.duration'), type: 'num', suf: t('u.sec') });
     h += '</div><div class="line-foot"><span><span class="formula" data-out="line-f-' + i + '">' + o['line-f-' + i] + '</span>' +
-      (drift ? ' <span class="drift">· settings now ' + E.fmtNum(m.credits, 4) + ' cr/' + (m.perSecond ? 'sec' : 'gen') + '</span>' : '') +
-      (l.category === 'Video' && !l.perSecond ? ' <span class="muted" style="font-size:12px">· duration is informational (priced per generation)</span>' : '') + '</span>' +
+      (drift ? ' <span class="drift">· ' + esc(t('gen.driftLine', { v: nf(m.credits, 4) + ' ' + unitPer(m.perSecond) })) + '</span>' : '') +
+      (l.category === 'Video' && !l.perSecond ? ' <span class="muted" style="font-size:12px">· ' + t('gen.durInfo') + '</span>' : '') + '</span>' +
       out('line-' + i, o['line-' + i]) + '</div></div>';
     return h;
   }
 
   function renderService(s, i, o) {
     var p = 'services.' + i + '.';
-    var h = '<div class="svc' + (s.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle(p + 'enabled', s.enabled, null, 'Include ' + (s.name || 'service')) + '<div class="svc-title">';
-    if (s.custom) h += input(p + 'name', s.name, { ph: 'Custom service name', aria: 'Service name' }) + input(p + 'desc', s.desc, { ph: 'Short description for the client (optional)', cls: 'desc', aria: 'Description' });
-    else h += '<div class="svc-name">' + esc(s.name) + '</div>' + (s.desc ? '<div class="svc-desc">' + esc(s.desc) + '</div>' : '');
+    var name = svcName(ui.lang, s), desc = svcDesc(ui.lang, s);
+    var h = '<div class="svc' + (s.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle(p + 'enabled', s.enabled, t('svc.include', { n: name })) + '<div class="svc-title">';
+    if (s.custom) h += input(p + 'name', s.name, { ph: t('ph.svcName'), aria: t('ph.svcName') }) + input(p + 'desc', s.desc, { ph: t('ph.svcDesc'), cls: 'desc', aria: t('ph.svcDesc') });
+    else h += '<div class="svc-name">' + esc(name) + '</div>' + (desc ? '<div class="svc-desc">' + esc(desc) + '</div>' : '');
     h += '</div>' + out('svc-' + i, o['svc-' + i]);
-    if (s.custom) h += '<button class="icon-btn del" title="Remove service" data-action="svc-del" data-i="' + i + '">✕</button>';
+    if (s.custom) h += '<button class="icon-btn del" title="' + esc(t('t.delSvc')) + '" data-action="svc-del" data-i="' + i + '">✕</button>';
     h += '</div>';
     if (s.enabled) {
-      h += '<div class="svc-body">' + field('Pricing', seg(p + 'mode', s.mode, [{ value: 'hours', label: 'Hours' }, { value: 'fixed', label: 'Fixed' }]));
-      if (s.mode === 'fixed') h += input(p + 'fixed', s.fixed, { label: 'Fixed price', type: 'num', pre: '$' });
-      else h += input(p + 'hours', s.hours, { label: 'Hours', type: 'num', suf: 'h' }) + input(p + 'rate', s.rate, { label: 'Rate / hour', type: 'num', pre: '$' });
+      h += '<div class="svc-body">' + field(t('f.pricing'), seg(p + 'mode', s.mode, [{ value: 'hours', label: t('seg.hours') }, { value: 'fixed', label: t('seg.fixed') }]));
+      if (s.mode === 'fixed') h += input(p + 'fixed', s.fixed, { label: t('f.fixedPrice'), type: 'num', pre: '$' });
+      else h += input(p + 'hours', s.hours, { label: t('f.hours'), type: 'num', suf: t('u.h') }) + input(p + 'rate', s.rate, { label: t('f.rate'), type: 'num', pre: '$' });
       h += '</div>';
     }
     return h + '</div>';
@@ -1064,86 +1390,89 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var drift = E.refreshPrices(est, settings).changes.length;
     var curOpts = E.CURRENCIES.map(function (x) { return { value: x, label: x }; });
 
-    var h = '<div class="page-head"><div style="min-width:0"><div class="eyebrow">Estimate</div><h1 data-out="title">' + o.title + '</h1><div class="status" data-out="status">' + o.status + '</div></div>' +
-      '<div class="head-actions"><button class="btn" data-action="new">New</button><button class="btn" data-action="duplicate-current">Duplicate</button>' +
-      '<button class="btn" data-action="refresh-prices">Refresh prices</button><button class="btn" data-action="client">Client version</button><button class="btn primary" data-action="save">Save</button></div></div>';
-    if (drift) h += '<div class="notice"><span>' + drift + ' price' + (drift === 1 ? '' : 's') + ' in this estimate differ from your current Settings. The estimate keeps its own snapshot until you refresh.</span><button class="btn sm" data-action="refresh-prices">Review &amp; refresh</button></div>';
+    var h = '<div class="page-head"><div style="min-width:0"><div class="eyebrow">' + t('est.eyebrow') + '</div><h1 data-out="title">' + o.title + '</h1><div class="status" data-out="status">' + o.status + '</div></div>' +
+      '<div class="head-actions"><button class="btn" data-action="new">' + t('btn.new') + '</button><button class="btn" data-action="duplicate-current">' + t('btn.duplicate') + '</button>' +
+      '<button class="btn" data-action="refresh-prices">' + t('btn.refresh') + '</button><button class="btn" data-action="client">' + t('btn.client') + '</button><button class="btn primary" data-action="save">' + t('btn.save') + '</button></div></div>';
+    if (drift) h += '<div class="notice"><span>' + esc(t('drift.notice', { n: drift })) + '</span><button class="btn sm" data-action="refresh-prices">' + esc(t('drift.btn')) + '</button></div>';
 
     h += '<div class="est-layout"><div class="est-main">';
 
     // 1. Project
-    h += section('01', 'Project',
-      '<div class="grid wide">' + input('name', est.name, { label: 'Project name', ph: 'e.g. Spring campaign teaser' }) + input('client', est.client, { label: 'Client', ph: 'Client name' }) + '</div>' +
-      '<div class="grid" style="margin-top:12px">' + input('date', est.date, { label: 'Date', html: 'date' }) + input('deadline', est.deadline, { label: 'Deadline', html: 'date' }) +
-      field('Output currency', selectEl('data-bind="currency" data-rerender', curOpts, est.currency)) + '</div>' +
-      '<div class="rates-row"><div class="grid">' + input('rates.creditPrice', est.rates.creditPrice, { label: 'Credit price (USD)', type: 'num', pre: '$' }) +
-      input('rates.EUR', est.rates.EUR, { label: '1 USD → EUR', type: 'num' }) + input('rates.CZK', est.rates.CZK, { label: '1 USD → CZK', type: 'num' }) + '</div>' +
-      '<p class="hint" style="margin:10px 0 0">Rates are a snapshot taken from Settings when the estimate was created. All money inputs below are in USD; totals are shown in ' + esc(est.currency) + '.</p></div>');
+    h += section('01', t('sec.project'),
+      '<div class="grid wide">' + input('name', est.name, { label: t('f.projectName'), ph: t('ph.projectName') }) + input('client', est.client, { label: t('f.client'), ph: t('ph.client') }) + '</div>' +
+      '<div class="grid" style="margin-top:12px">' + input('date', est.date, { label: t('f.date'), html: 'date' }) + input('deadline', est.deadline, { label: t('f.deadline'), html: 'date' }) +
+      field(t('f.currency'), selectEl('data-bind="currency" data-rerender', curOpts, est.currency)) +
+      field(t('f.docLang'), selectEl('data-bind="docLang"', LANG_OPTS, est.docLang)) + '</div>' +
+      '<div class="rates-row"><div class="grid">' + input('rates.creditPrice', est.rates.creditPrice, { label: t('f.creditPrice'), type: 'num', pre: '$' }) +
+      input('rates.EUR', est.rates.EUR, { label: t('f.usdEur'), type: 'num' }) + input('rates.CZK', est.rates.CZK, { label: t('f.usdCzk'), type: 'num' }) + '</div>' +
+      '<p class="hint" style="margin:10px 0 0">' + esc(t('hint.rates', { c: est.currency })) + '</p></div>');
 
     // 2. AI generation
     var linesHtml = est.lines.length ? '<div class="lines">' + est.lines.map(function (l, i) { return renderLine(l, i, o); }).join('') + '</div>'
-      : '<div class="empty">No generation lines yet. Add a shot or asset below.</div>';
-    h += section('02', 'AI generation', linesHtml +
-      '<div class="add-row"><span class="hint">Add line:</span>' + E.CATEGORIES.map(function (cat) { return '<button class="btn dashed sm" data-action="add-line" data-cat="' + cat + '">+ ' + cat + '</button>'; }).join('') + '</div>' +
+      : '<div class="empty">' + t('gen.empty') + '</div>';
+    h += section('02', t('sec.gen'), linesHtml +
+      '<div class="add-row"><span class="hint">' + t('gen.add') + '</span>' + E.CATEGORIES.map(function (cat) { return '<button class="btn dashed sm" data-action="add-line" data-cat="' + cat + '">+ ' + esc(catName(cat)) + '</button>'; }).join('') + '</div>' +
       '<div data-out="gen-summary">' + o['gen-summary'] + '</div>',
-      input('wastePct', est.wastePct, { type: 'num', suf: '%', aria: 'Waste buffer', cls: '' }).replace('<div class="ctl', '<div style="width:110px" class="ctl') + '<span class="hint">waste buffer</span>');
+      input('wastePct', est.wastePct, { type: 'num', suf: '%', aria: t('gen.waste'), width: '110px' }) + '<span class="hint">' + t('gen.waste') + '</span>');
 
     // 3. Services
     var sv = est.services.map(function (s, i) { return renderService(s, i, o); }).join('');
     var f = est.formats;
-    sv += '<div class="svc' + (f.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle('formats.enabled', f.enabled, null, 'Include extra delivery formats') +
-      '<div class="svc-title"><div class="svc-name">Extra delivery formats</div><div class="svc-desc">Count × price per format</div></div>' + out('formats', o.formats) + '</div>' +
-      (f.enabled ? '<div class="svc-body">' + input('formats.label', f.label, { label: 'Formats', ph: '9:16, 1:1', fcls: 'grow' }) + input('formats.count', f.count, { label: 'Count', type: 'int' }) + input('formats.price', f.price, { label: 'Price / format', type: 'num', pre: '$' }) + '</div>' : '') + '</div>';
-    h += section('03', 'Services', sv + '<div class="add-row"><button class="btn dashed sm" data-action="add-service">+ Custom service</button></div>');
+    sv += '<div class="svc' + (f.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle('formats.enabled', f.enabled, t('svc.include', { n: t('svc.formats') })) +
+      '<div class="svc-title"><div class="svc-name">' + t('svc.formats') + '</div><div class="svc-desc">' + t('svc.formatsDesc') + '</div></div>' + out('formats', o.formats) + '</div>' +
+      (f.enabled ? '<div class="svc-body">' + input('formats.label', f.label, { label: t('f.formats'), ph: '9:16, 1:1', fcls: 'grow' }) + input('formats.count', f.count, { label: t('f.count'), type: 'int' }) + input('formats.price', f.price, { label: t('f.pricePerFormat'), type: 'num', pre: '$' }) + '</div>' : '') + '</div>';
+    h += section('03', t('sec.services'), sv + '<div class="add-row"><button class="btn dashed sm" data-action="add-service">' + t('btn.addService') + '</button></div>');
 
     // 4. Fixed costs
     var fx = est.fixedCosts.length ? '<div class="rows">' + est.fixedCosts.map(function (x, i) {
-      return '<div class="row">' + input('fixedCosts.' + i + '.name', x.name, { ph: 'Music license, voice actor, stock…', aria: 'Cost name' }) + input('fixedCosts.' + i + '.amount', x.amount, { type: 'num', pre: '$', aria: 'Amount' }) +
-        '<button class="icon-btn del" title="Remove" data-action="fixed-del" data-i="' + i + '">✕</button></div>';
-    }).join('') + '</div>' : '<div class="empty">No fixed costs. Music licenses, voice actors, stock footage…</div>';
-    h += section('04', 'Fixed costs', fx + '<div class="add-row"><button class="btn dashed sm" data-action="add-fixed">+ Fixed cost</button><span class="hint" style="margin-left:auto">Total <b class="num" style="color:var(--text)" data-out="fixed-total">' + o['fixed-total'] + '</b></span></div>');
+      return '<div class="row">' + input('fixedCosts.' + i + '.name', x.name, { ph: t('ph.fixedName'), aria: t('a.costName') }) + input('fixedCosts.' + i + '.amount', x.amount, { type: 'num', pre: '$', aria: t('a.amount') }) +
+        '<button class="icon-btn del" title="' + esc(t('t.remove')) + '" data-action="fixed-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div>' : '<div class="empty">' + t('fixed.empty') + '</div>';
+    h += section('04', t('sec.fixed'), fx + '<div class="add-row"><button class="btn dashed sm" data-action="add-fixed">' + t('btn.addFixed') + '</button><span class="hint" style="margin-left:auto">' + t('fixed.total') + ' <b class="num" style="color:var(--text)" data-out="fixed-total">' + o['fixed-total'] + '</b></span></div>');
 
     // 5. Revisions
-    h += section('05', 'Revisions', '<div class="grid">' + input('revisions.included', est.revisions.included, { label: 'Included rounds', type: 'int' }) +
-      input('revisions.extra', est.revisions.extra, { label: 'Extra paid rounds expected', type: 'int' }) + input('revisions.price', est.revisions.price, { label: 'Price / extra round', type: 'num', pre: '$' }) +
-      '<div class="fld"><span class="lbl">Extra rounds total</span>' + out('revisions', o.revisions, 'snap out') + '</div></div>');
+    h += section('05', t('sec.revisions'), '<div class="grid">' + input('revisions.included', est.revisions.included, { label: t('f.included'), type: 'int' }) +
+      input('revisions.extra', est.revisions.extra, { label: t('f.extraRounds'), type: 'int' }) + input('revisions.price', est.revisions.price, { label: t('f.pricePerRound'), type: 'num', pre: '$' }) +
+      '<div class="fld"><span class="lbl">' + t('f.extraTotal') + '</span>' + out('revisions', o.revisions, 'snap out') + '</div></div>');
 
-    // 6-8. Usage, rush, discount
-    var uOpts = settings.usageOptions.map(function (u) { return { value: u.id, label: u.name + (u.type === 'mult' ? ' (×' + E.fmtNum(u.value, 3) + ')' : ' (+$' + E.fmtNum(u.value) + ')') }; });
-    if (est.usage.optionId !== 'custom' && !settings.usageOptions.some(function (u) { return u.id === est.usage.optionId; })) uOpts.unshift({ value: est.usage.optionId, label: est.usage.name + ' (saved)' });
-    uOpts.push({ value: 'custom', label: 'Custom…' });
-    h += section('06', 'Usage rights', '<div class="grid">' + field('License', selectEl('data-change="usage-option"', uOpts, est.usage.optionId)) +
-      (est.usage.optionId === 'custom' ? input('usage.name', est.usage.name, { label: 'Name', ph: 'e.g. Broadcast, 1 year' }) : '') +
-      field('Type', seg('usage.type', est.usage.type, [{ value: 'mult', label: 'Multiplier' }, { value: 'fixed', label: 'Fixed' }])) +
-      (est.usage.type === 'mult' ? input('usage.value', est.usage.value, { label: 'Multiplier on subtotal', type: 'num', pre: '×' }) : input('usage.value', est.usage.value, { label: 'Surcharge', type: 'num', pre: '$' })) +
-      '<div class="fld"><span class="lbl">Usage surcharge</span>' + out('usage', o.usage, 'snap out') + '</div></div>');
+    // 6. Usage rights
+    var uOpts = settings.usageOptions.map(function (u) { return { value: u.id, label: dataName(ui.lang, u.id, u.name) + (u.type === 'mult' ? ' (×' + nf(u.value, 3) + ')' : ' (+$' + nf(u.value) + ')') }; });
+    if (est.usage.optionId !== 'custom' && !settings.usageOptions.some(function (u) { return u.id === est.usage.optionId; })) uOpts.unshift({ value: est.usage.optionId, label: dataName(ui.lang, est.usage.optionId, est.usage.name) + ' ' + t('opt.saved') });
+    uOpts.push({ value: 'custom', label: dataName(ui.lang, 'custom', '') + '…' });
+    h += section('06', t('sec.usage'), '<div class="grid">' + field(t('f.license'), selectEl('data-change="usage-option"', uOpts, est.usage.optionId)) +
+      (est.usage.optionId === 'custom' ? input('usage.name', est.usage.name === 'Custom' ? '' : est.usage.name, { label: t('f.name'), ph: t('ph.usageName') }) : '') +
+      field(t('f.type'), seg('usage.type', est.usage.type, [{ value: 'mult', label: t('seg.mult') }, { value: 'fixed', label: t('seg.fixed') }])) +
+      (est.usage.type === 'mult' ? input('usage.value', est.usage.value, { label: t('f.multiplier'), type: 'num', pre: '×' }) : input('usage.value', est.usage.value, { label: t('f.surcharge'), type: 'num', pre: '$' })) +
+      '<div class="fld"><span class="lbl">' + t('f.usageAmt') + '</span>' + out('usage', o.usage, 'snap out') + '</div></div>');
 
-    var rOpts = settings.rushOptions.map(function (r) { return { value: r.id, label: r.name + (E.num(r.pct) ? ' (+' + E.fmtNum(r.pct) + '%)' : '') }; });
-    if (est.rush.optionId !== 'custom' && !settings.rushOptions.some(function (r) { return r.id === est.rush.optionId; })) rOpts.unshift({ value: est.rush.optionId, label: est.rush.name + ' (saved)' });
-    rOpts.push({ value: 'custom', label: 'Custom…' });
-    h += section('07', 'Rush fee', '<div class="grid">' + field('Timeline', selectEl('data-change="rush-option"', rOpts, est.rush.optionId)) +
-      input('rush.pct', est.rush.pct, { label: 'Rush fee', type: 'num', suf: '%' }) + '<div class="fld"><span class="lbl">Rush amount</span>' + out('rush', o.rush, 'snap out') + '</div></div>' +
-      '<p class="hint" style="margin:10px 0 0">Applied to labor + markup only — never to raw credit or fixed costs.</p>');
+    // 7. Rush fee
+    var rOpts = settings.rushOptions.map(function (r) { return { value: r.id, label: dataName(ui.lang, r.id, r.name) + (E.num(r.pct) ? ' (+' + nf(r.pct) + '%)' : '') }; });
+    if (est.rush.optionId !== 'custom' && !settings.rushOptions.some(function (r) { return r.id === est.rush.optionId; })) rOpts.unshift({ value: est.rush.optionId, label: dataName(ui.lang, est.rush.optionId, est.rush.name) + ' ' + t('opt.saved') });
+    rOpts.push({ value: 'custom', label: t('opt.custom') });
+    h += section('07', t('sec.rush'), '<div class="grid">' + field(t('f.timeline'), selectEl('data-change="rush-option"', rOpts, est.rush.optionId)) +
+      input('rush.pct', est.rush.pct, { label: t('f.rushFee'), type: 'num', suf: '%' }) + '<div class="fld"><span class="lbl">' + t('f.rushAmt') + '</span>' + out('rush', o.rush, 'snap out') + '</div></div>' +
+      '<p class="hint" style="margin:10px 0 0">' + t('hint.rush') + '</p>');
 
-    h += section('08', 'Discount', '<div class="grid">' + field('Type', seg('discount.type', est.discount.type, [{ value: 'pct', label: '%' }, { value: 'fixed', label: 'Fixed' }])) +
-      (est.discount.type === 'pct' ? input('discount.value', est.discount.value, { label: 'Discount', type: 'num', suf: '%' }) : input('discount.value', est.discount.value, { label: 'Discount', type: 'num', pre: '$' })) +
-      '<div class="fld"><span class="lbl">Discount amount</span>' + out('discount', o.discount, 'snap out') + '</div></div>');
+    // 8. Discount
+    h += section('08', t('sec.discount'), '<div class="grid">' + field(t('f.type'), seg('discount.type', est.discount.type, [{ value: 'pct', label: '%' }, { value: 'fixed', label: t('seg.fixed') }])) +
+      (est.discount.type === 'pct' ? input('discount.value', est.discount.value, { label: t('f.discount'), type: 'num', suf: '%' }) : input('discount.value', est.discount.value, { label: t('f.discount'), type: 'num', pre: '$' })) +
+      '<div class="fld"><span class="lbl">' + t('f.discountAmt') + '</span>' + out('discount', o.discount, 'snap out') + '</div></div>');
 
     // 9. Markup & payment
-    h += section('09', 'Markup & payment', '<div class="grid">' + input('markup.pct', est.markup.pct, { label: 'Markup', type: 'num', suf: '%' }) +
-      '<div class="fld"><span class="lbl">Markup applies to</span><div style="display:flex;gap:14px;flex-wrap:wrap;min-height:40px;align-items:center">' +
-      checkbox('markup.credits', est.markup.credits, 'AI credits') + checkbox('markup.fixed', est.markup.fixed, 'Fixed costs') + checkbox('markup.labor', est.markup.labor, 'Labor') + '</div></div>' +
-      '<div class="fld"><span class="lbl">Markup amount</span>' + out('markup', o.markup, 'snap out') + '</div></div>' +
-      '<div class="grid" style="margin-top:12px">' + input('prepayPct', est.prepayPct, { label: 'Prepayment', type: 'num', suf: '%' }) +
-      '<div class="fld"><span class="lbl">Prepayment amount</span>' + out('prepay', o.prepay, 'snap out') + '</div></div>');
+    h += section('09', t('sec.markup'), '<div class="grid">' + input('markup.pct', est.markup.pct, { label: t('f.markup'), type: 'num', suf: '%' }) +
+      '<div class="fld"><span class="lbl">' + t('f.markupOn') + '</span><div style="display:flex;gap:14px;flex-wrap:wrap;min-height:40px;align-items:center">' +
+      checkbox('markup.credits', est.markup.credits, t('chk.credits')) + checkbox('markup.fixed', est.markup.fixed, t('chk.fixed')) + checkbox('markup.labor', est.markup.labor, t('chk.labor')) + '</div></div>' +
+      '<div class="fld"><span class="lbl">' + t('f.markupAmt') + '</span>' + out('markup', o.markup, 'snap out') + '</div></div>' +
+      '<div class="grid" style="margin-top:12px">' + input('prepayPct', est.prepayPct, { label: t('f.prepay'), type: 'num', suf: '%' }) +
+      '<div class="fld"><span class="lbl">' + t('f.prepayAmt') + '</span>' + out('prepay', o.prepay, 'snap out') + '</div></div>');
 
     // 10. Notes
-    h += section('10', 'Notes', '<div class="grid wide">' +
-      field('Notes for the client (shown on client version)', '<textarea data-bind="clientNotes" placeholder="Scope, assumptions, delivery details…">' + esc(est.clientNotes) + '</textarea>') +
-      field('Internal notes (never shown to client)', '<textarea data-bind="internalNotes" placeholder="Anything for yourself…">' + esc(est.internalNotes) + '</textarea>') + '</div>');
+    h += section('10', t('sec.notes'), '<div class="grid wide">' +
+      field(t('f.clientNotes'), '<textarea data-bind="clientNotes" placeholder="' + esc(t('ph.clientNotes')) + '">' + esc(est.clientNotes) + '</textarea>') +
+      field(t('f.internalNotes'), '<textarea data-bind="internalNotes" placeholder="' + esc(t('ph.internalNotes')) + '">' + esc(est.internalNotes) + '</textarea>') + '</div>');
 
     h += '</div><aside class="est-side"><div class="summary" id="summary" data-out="summary">' + o.summary + '</div></aside></div>';
-    h += '<div class="mobile-bar"><div><div class="mb-total" data-out="mb-total">' + o['mb-total'] + '</div><div class="mb-sub" data-out="mb-sub">' + o['mb-sub'] + '</div></div><button class="btn sm" data-action="scroll-summary">Breakdown ↓</button></div>';
+    h += '<div class="mobile-bar"><div><div class="mb-total" data-out="mb-total">' + o['mb-total'] + '</div><div class="mb-sub" data-out="mb-sub">' + o['mb-sub'] + '</div></div><button class="btn sm" data-action="scroll-summary">' + t('mb.breakdown') + '</button></div>';
     return h;
   }
 
@@ -1152,45 +1481,101 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     $$('[data-out]', app).forEach(function (el) { var v = o[el.dataset.out]; if (v !== undefined && el.innerHTML !== v) el.innerHTML = v; });
   }
 
-  /* ================= CLIENT VIEW ================= */
+  /* ================= CLIENT DOCUMENT ================= */
+  function aiDetail(lang, cats) {
+    var has = function (c) { return cats.indexOf(c) >= 0; };
+    var kinds = [];
+    if (lang === 'ru') {
+      if (has('Video')) kinds.push('видео');
+      if (has('Image')) kinds.push('изображений');
+      if (has('Audio')) kinds.push('аудио');
+      if (has('Other')) kinds.push('дополнительных материалов');
+      return (kinds.length ? 'Генерация ' + joinAnd('ru', kinds) + ' с помощью ИИ' : 'AI-генерация') + ', включая итерации' + (has('Upscale') ? ' и апскейл' : '');
+    }
+    if (has('Video')) kinds.push('video');
+    if (has('Image')) kinds.push('images');
+    if (has('Audio')) kinds.push('audio');
+    if (has('Other')) kinds.push('additional assets');
+    return (kinds.length ? 'AI-generated ' + joinAnd('en', kinds) : 'AI generation') + ', incl. ' + joinAnd('en', has('Upscale') ? ['iterations', 'upscaling'] : ['iterations']);
+  }
+  function clientLineText(lang, l) {
+    switch (l.kind) {
+      case 'ai': return { name: tr(lang, 'doc.ai'), detail: aiDetail(lang, l.cats || []) };
+      case 'service': return { name: svcName(lang, l), detail: svcDesc(lang, l) };
+      case 'formats':
+        return { name: tr(lang, 'doc.formats'), detail: lang === 'ru'
+          ? l.count + ' ' + plural('ru', l.count, ['дополнительный формат', 'дополнительных формата', 'дополнительных форматов']) + (l.desc ? ' (' + l.desc + ')' : '')
+          : l.count + ' additional format' + (l.count === 1 ? '' : 's') + (l.desc ? ' (' + l.desc + ')' : '') };
+      case 'revisions':
+        return { name: tr(lang, 'doc.revisions'), detail: lang === 'ru'
+          ? l.count + ' ' + plural('ru', l.count, ['раунд', 'раунда', 'раундов']) + ' сверх включённых'
+          : l.count + ' round' + (l.count === 1 ? '' : 's') + ' beyond the included revisions' };
+      default: return { name: l.name || tr(lang, 'doc.fixed'), detail: '' };
+    }
+  }
+  function revisionTerms(lang, inc, extra) {
+    if (lang === 'ru') {
+      var s = inc ? 'включено ' + inc + ' ' + plural('ru', inc, ['раунд', 'раунда', 'раундов']) + ' правок' : 'раунды правок не включены';
+      if (extra > 0) s += '; ' + extra + ' ' + plural('ru', extra, ['дополнительный раунд учтён', 'дополнительных раунда учтены', 'дополнительных раундов учтены']) + ' выше';
+      return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+    }
+    var e = inc ? inc + ' revision round' + (inc === 1 ? '' : 's') + ' included' : 'No revision rounds included';
+    if (extra > 0) e += '; ' + extra + ' additional round' + (extra === 1 ? '' : 's') + ' priced above';
+    return e + '.';
+  }
+  function timelineTerms(lang, rushName, deadline) {
+    if (lang === 'ru') return 'Срочное производство' + (rushName ? ' (' + rushName + ')' : '') + (deadline ? ', сдача до ' + deadline : '') + '.';
+    return (rushName ? rushName + ' delivery' : 'Rush delivery') + (deadline ? ' by ' + deadline : '') + '.';
+  }
+
   function renderClient() {
-    var c = E.calcEstimate(est), s = settings.studio;
+    var c = E.calcEstimate(est), s = settings.studio, L = est.docLang === 'ru' ? 'ru' : 'en';
+    var T = function (k, v) { return tr(L, k, v); };
+    var dm = function (x) { return money(x, L); };
     var contact = [s.name, s.address, s.email, s.phone, s.website].filter(function (x) { return x && String(x).trim(); }).map(esc).join('\n');
+    var tagline = L === 'ru' ? (s.taglineRu || s.tagline) : s.tagline;
+    var footer = L === 'ru' ? (s.footerRu || s.footer) : s.footer;
     var groups = [];
     c.clientLines.forEach(function (l) {
-      var g = groups.find(function (x) { return x.name === l.section; });
-      if (!g) groups.push(g = { name: l.section, lines: [] });
+      var g = groups.find(function (x) { return x.id === l.section; });
+      if (!g) groups.push(g = { id: l.section, lines: [] });
       g.lines.push(l);
     });
-    var meta = [['Client', est.client], ['Date', fmtDate(est.date)], ['Deadline', fmtDate(est.deadline)], ['Currency', est.currency]].filter(function (x) { return x[1]; });
+    var meta = [[T('doc.client'), est.client], [T('doc.date'), fmtDate(est.date, L, true)], [T('doc.deadline'), fmtDate(est.deadline, L, true)], [T('doc.currency'), est.currency]].filter(function (x) { return x[1]; });
+    var rushName = est.rush.optionId === 'custom' && !c.rushName ? '' : dataName(L, est.rush.optionId, c.rushName);
+    var usageName = dataName(L, est.usage.optionId, c.usageName);
 
-    var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">← Back to estimate</button><span class="hint">Client version — internal costs, credits, model names and margin are hidden.</span><button class="btn primary" data-action="print">Print / Save PDF</button></div>';
-    h += '<article class="doc"><header class="doc-head"><div><div class="doc-logo">' + esc(s.logo || 'Studio') + '</div>' + (s.tagline ? '<div class="doc-tagline">' + esc(s.tagline) + '</div>' : '') + '</div>' +
+    var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">' + t('client.back') + '</button><span class="hint">' + t('client.hint') + '</span>' +
+      '<div class="seg" role="group" aria-label="' + esc(t('client.lang')) + '">' + ['en', 'ru'].map(function (lg) {
+        return '<button type="button" class="' + (L === lg ? 'on' : '') + '" data-action="set" data-path="docLang" data-value="' + lg + '">' + lg.toUpperCase() + '</button>';
+      }).join('') + '</div><button class="btn primary" data-action="print">' + t('client.print') + '</button></div>';
+    h += '<article class="doc" lang="' + L + '"><header class="doc-head"><div class="doc-brand">' + docLogo() + (tagline ? '<div class="doc-tagline">' + esc(tagline) + '</div>' : '') + '</div>' +
       (contact ? '<div class="doc-contact">' + contact + '</div>' : '') + '</header>';
-    h += '<div class="doc-title"><div><div class="k">Estimate</div><h1>' + esc(est.name || 'Untitled project') + '</h1></div><dl class="doc-meta">' +
+    h += '<div class="doc-title"><div><div class="k">' + T('doc.estimate') + '</div><h1>' + esc(est.name || T('doc.untitled')) + '</h1></div><dl class="doc-meta">' +
       meta.map(function (m) { return '<dt>' + esc(m[0]) + '</dt><dd>' + esc(m[1]) + '</dd>'; }).join('') + '</dl></div>';
     h += '<table class="doc-table"><tbody>';
-    if (!groups.length) h += '<tr><td class="dt">No line items yet.</td><td></td></tr>';
+    if (!groups.length) h += '<tr><td class="dt">' + T('doc.noItems') + '</td><td></td></tr>';
     groups.forEach(function (g) {
-      h += '<tr><th class="sect" colspan="2">' + esc(g.name) + '</th></tr>';
-      g.lines.forEach(function (l) { h += '<tr><td><div class="ln">' + esc(l.name) + '</div>' + (l.detail ? '<div class="dt">' + esc(l.detail) + '</div>' : '') + '</td><td class="amt">' + money(l.amount) + '</td></tr>'; });
+      h += '<tr><th class="sect" colspan="2">' + esc(T('doc.sec.' + g.id)) + '</th></tr>';
+      g.lines.forEach(function (l) {
+        var x = clientLineText(L, l);
+        h += '<tr><td><div class="ln">' + esc(x.name) + '</div>' + (x.detail ? '<div class="dt">' + esc(x.detail) + '</div>' : '') + '</td><td class="amt">' + dm(l.amount) + '</td></tr>';
+      });
     });
     h += '</tbody></table><div class="doc-totals">';
-    function tr(label, value, cls) { return '<div class="tr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
-    h += tr('Subtotal', money(c.subtotal));
-    if (c.rush) h += tr('Rush fee' + (c.rushName ? ' — ' + esc(c.rushName) : '') + ' (+' + pct(c.rushPct) + ')', money(c.rush));
-    if (c.usage) h += tr('Usage rights — ' + esc(c.usageName || 'Custom'), (c.usage < 0 ? '−' : '') + money(Math.abs(c.usage)));
-    if (c.discount) h += tr('Discount' + (c.discountType === 'pct' ? ' (' + pct(c.discountValue) + ')' : ''), '−' + money(c.discount));
-    h += tr('Total', money(c.total), 'grand');
-    if (c.prepayPct > 0) h += tr('Prepayment ' + pct(c.prepayPct) + ' — due before start', money(c.prepay), 'pp') + tr('Balance on delivery', money(c.balance), 'pp');
+    function trow(label, value, cls) { return '<div class="tr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
+    h += trow(T('doc.subtotal'), dm(c.subtotal));
+    if (c.rush) h += trow(T('doc.rush') + (rushName ? ' — ' + esc(rushName) : '') + ' (+' + pct(c.rushPct, L) + ')', dm(c.rush));
+    if (c.usage) h += trow(T('doc.usage') + ' — ' + esc(usageName), (c.usage < 0 ? '−' : '') + dm(Math.abs(c.usage)));
+    if (c.discount) h += trow(T('doc.discount') + (c.discountType === 'pct' ? ' (' + pct(c.discountValue, L) + ')' : ''), '−' + dm(c.discount));
+    h += trow(T('doc.total'), dm(c.total), 'grand');
+    if (c.prepayPct > 0) h += trow(esc(T('doc.prepay', { p: pct(c.prepayPct, L) })), dm(c.prepay), 'pp') + trow(T('doc.balance'), dm(c.balance), 'pp');
     h += '</div><div class="doc-terms">';
-    var inc = E.num(est.revisions.included);
-    h += '<div><b>Revisions:</b> ' + (inc ? inc + ' revision round' + (inc === 1 ? '' : 's') + ' included' : 'No revision rounds included') +
-      (E.num(est.revisions.extra) > 0 ? '; ' + E.num(est.revisions.extra) + ' additional round' + (E.num(est.revisions.extra) === 1 ? '' : 's') + ' priced above' : '') + '.</div>';
-    h += '<div><b>Usage rights:</b> ' + esc(c.usageName || 'Custom') + (c.usage ? '' : ' (included)') + '.</div>';
-    if (c.rush) h += '<div><b>Timeline:</b> ' + esc(c.rushName || 'Rush') + ' delivery' + (est.deadline ? ' by ' + esc(fmtDate(est.deadline)) : '') + '.</div>';
+    h += '<div><b>' + T('doc.revTitle') + '</b> ' + esc(revisionTerms(L, E.num(est.revisions.included), E.num(est.revisions.extra))) + '</div>';
+    h += '<div><b>' + T('doc.usageTerms') + '</b> ' + esc(usageName) + (c.usage ? '' : ' ' + T('doc.included')) + '.</div>';
+    if (c.rush) h += '<div><b>' + T('doc.timelineTitle') + '</b> ' + esc(timelineTerms(L, rushName, fmtDate(est.deadline, L, true))) + '</div>';
     if (est.clientNotes && est.clientNotes.trim()) h += '<div class="doc-notes">' + esc(est.clientNotes.trim()) + '</div>';
-    h += '</div>' + (s.footer ? '<div class="doc-foot">' + esc(s.footer) + '</div>' : '') + '</article>';
+    h += '</div>' + (footer ? '<div class="doc-foot">' + esc(footer) + '</div>' : '') + '</article>';
     return h;
   }
 
@@ -1199,19 +1584,19 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var q = (ui.search || '').toLowerCase().trim();
     var list = estimates.slice().sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); })
       .filter(function (e) { return !q || (e.name + ' ' + e.client).toLowerCase().indexOf(q) >= 0; });
-    if (!estimates.length) return '<div class="empty">No saved estimates yet. Build one on the Estimate tab and press Save.</div>';
-    if (!list.length) return '<div class="empty">Nothing matches “' + esc(ui.search) + '”.</div>';
+    if (!estimates.length) return '<div class="empty">' + t('saved.empty') + '</div>';
+    if (!list.length) return '<div class="empty">' + esc(t('saved.noMatch', { q: ui.search })) + '</div>';
     return '<div class="cards">' + list.map(function (e) {
       var c = E.calcEstimate(e), cur = e.id === est.id;
-      return '<div class="est-card' + (cur ? ' current' : '') + '"><div><h3>' + esc(e.name || 'Untitled') + (cur ? '<span class="tag">open</span>' : '') + '</h3><div class="meta">' + esc(e.client || 'No client') + ' · ' + esc(fmtDate(e.date)) + '</div></div>' +
-        '<div class="amt">' + E.fmtMoney(c.total, e.currency) + '</div><div class="meta">Margin ' + E.fmtMoney(c.margin, e.currency) + ' · ' + pct(c.marginPct) + ' · updated ' + esc(fmtDate(e.updatedAt)) + '</div>' +
-        '<div class="acts"><button class="btn sm primary" data-action="open" data-id="' + esc(e.id) + '">Open</button><button class="btn sm" data-action="dup-saved" data-id="' + esc(e.id) + '">Duplicate</button><button class="btn sm danger" data-action="del-saved" data-id="' + esc(e.id) + '">Delete</button></div></div>';
+      return '<div class="est-card' + (cur ? ' current' : '') + '"><div><h3>' + esc(e.name || t('untitled')) + (cur ? '<span class="tag">' + t('saved.open') + '</span>' : '') + '</h3><div class="meta">' + esc(e.client || t('saved.noClient')) + ' · ' + esc(fmtDate(e.date)) + '</div></div>' +
+        '<div class="amt">' + E.fmtMoney(c.total, e.currency, ui.lang) + '</div><div class="meta">' + esc(t('saved.meta', { m: E.fmtMoney(c.margin, e.currency, ui.lang), p: pct(c.marginPct), d: fmtDate(e.updatedAt) })) + '</div>' +
+        '<div class="acts"><button class="btn sm primary" data-action="open" data-id="' + esc(e.id) + '">' + t('btn.open') + '</button><button class="btn sm" data-action="dup-saved" data-id="' + esc(e.id) + '">' + t('btn.duplicate') + '</button><button class="btn sm danger" data-action="del-saved" data-id="' + esc(e.id) + '">' + t('btn.delete') + '</button></div></div>';
     }).join('') + '</div>';
   }
   function renderSaved() {
-    return '<div class="page-head"><div><div class="eyebrow">Library</div><h1>Saved estimates</h1></div><div class="head-actions">' +
-      '<button class="btn" data-action="export">Export data</button><button class="btn" data-action="import">Import data</button><button class="btn primary" data-action="new">New estimate</button></div></div>' +
-      '<div class="toolbar"><input type="search" data-search placeholder="Search by project or client…" value="' + esc(ui.search) + '" aria-label="Search"></div><div data-out="saved-list">' + renderSavedList() + '</div>';
+    return '<div class="page-head"><div><div class="eyebrow">' + t('saved.eyebrow') + '</div><h1>' + t('saved.title') + '</h1></div><div class="head-actions">' +
+      '<button class="btn" data-action="export">' + t('btn.export') + '</button><button class="btn" data-action="import">' + t('btn.import') + '</button><button class="btn primary" data-action="new">' + t('btn.newEstimate') + '</button></div></div>' +
+      '<div class="toolbar"><input type="search" data-search placeholder="' + esc(t('ph.search')) + '" value="' + esc(ui.search) + '" aria-label="' + esc(t('ph.search')) + '"></div><div data-out="saved-list">' + renderSavedList() + '</div>';
   }
 
   /* ================= SETTINGS VIEW ================= */
@@ -1226,78 +1611,87 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var h = '';
     E.CATEGORIES.forEach(function (cat) {
       var ms = settings.models.filter(function (m) { return m.category === cat && (ui.showArchived || !m.archived); });
-      h += '<div class="model-cat"><h3>' + cat + '</h3>';
-      if (!ms.length) h += '<div class="hint" style="padding:4px 0 8px">No models.</div>';
+      h += '<div class="model-cat"><h3>' + esc(catName(cat)) + '</h3>';
+      if (!ms.length) h += '<div class="hint" style="padding:4px 0 8px">' + t('set.noModels') + '</div>';
       ms.forEach(function (m) {
         var used = modelUsage(m.id);
-        h += '<div class="model-row' + (m.archived ? ' archived' : '') + '"><div class="mname">' + esc(m.name || '(unnamed)') + (m.archived ? '<span class="tag">archived</span>' : '') + '</div>' +
-          '<div class="mcost">' + E.fmtNum(m.credits, 4) + ' cr / ' + (m.perSecond ? 'sec' : 'gen') + '</div><div class="mnotes">' + esc(m.notes) + (used ? (m.notes ? ' · ' : '') + 'used in ' + used + ' estimate' + (used === 1 ? '' : 's') : '') + '</div><div class="macts">' +
-          '<button class="btn sm" data-action="model-edit" data-id="' + esc(m.id) + '">Edit</button>' +
-          (m.archived ? '<button class="btn sm" data-action="model-restore" data-id="' + esc(m.id) + '">Restore</button>' : '<button class="btn sm" data-action="model-archive" data-id="' + esc(m.id) + '">Archive</button>') +
-          (used ? '' : '<button class="btn sm danger" data-action="model-delete" data-id="' + esc(m.id) + '">Delete</button>') + '</div></div>';
+        h += '<div class="model-row' + (m.archived ? ' archived' : '') + '"><div class="mname">' + esc(modelLabel(m) || '—') + (m.archived ? '<span class="tag">' + t('set.archivedTag') + '</span>' : '') + '</div>' +
+          '<div class="mcost">' + nf(m.credits, 4) + ' ' + unitPer(m.perSecond) + '</div><div class="mnotes">' + esc(m.notes) + (used ? (m.notes ? ' · ' : '') + esc(t('set.used', { n: used })) : '') + '</div><div class="macts">' +
+          '<button class="btn sm" data-action="model-edit" data-id="' + esc(m.id) + '">' + t('btn.edit') + '</button>' +
+          (m.archived ? '<button class="btn sm" data-action="model-restore" data-id="' + esc(m.id) + '">' + t('btn.restore') + '</button>' : '<button class="btn sm" data-action="model-archive" data-id="' + esc(m.id) + '">' + t('btn.archive') + '</button>') +
+          (used ? '' : '<button class="btn sm danger" data-action="model-delete" data-id="' + esc(m.id) + '">' + t('btn.delete') + '</button>') + '</div></div>';
       });
       h += '</div>';
     });
-    return h + '<div class="add-row"><button class="btn primary sm" data-action="model-add">+ Add model</button>' +
-      '<label class="check" style="margin-left:auto"><input type="checkbox" data-action-check="toggle-archived"' + (ui.showArchived ? ' checked' : '') + '> Show archived (' + archivedCount + ')</label></div>' +
-      '<p class="hint">Archived models are hidden from selection but stay in old estimates. Models used in a saved estimate can only be archived, not deleted.</p>';
+    return h + '<div class="add-row"><button class="btn primary sm" data-action="model-add">' + t('btn.addModel') + '</button>' +
+      '<label class="check" style="margin-left:auto"><input type="checkbox" data-action-check="toggle-archived"' + (ui.showArchived ? ' checked' : '') + '> ' + esc(t('set.showArchived', { n: archivedCount })) + '</label></div>' +
+      '<p class="hint">' + t('set.modelsHint') + '</p>';
   }
 
   function renderSettings() {
     var S = { scope: 'settings' };
     function si(path, value, opts) { return input(path, value, Object.assign({}, S, opts)); }
-    var h = '<div class="page-head"><div><div class="eyebrow">Configuration</div><h1>Settings</h1><div class="status">Changes save automatically. Existing estimates keep their own price snapshots.</div></div></div>';
+    var h = '<div class="page-head"><div><div class="eyebrow">' + t('set.eyebrow') + '</div><h1>' + t('set.title') + '</h1><div class="status">' + t('set.status') + '</div></div></div>';
 
-    h += section('A', 'Models & tools', renderModels());
+    h += section('A', t('set.models'), renderModels());
 
-    h += section('B', 'Pricing & currency', '<div class="grid">' + si('creditPrice', settings.creditPrice, { label: 'Price of 1 credit (USD)', type: 'num', pre: '$' }) +
-      si('fx.EUR', settings.fx.EUR, { label: '1 USD → EUR', type: 'num' }) + si('fx.CZK', settings.fx.CZK, { label: '1 USD → CZK', type: 'num' }) +
-      field('Default output currency', selectEl('data-sbind="defaultCurrency"', E.CURRENCIES.map(function (x) { return { value: x, label: x }; }), settings.defaultCurrency)) + '</div>');
+    h += section('B', t('set.pricing'), '<div class="grid">' + si('creditPrice', settings.creditPrice, { label: t('f.creditPriceSet'), type: 'num', pre: '$' }) +
+      si('fx.EUR', settings.fx.EUR, { label: t('f.usdEur'), type: 'num' }) + si('fx.CZK', settings.fx.CZK, { label: t('f.usdCzk'), type: 'num' }) +
+      field(t('f.defCurrency'), selectEl('data-sbind="defaultCurrency"', E.CURRENCIES.map(function (x) { return { value: x, label: x }; }), settings.defaultCurrency)) +
+      field(t('f.defDocLang'), selectEl('data-sbind="defaultDocLang"', LANG_OPTS, settings.defaultDocLang)) + '</div>');
 
     var rates = E.SERVICE_DEFS.map(function (d) {
-      return si('serviceRates.' + d.key, settings.serviceRates[d.key], { label: d.name, type: 'numOrNull', pre: '$', ph: 'default' });
+      return si('serviceRates.' + d.key, settings.serviceRates[d.key], { label: svcName(ui.lang, d), type: 'numOrNull', pre: '$', ph: t('ph.default') });
     }).join('');
-    h += section('C', 'Hourly rates', '<div class="grid">' + si('hourlyRate', settings.hourlyRate, { label: 'Default hourly rate', type: 'num', pre: '$' }) + '</div>' +
-      '<div class="sub-title">Per-service rates <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">— leave empty to use the default</span></div><div class="grid">' + rates + '</div>');
+    h += section('C', t('set.rates'), '<div class="grid">' + si('hourlyRate', settings.hourlyRate, { label: t('f.hourly'), type: 'num', pre: '$' }) + '</div>' +
+      '<div class="sub-title">' + t('set.perService') + ' <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">' + t('set.perServiceHint') + '</span></div><div class="grid">' + rates + '</div>');
 
-    h += section('D', 'Estimate defaults', '<div class="grid">' +
-      si('wastePct', settings.wastePct, { label: 'Waste buffer', type: 'num', suf: '%' }) + si('markupPct', settings.markupPct, { label: 'Markup', type: 'num', suf: '%' }) +
-      si('revisionsIncluded', settings.revisionsIncluded, { label: 'Included revisions', type: 'int' }) + si('revisionPrice', settings.revisionPrice, { label: 'Price / extra revision', type: 'num', pre: '$' }) +
-      si('formatPrice', settings.formatPrice, { label: 'Price / extra format', type: 'num', pre: '$' }) + si('prepayPct', settings.prepayPct, { label: 'Prepayment', type: 'num', suf: '%' }) + '</div>' +
-      '<div class="sub-title">Markup applies to</div><div style="display:flex;gap:16px;flex-wrap:wrap">' +
-      checkbox('markupOn.credits', settings.markupOn.credits, 'AI credits', 'settings') + checkbox('markupOn.fixed', settings.markupOn.fixed, 'Fixed costs', 'settings') + checkbox('markupOn.labor', settings.markupOn.labor, 'Labor', 'settings') + '</div>');
+    h += section('D', t('set.defaults'), '<div class="grid">' +
+      si('wastePct', settings.wastePct, { label: t('f.waste'), type: 'num', suf: '%' }) + si('markupPct', settings.markupPct, { label: t('f.markup'), type: 'num', suf: '%' }) +
+      si('revisionsIncluded', settings.revisionsIncluded, { label: t('f.includedRev'), type: 'int' }) + si('revisionPrice', settings.revisionPrice, { label: t('f.revPrice'), type: 'num', pre: '$' }) +
+      si('formatPrice', settings.formatPrice, { label: t('f.formatPrice'), type: 'num', pre: '$' }) + si('prepayPct', settings.prepayPct, { label: t('f.prepay'), type: 'num', suf: '%' }) + '</div>' +
+      '<div class="sub-title">' + t('f.markupOn') + '</div><div style="display:flex;gap:16px;flex-wrap:wrap">' +
+      checkbox('markupOn.credits', settings.markupOn.credits, t('chk.credits'), 'settings') + checkbox('markupOn.fixed', settings.markupOn.fixed, t('chk.fixed'), 'settings') + checkbox('markupOn.labor', settings.markupOn.labor, t('chk.labor'), 'settings') + '</div>');
 
     var rush = '<div class="rows">' + settings.rushOptions.map(function (r, i) {
-      return '<div class="row">' + si('rushOptions.' + i + '.name', r.name, { aria: 'Name', ph: 'Name' }) + si('rushOptions.' + i + '.pct', r.pct, { type: 'num', suf: '%', aria: 'Percent' }) +
-        '<button class="icon-btn del" title="Remove" data-action="rush-del" data-i="' + i + '">✕</button></div>';
-    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="rush-add">+ Rush option</button></div>';
-    h += section('E', 'Rush fee options', rush);
+      return '<div class="row">' + si('rushOptions.' + i + '.name', r.name, { aria: t('f.name'), ph: t('f.name') }) + si('rushOptions.' + i + '.pct', r.pct, { type: 'num', suf: '%', aria: '%' }) +
+        '<button class="icon-btn del" title="' + esc(t('t.remove')) + '" data-action="rush-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="rush-add">' + t('btn.addRush') + '</button></div>';
+    h += section('E', t('set.rushOpts'), rush);
 
     var usage = '<div class="rows">' + settings.usageOptions.map(function (u, i) {
-      return '<div class="row r4">' + si('usageOptions.' + i + '.name', u.name, { aria: 'Name', ph: 'Name' }) +
-        selectEl('data-sbind="usageOptions.' + i + '.type" data-rerender aria-label="Type"', [{ value: 'mult', label: 'Multiplier' }, { value: 'fixed', label: 'Fixed $' }], u.type) +
-        si('usageOptions.' + i + '.value', u.value, { type: 'num', pre: u.type === 'mult' ? '×' : '$', aria: 'Value' }) +
-        '<button class="icon-btn del" title="Remove" data-action="usage-del" data-i="' + i + '">✕</button></div>';
-    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="usage-add">+ Usage option</button><span class="hint">A “Custom…” option is always available in the estimate.</span></div>';
-    h += section('F', 'Usage rights options', usage);
+      return '<div class="row r4">' + si('usageOptions.' + i + '.name', u.name, { aria: t('f.name'), ph: t('f.name') }) +
+        selectEl('data-sbind="usageOptions.' + i + '.type" data-rerender aria-label="' + esc(t('f.type')) + '"', [{ value: 'mult', label: t('opt.multType') }, { value: 'fixed', label: t('opt.fixedType') }], u.type) +
+        si('usageOptions.' + i + '.value', u.value, { type: 'num', pre: u.type === 'mult' ? '×' : '$', aria: t('a.amount') }) +
+        '<button class="icon-btn del" title="' + esc(t('t.remove')) + '" data-action="usage-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="usage-add">' + t('btn.addUsage') + '</button><span class="hint">' + t('set.usageHint') + '</span></div>';
+    h += section('F', t('set.usageOpts'), usage);
 
-    var st = settings.studio;
-    h += section('G', 'Studio & client version', '<div class="grid wide">' + si('studio.logo', st.logo, { label: 'Text logo' }) + si('studio.tagline', st.tagline, { label: 'Tagline' }) +
-      si('studio.name', st.name, { label: 'Studio / legal name' }) + si('studio.email', st.email, { label: 'Email' }) + si('studio.phone', st.phone, { label: 'Phone' }) +
-      si('studio.website', st.website, { label: 'Website' }) + '</div><div class="grid wide" style="margin-top:12px">' +
-      field('Address / company details', '<textarea data-sbind="studio.address" placeholder="Street, city, company ID, VAT ID…">' + esc(st.address) + '</textarea>') +
-      field('Footer note on client version', '<textarea data-sbind="studio.footer">' + esc(st.footer) + '</textarea>') + '</div>');
+    var st = settings.studio, mode = st.logoMode;
+    var logoCtl = '<div class="logo-setting"><div class="logo-preview">' + docLogo() + '</div><div class="logo-ctl">' +
+      seg('studio.logoMode', mode, [{ value: 'builtin', label: t('logo.builtin') }, { value: 'image', label: t('logo.image') }, { value: 'text', label: t('logo.text') }], 'settings') +
+      (mode === 'image' ? '<div class="add-row" style="margin-top:10px"><button class="btn sm" data-action="logo-upload">' + t('btn.uploadLogo') + '</button>' + (st.logoImage ? '' : '<span class="hint">' + t('logo.noImage') + '</span>') + '</div>' : '') +
+      (mode === 'text' ? '<div style="margin-top:10px;max-width:280px">' + si('studio.logo', st.logo, { aria: t('f.logoText') }) + '</div>' : '') + '</div></div>';
+    h += section('G', t('set.studio'), field(t('f.logo'), logoCtl) + '<div class="grid wide" style="margin-top:14px">' +
+      si('studio.tagline', st.tagline, { label: t('f.tagline') }) + si('studio.taglineRu', st.taglineRu, { label: t('f.taglineRu') }) +
+      si('studio.name', st.name, { label: t('f.studioName') }) + si('studio.email', st.email, { label: t('f.email') }) + si('studio.phone', st.phone, { label: t('f.phone') }) +
+      si('studio.website', st.website, { label: t('f.website') }) + '</div><div class="grid wide" style="margin-top:12px">' +
+      field(t('f.address'), '<textarea data-sbind="studio.address" placeholder="' + esc(t('ph.address')) + '">' + esc(st.address) + '</textarea>') +
+      field(t('f.footer'), '<textarea data-sbind="studio.footer">' + esc(st.footer) + '</textarea>') +
+      field(t('f.footerRu'), '<textarea data-sbind="studio.footerRu">' + esc(st.footerRu) + '</textarea>') + '</div>');
 
-    h += section('H', 'Data', '<p class="hint" style="margin-top:0">Everything is stored in this browser (localStorage). Export a JSON backup to move settings and saved estimates to another device.</p>' +
-      '<div class="add-row"><button class="btn" data-action="export">Export data (JSON)</button><button class="btn" data-action="import">Import data…</button>' +
-      '<button class="btn danger" data-action="reset-settings">Reset settings</button><button class="btn danger" data-action="wipe">Delete all data</button></div>');
+    h += section('H', t('set.data'), '<p class="hint" style="margin-top:0">' + t('set.dataHint') + '</p>' +
+      '<div class="add-row"><button class="btn" data-action="export">' + t('btn.exportJson') + '</button><button class="btn" data-action="import">' + t('btn.importDots') + '</button>' +
+      '<button class="btn danger" data-action="reset-settings">' + t('btn.resetSettings') + '</button><button class="btn danger" data-action="wipe">' + t('btn.wipe') + '</button></div>');
     return h;
   }
 
   /* ================= Render & navigation ================= */
   function render() {
-    $$('#nav button').forEach(function (b) { b.classList.toggle('active', b.dataset.nav === (ui.view === 'client' ? 'estimate' : ui.view)); });
-    $('#brand-logo').textContent = settings.studio.logo || 'Studio';
+    document.documentElement.lang = ui.lang;
+    $$('#nav button').forEach(function (b) { b.classList.toggle('active', b.dataset.nav === (ui.view === 'client' ? 'estimate' : ui.view)); b.textContent = t('nav.' + b.dataset.nav); });
+    $$('#lang-switch button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === ui.lang); });
+    renderBrand();
     var y = window.scrollY;
     if (ui.view === 'saved') app.innerHTML = renderSaved();
     else if (ui.view === 'settings') app.innerHTML = renderSettings();
@@ -1311,7 +1705,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     else render();
   }
 
-  /* ---------------- Estimate actions ---------------- */
+  /* ================= Estimate actions ================= */
   function loadEstimate(e) {
     est = E.clone(e);
     baseJson = JSON.stringify(est);
@@ -1319,11 +1713,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   }
   async function guardDiscard() {
     if (!isDirty()) return true;
-    return confirmDialog('Discard changes?', 'The current estimate has unsaved changes. Continue without saving?', 'Discard', true);
+    return confirmDialog(t('m.discardTitle'), esc(t('m.discardMsg')), t('m.discard'), true);
   }
   async function saveCurrent() {
     if (!String(est.name || '').trim()) {
-      var n = await promptDialog('Save estimate', 'Project name', '', 'Save');
+      var n = await promptDialog(t('m.saveTitle'), t('m.projectName'), '', t('btn.save'));
       if (!n) return;
       est.name = n;
     }
@@ -1332,10 +1726,10 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       var same = estimates.find(function (x) { return x.name.trim().toLowerCase() === est.name.trim().toLowerCase(); });
       if (same) {
         var choice = await new Promise(function (resolve) {
-          openModal({ title: 'Project name already exists', body: '<div>A saved estimate called “' + esc(same.name) + '” already exists.</div>', onCancel: function () { resolve(null); }, actions: [
-            { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(null); } },
-            { label: 'Keep both', onClick: function () { resolve('both'); } },
-            { label: 'Overwrite', kind: 'primary', onClick: function () { resolve('overwrite'); } }
+          openModal({ title: t('m.existsTitle'), body: '<div>' + esc(t('m.existsMsg', { n: same.name })) + '</div>', onCancel: function () { resolve(null); }, actions: [
+            { label: t('m.cancel'), kind: 'ghost', onClick: function () { resolve(null); } },
+            { label: t('m.keepBoth'), onClick: function () { resolve('both'); } },
+            { label: t('m.overwrite'), kind: 'primary', onClick: function () { resolve('overwrite'); } }
           ] });
         });
         if (!choice) return;
@@ -1347,83 +1741,117 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     saveEstimates();
     baseJson = JSON.stringify(est);
     saveDraft();
-    toast('Saved “' + est.name + '”');
+    toast(t('toast.saved', { n: est.name }));
     render();
+  }
+  function changeText(c) {
+    var arrow = function (a, b, dp, pre) { return (pre || '') + nf(a, dp) + ' → ' + (pre || '') + nf(b, dp); };
+    switch (c.type) {
+      case 'model': return dataName(ui.lang, '', c.name) + ': ' + arrow(c.from, c.to, 4) + ' ' + unitPer(c.perSecond) + (c.newName ? ' ' + t('change.renamed', { n: c.newName }) : '');
+      case 'creditPrice': return t('change.creditPrice') + ': ' + arrow(c.from, c.to, 6, '$');
+      case 'fxEUR': return t('change.fxEUR') + ': ' + arrow(c.from, c.to, 6);
+      case 'fxCZK': return t('change.fxCZK') + ': ' + arrow(c.from, c.to, 6);
+      case 'rate': return t('change.rate', { n: svcName(ui.lang, { key: c.key, name: c.name }) }) + ': ' + arrow(c.from, c.to, 2, '$');
+      case 'formatPrice': return t('change.formatPrice') + ': ' + arrow(c.from, c.to, 2, '$');
+      case 'revisionPrice': return t('change.revisionPrice') + ': ' + arrow(c.from, c.to, 2, '$');
+    }
+    return JSON.stringify(c);
   }
   function doRefreshPrices() {
     var r = E.refreshPrices(est, settings);
-    if (!r.changes.length) { toast('All prices already match your settings'); return; }
+    if (!r.changes.length) { toast(t('toast.pricesOk')); return; }
     var before = E.calcEstimate(est).total, after = E.calcEstimate(r.estimate).total;
-    openModal({ title: 'Refresh prices from Settings', body:
-      '<div>These snapshot values will be updated to your current settings:</div><ul>' + r.changes.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' +
-      '<div>Client total: <b style="color:var(--text)">' + money(before) + '</b> → <b style="color:var(--accent)">' + money(after) + '</b></div>',
-      actions: [{ label: 'Cancel', kind: 'ghost' }, { label: 'Refresh prices', kind: 'primary', onClick: function () {
-        est = r.estimate; saveDraft(); render(); toast('Prices refreshed');
+    openModal({ title: t('m.refreshTitle'), body:
+      '<div>' + t('m.refreshIntro') + '</div><ul>' + r.changes.map(function (c) { return '<li>' + esc(changeText(c)) + '</li>'; }).join('') + '</ul>' +
+      '<div>' + t('m.refreshTotal') + ' <b style="color:var(--text)">' + money(before) + '</b> → <b style="color:var(--accent)">' + money(after) + '</b></div>',
+      actions: [{ label: t('m.cancel'), kind: 'ghost' }, { label: t('btn.refresh'), kind: 'primary', onClick: function () {
+        est = r.estimate; saveDraft(); render(); toast(t('toast.refreshed'));
       } }] });
   }
 
-  /* ---------------- Settings actions ---------------- */
+  /* ================= Settings actions ================= */
   function editModel(id) {
     var m = id ? E.clone(E.findModel(settings, id)) : { id: null, name: '', category: 'Video', credits: 0, perSecond: false, notes: '', archived: false };
     if (!m) return;
-    var body = field('Name', '<input type="text" id="mm-name" value="' + esc(m.name) + '" placeholder="e.g. Veo 3">') +
-      '<div class="grid">' + field('Category', selectEl('id="mm-cat"', E.CATEGORIES.map(function (c) { return { value: c, label: c }; }), m.category)) +
-      field('Cost in credits', '<input type="text" inputmode="decimal" id="mm-credits" value="' + esc(m.credits) + '">') + '</div>' +
-      '<label class="check"><input type="checkbox" id="mm-ps"' + (m.perSecond ? ' checked' : '') + '> Price is per second of video (credits × duration × generations)</label>' +
-      field('Notes', '<textarea id="mm-notes" placeholder="Resolution, mode, plan…">' + esc(m.notes) + '</textarea>') +
-      (id ? '<div class="hint">Changing the price affects new lines only. Existing estimates keep their snapshot until you press “Refresh prices” in that estimate.</div>' : '');
-    openModal({ title: id ? 'Edit model' : 'Add model', body: body, actions: [{ label: 'Cancel', kind: 'ghost' }, { label: id ? 'Save' : 'Add model', kind: 'primary', onClick: function (root) {
+    var body = field(t('f.name'), '<input type="text" id="mm-name" value="' + esc(m.name) + '" placeholder="' + esc(t('ph.modelName')) + '">') +
+      '<div class="grid">' + field(t('f.category'), selectEl('id="mm-cat"', catOptions(), m.category)) +
+      field(t('f.costCredits'), '<input type="text" inputmode="decimal" id="mm-credits" value="' + esc(m.credits) + '">') + '</div>' +
+      '<label class="check"><input type="checkbox" id="mm-ps"' + (m.perSecond ? ' checked' : '') + '> ' + esc(t('m.perSecLabel')) + '</label>' +
+      field(t('f.notes'), '<textarea id="mm-notes" placeholder="' + esc(t('ph.modelNotes')) + '">' + esc(m.notes) + '</textarea>') +
+      (id ? '<div class="hint">' + t('m.modelHint') + '</div>' : '');
+    openModal({ title: id ? t('m.editModel') : t('m.addModel'), body: body, actions: [{ label: t('m.cancel'), kind: 'ghost' }, { label: id ? t('btn.save') : t('m.addModel'), kind: 'primary', onClick: function (root) {
       var name = root.querySelector('#mm-name').value.trim();
       if (!name) { root.querySelector('#mm-name').focus(); return false; }
       var data = { name: name, category: root.querySelector('#mm-cat').value, credits: E.num(root.querySelector('#mm-credits').value), perSecond: root.querySelector('#mm-ps').checked, notes: root.querySelector('#mm-notes').value };
       if (id) Object.assign(E.findModel(settings, id), data);
       else settings.models.push(Object.assign({ id: E.uid('m'), archived: false }, data));
-      saveSettings(); render(); toast(id ? 'Model updated' : 'Model added');
+      saveSettings(); render(); toast(id ? t('toast.modelUpdated') : t('toast.modelAdded'));
     } }] });
   }
 
   function exportData() {
-    var go = function () {
+    var run = function () {
       var data = { app: 'ai-estimate-calculator', schema: 1, exportedAt: new Date().toISOString(), settings: settings, estimates: estimates };
       var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob); a.download = 'estimates-backup-' + E.today() + '.json';
       document.body.appendChild(a); a.click();
       setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
-      toast('Exported ' + estimates.length + ' estimate' + (estimates.length === 1 ? '' : 's') + ' + settings');
+      toast(t('toast.exported', { n: estimates.length }));
     };
-    if (isDirty()) {
-      confirmDialog('Unsaved estimate', 'The estimate you are editing has unsaved changes and will not be included. Export anyway?', 'Export').then(function (ok) { if (ok) go(); });
-    } else go();
+    if (isDirty()) confirmDialog(t('m.unsavedTitle'), esc(t('m.unsavedMsg')), t('m.export')).then(function (ok) { if (ok) run(); });
+    else run();
   }
   function importData(text) {
     var data;
-    try { data = JSON.parse(text); } catch (e) { toast('Not a valid JSON file', 'error'); return; }
-    if (!data || typeof data !== 'object' || (!data.settings && !Array.isArray(data.estimates))) { toast('This file is not an estimate-calculator backup', 'error'); return; }
+    try { data = JSON.parse(text); } catch (e) { toast(t('toast.badJson'), 'error'); return; }
+    if (!data || typeof data !== 'object' || (!data.settings && !Array.isArray(data.estimates))) { toast(t('toast.badBackup'), 'error'); return; }
     var inEst = Array.isArray(data.estimates) ? data.estimates.map(E.normalizeEstimate) : [];
     var inSet = data.settings ? E.normalizeSettings(data.settings) : null;
-    openModal({ title: 'Import data', body: '<div>File contains <b style="color:var(--text)">' + inEst.length + ' estimate' + (inEst.length === 1 ? '' : 's') + '</b>' + (inSet ? ' and settings with <b style="color:var(--text)">' + inSet.models.length + ' models</b>' : '') + '.</div>' +
-      '<ul><li><b>Merge</b> — keep your settings, add missing models, add estimates (same estimate → newer version wins).</li><li><b>Replace all</b> — overwrite settings and saved estimates on this device.</li></ul>',
-      actions: [{ label: 'Cancel', kind: 'ghost' },
-        { label: 'Merge', onClick: function () {
+    openModal({ title: t('m.importTitle'), body: '<div>' + t('m.importMsg', { n: inEst.length, m: inSet ? inSet.models.length : null }) + '</div><ul>' + t('m.importHelp') + '</ul>',
+      actions: [{ label: t('m.cancel'), kind: 'ghost' },
+        { label: t('m.importMerge'), onClick: function () {
           if (inSet) inSet.models.forEach(function (m) { if (!E.findModel(settings, m.id)) settings.models.push(m); });
           var added = 0;
           inEst.forEach(function (e) {
             var i = estimates.findIndex(function (x) { return x.id === e.id; });
             if (i < 0) { estimates.push(e); added++; } else if (String(e.updatedAt) > String(estimates[i].updatedAt)) { estimates[i] = e; added++; }
           });
-          saveSettings(); saveEstimates(); render(); toast('Merged · ' + added + ' estimate' + (added === 1 ? '' : 's') + ' added/updated');
+          saveSettings(); saveEstimates(); render(); toast(t('toast.merged', { n: added }));
         } },
-        { label: 'Replace all', kind: 'danger solid primary', onClick: function () {
+        { label: t('m.importReplace'), kind: 'danger solid primary', onClick: function () {
           if (inSet) settings = inSet;
           estimates = inEst;
-          saveSettings(); saveEstimates(); render(); toast('Data replaced from backup');
+          saveSettings(); saveEstimates(); render(); toast(t('toast.replaced'));
         } }] });
   }
+  /** Reads an uploaded logo, downsizes it (max 600 px) and stores it as a data URL in settings. */
+  function setLogoFromFile(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var scale = Math.min(1, 600 / Math.max(img.naturalWidth || 600, img.naturalHeight || 600));
+        var w = Math.max(1, Math.round((img.naturalWidth || 600) * scale)), h = Math.max(1, Math.round((img.naturalHeight || 600) * scale));
+        var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+        cv.getContext('2d').drawImage(img, 0, 0, w, h);
+        settings.studio.logoImage = file.type === 'image/jpeg' ? cv.toDataURL('image/jpeg', 0.9) : cv.toDataURL('image/png');
+        settings.studio.logoMode = 'image';
+        saveSettings(); render(); toast(t('toast.logoSet'));
+      };
+      img.onerror = function () { toast(t('toast.logoBad'), 'error'); };
+      img.src = String(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
 
-  /* ---------------- Events ---------------- */
+  /* ================= Events ================= */
   document.getElementById('nav').addEventListener('click', function (e) {
     var b = e.target.closest('[data-nav]'); if (b) go(b.dataset.nav);
+  });
+  document.getElementById('lang-switch').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-lang]');
+    if (b && b.dataset.lang !== ui.lang) { ui.lang = b.dataset.lang; saveUi(); render(); }
   });
   document.getElementById('import-file').addEventListener('change', function (e) {
     var f = e.target.files && e.target.files[0]; if (!f) return;
@@ -1431,39 +1859,43 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     r.onload = function () { importData(String(r.result)); };
     r.readAsText(f); e.target.value = '';
   });
+  document.getElementById('logo-file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (f) setLogoFromFile(f);
+    e.target.value = '';
+  });
 
   app.addEventListener('input', function (e) {
-    var t = e.target;
-    if (t.type === 'checkbox' || t.tagName === 'SELECT') return; // handled on change
-    if (t.dataset.bind) { setPath(est, t.dataset.bind, readVal(t)); saveDraft(); updateDerived(); }
-    else if (t.dataset.sbind) { setPath(settings, t.dataset.sbind, readVal(t)); saveSettings(); }
-    else if (t.hasAttribute('data-search')) { ui.search = t.value; $('[data-out="saved-list"]').innerHTML = renderSavedList(); }
+    var el = e.target;
+    if (el.type === 'checkbox' || el.tagName === 'SELECT') return; // handled on change
+    if (el.dataset.bind) { setPath(est, el.dataset.bind, readVal(el)); saveDraft(); updateDerived(); }
+    else if (el.dataset.sbind) { setPath(settings, el.dataset.sbind, readVal(el)); saveSettings(); }
+    else if (el.hasAttribute('data-search')) { ui.search = el.value; $('[data-out="saved-list"]').innerHTML = renderSavedList(); }
   });
 
   app.addEventListener('change', function (e) {
-    var t = e.target, i = +t.dataset.i;
-    if (t.dataset.actionCheck === 'toggle-archived') { ui.showArchived = t.checked; saveUi(); render(); return; }
-    if (t.dataset.change) {
-      var v = t.value;
-      if (t.dataset.change === 'line-category') {
+    var el = e.target, i = +el.dataset.i;
+    if (el.dataset.actionCheck === 'toggle-archived') { ui.showArchived = el.checked; saveUi(); render(); return; }
+    if (el.dataset.change) {
+      var v = el.value;
+      if (el.dataset.change === 'line-category') {
         var l = est.lines[i]; l.category = v;
         if (v === 'Video' && !E.num(l.duration)) l.duration = 5;
         E.setLineModel(l, settings, (E.activeModels(settings, v)[0] || {}).id || 'custom');
-      } else if (t.dataset.change === 'line-model') {
+      } else if (el.dataset.change === 'line-model') {
         E.setLineModel(est.lines[i], settings, v);
-      } else if (t.dataset.change === 'usage-option') {
-        if (v === 'custom') est.usage = { optionId: 'custom', name: 'Custom', type: est.usage.type, value: est.usage.value };
+      } else if (el.dataset.change === 'usage-option') {
+        if (v === 'custom') est.usage = { optionId: 'custom', name: '', type: est.usage.type, value: est.usage.value };
         else { var u = settings.usageOptions.find(function (x) { return x.id === v; }); if (u) est.usage = { optionId: u.id, name: u.name, type: u.type, value: E.num(u.value) }; }
-      } else if (t.dataset.change === 'rush-option') {
-        if (v === 'custom') est.rush = { optionId: 'custom', name: 'Custom', pct: est.rush.pct };
+      } else if (el.dataset.change === 'rush-option') {
+        if (v === 'custom') est.rush = { optionId: 'custom', name: '', pct: est.rush.pct };
         else { var r = settings.rushOptions.find(function (x) { return x.id === v; }); if (r) est.rush = { optionId: r.id, name: r.name, pct: E.num(r.pct) }; }
       }
       saveDraft(); render(); return;
     }
-    if (t.tagName === 'SELECT' || t.type === 'checkbox') {
-      if (t.dataset.bind) { setPath(est, t.dataset.bind, readVal(t)); saveDraft(); }
-      else if (t.dataset.sbind) { setPath(settings, t.dataset.sbind, readVal(t)); saveSettings(); }
-      if (t.hasAttribute('data-rerender')) render(); else if (t.dataset.bind) updateDerived();
+    if (el.tagName === 'SELECT' || el.type === 'checkbox') {
+      if (el.dataset.bind) { setPath(est, el.dataset.bind, readVal(el)); saveDraft(); }
+      else if (el.dataset.sbind) { setPath(settings, el.dataset.sbind, readVal(el)); saveSettings(); }
+      if (el.hasAttribute('data-rerender')) render(); else if (el.dataset.bind) updateDerived();
     }
   });
 
@@ -1481,7 +1913,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
         est = E.newEstimate(settings); baseJson = JSON.stringify(est); saveDraft(); go('estimate'); window.scrollTo(0, 0); break;
       case 'save': await saveCurrent(); break;
       case 'duplicate-current':
-        est = E.duplicateEstimate(est); baseJson = ''; saveDraft(); render(); toast('Duplicated — this copy is not saved yet'); break;
+        est = E.duplicateEstimate(est, t('copySuffix')); baseJson = ''; saveDraft(); render(); toast(t('toast.dupCurrent')); break;
       case 'refresh-prices': doRefreshPrices(); break;
       case 'client': go('client'); window.scrollTo(0, 0); break;
       case 'back': go('estimate'); break;
@@ -1511,27 +1943,28 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       }
       case 'dup-saved': {
         var src = estimates.find(function (x) { return x.id === id; });
-        if (src) { var d = E.duplicateEstimate(src); estimates.unshift(d); saveEstimates(); render(); toast('Duplicated as “' + d.name + '”'); }
+        if (src) { var d = E.duplicateEstimate(src, t('copySuffix')); estimates.unshift(d); saveEstimates(); render(); toast(t('toast.duplicated', { n: d.name })); }
         break;
       }
       case 'del-saved': {
         var del = estimates.find(function (x) { return x.id === id; });
-        if (del && await confirmDialog('Delete estimate?', 'Delete “' + esc(del.name || 'Untitled') + '” permanently? This cannot be undone.', 'Delete', true)) {
-          estimates = estimates.filter(function (x) { return x.id !== id; }); saveEstimates(); render(); toast('Deleted');
+        if (del && await confirmDialog(t('m.delEstTitle'), esc(t('m.delEstMsg', { n: del.name || t('untitled') })), t('btn.delete'), true)) {
+          estimates = estimates.filter(function (x) { return x.id !== id; }); saveEstimates(); render(); toast(t('toast.deleted'));
         }
         break;
       }
       case 'export': exportData(); break;
       case 'import': $('#import-file').click(); break;
+      case 'logo-upload': $('#logo-file').click(); break;
 
       case 'model-add': editModel(null); break;
       case 'model-edit': editModel(id); break;
-      case 'model-archive': E.findModel(settings, id).archived = true; saveSettings(); render(); toast('Archived — hidden from selection'); break;
-      case 'model-restore': E.findModel(settings, id).archived = false; saveSettings(); render(); toast('Restored'); break;
+      case 'model-archive': E.findModel(settings, id).archived = true; saveSettings(); render(); toast(t('toast.archived')); break;
+      case 'model-restore': E.findModel(settings, id).archived = false; saveSettings(); render(); toast(t('toast.restored')); break;
       case 'model-delete': {
         var m = E.findModel(settings, id);
-        if (modelUsage(id)) { toast('Model is used in an estimate — archive it instead', 'error'); break; }
-        if (await confirmDialog('Delete model?', 'Delete “' + esc(m.name) + '”? It is not used in any estimate.', 'Delete', true)) {
+        if (modelUsage(id)) { toast(t('toast.modelInUse'), 'error'); break; }
+        if (await confirmDialog(t('m.delModelTitle'), esc(t('m.delModelMsg', { n: m.name })), t('btn.delete'), true)) {
           settings.models = settings.models.filter(function (x) { return x.id !== id; }); saveSettings(); render();
         }
         break;
@@ -1541,12 +1974,12 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       case 'usage-add': settings.usageOptions.push({ id: E.uid('u'), name: '', type: 'mult', value: 1 }); saveSettings(); render(); break;
       case 'usage-del': settings.usageOptions.splice(i, 1); saveSettings(); render(); break;
       case 'reset-settings':
-        if (await confirmDialog('Reset settings?', 'Restore all settings (models, rates, options, studio details) to defaults? Saved estimates are not affected.', 'Reset', true)) {
-          settings = E.defaultSettings(); saveSettings(); render(); toast('Settings reset');
+        if (await confirmDialog(t('m.resetTitle'), esc(t('m.resetMsg')), t('m.reset'), true)) {
+          settings = E.defaultSettings(); saveSettings(); render(); toast(t('toast.reset'));
         }
         break;
       case 'wipe':
-        if (await confirmDialog('Delete all data?', 'This permanently deletes all settings and saved estimates from this browser. Export a backup first if you need it.', 'Delete everything', true)) {
+        if (await confirmDialog(t('m.wipeTitle'), esc(t('m.wipeMsg')), t('m.wipe'), true)) {
           Object.keys(KEYS).forEach(function (k) { try { localStorage.removeItem(KEYS[k]); } catch (err) { /* ignore */ } });
           location.reload();
         }
@@ -1560,6 +1993,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     if (e.key === KEYS.estimates) { estimates = (load(KEYS.estimates, []) || []).map(E.normalizeEstimate); if (ui.view === 'saved') render(); }
   });
 
+  var icon = document.querySelector('link[rel="icon"]');
+  if (icon) { icon.type = 'image/jpeg'; icon.href = CHIEFS_LOGO; }
   if (ui.view === 'estimate') freshenPristine();
   render();
 })();

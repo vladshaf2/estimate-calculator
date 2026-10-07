@@ -85,14 +85,15 @@ test('example 1: credits, waste buffer, labor, markup, rush, usage, discount (US
   assert.equal(E.roundTo(c.marginPct, 2), 87.28);
 
   // Client lines hide markup inside line items and add up exactly to the subtotal.
-  assert.deepEqual(roundtrip(c.clientLines.map((l) => [l.name, l.amount])), [
-    ['AI production', 18],
-    ['Pre-production', 300],
-    ['Editing', 500],
-    ['Extra delivery formats', 80],
-    ['Additional revision rounds', 150],
-    ['Music license', 240],
+  assert.deepEqual(roundtrip(c.clientLines.map((l) => [l.section, l.kind, l.key || l.name || '', l.amount])), [
+    ['ai', 'ai', '', 18],
+    ['services', 'service', 'preprod', 300],
+    ['services', 'service', 'editing', 500],
+    ['services', 'formats', '', 80],
+    ['revisions', 'revisions', '', 150],
+    ['third', 'fixed', 'Music license', 240],
   ]);
+  assert.deepEqual(roundtrip(c.clientLines[0].cats), ['Video', 'Image']);
   assert.equal(c.clientLines.reduce((a, l) => a + l.amount, 0), c.subtotal);
   // No model names or credit info leak into client lines.
   const clientText = JSON.stringify(c.clientLines);
@@ -163,6 +164,8 @@ test('example 2: CZK, custom model, fixed usage surcharge and fixed discount', (
   assert.equal(c.prepay, 2440);
   assert.equal(E.roundTo(c.realCost, 2), 828);
   assert.equal(E.fmtMoney(c.total, 'CZK').replace(/\s/g, ' '), 'CZK 8,133');
+  assert.equal(E.fmtMoney(c.total, 'CZK', 'ru').replace(/\s/g, ' '), '8 133 CZK');
+  assert.equal(E.fmtMoney(1690.42, 'USD', 'ru').replace(/\s/g, ' '), '1 690,42 $');
 
   // A fixed discount can never push the total below zero.
   e.discount.value = 1e6;
@@ -194,13 +197,14 @@ test('changing model prices in settings does not alter a saved estimate', () => 
 
   // "Refresh prices" updates snapshots on purpose — and doesn't mutate the original.
   const r = E.refreshPrices(saved, s);
-  assert.ok(r.changes.some((x) => x.startsWith('Kling: 10 → 20')), r.changes.join('\n'));
-  assert.ok(r.changes.some((x) => x.startsWith('Credit price')));
-  assert.ok(r.changes.some((x) => x.startsWith('Editing hourly rate')));
+  const has = (type, extra = {}) => r.changes.some((x) => x.type === type && Object.entries(extra).every(([k, v]) => x[k] === v));
+  assert.ok(has('model', { name: 'Kling', from: 10, to: 20 }), JSON.stringify(r.changes));
+  assert.ok(has('creditPrice', { from: 0.05, to: 0.1 }));
+  assert.ok(has('rate', { key: 'editing', from: 50, to: 999 }));
   assert.equal(saved.lines[0].credits, 10);
   assert.equal(E.calcEstimate(saved).total, before);
   // The estimate used a hand-edited $40/format; refresh resets it to the settings default ($50).
-  assert.ok(r.changes.some((x) => x.startsWith('Price per extra format: $40 → $50')));
+  assert.ok(has('formatPrice', { from: 40, to: 50 }));
   // Raw credits 400 + 40 = 440, +25% = 550 cr × $0.10 = $55; editing now 10 h × $999
   const c = E.calcEstimate(r.estimate);
   assert.equal(c.totalCredits, 550);

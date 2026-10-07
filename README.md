@@ -1,6 +1,6 @@
 # Estimate Calculator — AI production studio
 
-A single-file web app (`index.html`) for pricing AI video and image production work. It has no backend and no build step, and it is English-only. Everything is stored in your browser's `localStorage`.
+A single-file web app (`index.html`) for pricing AI video and image production work. It has no backend and no build step. Everything is stored in your browser's `localStorage`.
 
 ## Hosting
 
@@ -22,6 +22,29 @@ Upload `index.html` to any static host:
 4. Watch the summary on the right (on a phone, tap **Breakdown ↓**).
 5. Press **Save**. Saved estimates are listed under **Saved**, where you can open, duplicate or delete them.
 6. Press **Client version** and then **Print / Save PDF** to get a clean document for the client.
+
+## Languages
+
+There are two separate language settings:
+
+- **Interface language** (English / Russian): the **EN / RU** switch in the top bar. It is remembered per browser.
+- **Client document language**: set per estimate, under **Project → Client document language**, or with the **EN / RU** switch on the client page. The default for new estimates is in **Settings → Pricing, currency & language**.
+
+On the client document, built-in texts are translated. This covers:
+- section and service names,
+- the "AI production" line,
+- totals, revision and usage terms,
+- the default rush and usage option names,
+- dates and number formats (`1 706,97 $` in Russian).
+
+The tagline and footer note have separate EN and RU fields in Settings. Text you type yourself (project name, custom services, fixed-cost names, client notes, renamed options) is shown exactly as typed, so write it in the language of the document.
+
+## Logo
+
+**Settings → Studio & client version → Logo** offers three options:
+- **Chiefs logo** (built in, the default). It appears white in the app's top bar and as the red block on the client document.
+- **Own image**: upload a PNG, JPG or SVG. It is resized to at most 600 px, stored in the browser, and included in the export.
+- **Text**: a plain text logo.
 
 ## Adding a new model
 
@@ -111,5 +134,5 @@ The tests load the calculation engine straight out of `index.html`, so they chec
 - **Rush fee** ignores raw credit and fixed costs.
 - **Waste buffer** works per estimate.
 - **Changing model prices in Settings does not change a saved estimate.** Refresh prices then updates it on purpose and leaves the original untouched.
-- Number rounding and parsing (e.g. `1,5` → 1.5).
+- Number rounding and parsing (e.g. `1,5` → 1.5), and Russian number formatting (`8 133 CZK`).
 - Normalizing imported data.
