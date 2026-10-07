@@ -1,0 +1,1568 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0b">
+<title>Estimate Calculator · AI Production</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0b'/%3E%3Ccircle cx='32' cy='32' r='15' fill='none' stroke='%23e9b54a' stroke-width='5'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23e9b54a'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #0a0a0b;
+  --surface: #121214;
+  --surface-2: #17171a;
+  --field: #0d0d0f;
+  --border: #232327;
+  --border-strong: #303036;
+  --text: #ececee;
+  --muted: #8d8d96;
+  --faint: #5c5c66;
+  --accent: #e9b54a;
+  --accent-soft: rgba(233, 181, 74, .12);
+  --accent-ink: #1b1405;
+  --danger: #ef6464;
+  --ok: #58c493;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 var(--font);
+  background-image: radial-gradient(1200px 600px at 80% -10%, rgba(233,181,74,.06), transparent 60%),
+                    radial-gradient(900px 500px at -10% 110%, rgba(120,120,255,.035), transparent 60%);
+  background-attachment: fixed; min-height: 100vh;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+h1, h2, h3 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
+.num, .tab { font-variant-numeric: tabular-nums; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20; height: 58px; display: flex; align-items: center; gap: 16px;
+  padding: 0 max(16px, env(safe-area-inset-left)); border-bottom: 1px solid var(--border);
+  background: rgba(10,10,11,.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.brand-logo { font-weight: 800; letter-spacing: .22em; text-transform: uppercase; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 40vw; }
+.brand-sub { color: var(--faint); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.nav { margin-left: auto; display: flex; gap: 4px; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 3px; }
+.nav button { border: 0; background: transparent; color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 13px; }
+.nav button:hover { color: var(--text); }
+.nav button.active { background: var(--text); color: var(--bg); font-weight: 600; }
+
+main { max-width: 1320px; margin: 0 auto; padding: 24px max(16px, env(safe-area-inset-left)) 120px; }
+
+/* ---------- Generic ---------- */
+.page-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; justify-content: space-between; margin-bottom: 20px; }
+.page-head h1 { font-size: 28px; line-height: 1.15; word-break: break-word; }
+.eyebrow { color: var(--accent); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+.status { color: var(--muted); font-size: 12px; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); display: inline-block; }
+.dot.ok { background: var(--ok); } .dot.warn { background: var(--accent); }
+.head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 38px; padding: 0 14px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-strong); background: var(--surface-2); color: var(--text);
+  cursor: pointer; white-space: nowrap; font-size: 13px; transition: border-color .15s, background .15s;
+}
+.btn:hover { border-color: #45454d; background: #1d1d21; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.btn.primary:hover { background: #f2c25c; }
+.btn.danger { color: var(--danger); }
+.btn.danger.solid { background: var(--danger); border-color: var(--danger); color: #1a0606; font-weight: 600; }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.btn.ghost:hover { color: var(--text); background: var(--surface-2); }
+.btn.sm { height: 30px; padding: 0 10px; font-size: 12px; }
+.btn.dashed { border-style: dashed; background: transparent; color: var(--muted); }
+.btn.dashed:hover { color: var(--text); border-color: var(--accent); }
+.icon-btn { width: 32px; height: 32px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: var(--faint); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+.icon-btn:hover { color: var(--text); border-color: var(--border-strong); background: var(--surface-2); }
+.icon-btn.del:hover { color: var(--danger); }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.sec-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.sec-num { font-family: var(--mono); font-size: 11px; color: var(--accent); border: 1px solid rgba(233,181,74,.35); border-radius: 6px; padding: 2px 6px; }
+.sec-head h2 { font-size: 16px; }
+.sec-head .sec-extra { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hint { color: var(--muted); font-size: 12px; }
+.hint.warn { color: var(--accent); }
+.sub-title { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 18px 0 10px; font-weight: 600; }
+
+.grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.grid.wide { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.fld { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.fld .lbl { font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ctl { position: relative; display: flex; align-items: center; }
+.ctl .pre, .ctl .suf { position: absolute; color: var(--faint); font-size: 13px; pointer-events: none; }
+.ctl .pre { left: 11px; } .ctl .suf { right: 11px; }
+.ctl.has-pre input { padding-left: 26px; } .ctl.has-suf input { padding-right: 34px; }
+input[type=text], input[type=date], input[type=email], input[type=search], select, textarea {
+  width: 100%; height: 40px; padding: 0 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+  background: var(--field); color: var(--text); outline: none; transition: border-color .15s, box-shadow .15s; min-width: 0;
+}
+textarea { height: auto; min-height: 76px; padding: 10px 12px; resize: vertical; line-height: 1.45; }
+select { appearance: none; -webkit-appearance: none; padding-right: 30px; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 17px, calc(100% - 10px) 17px; background-size: 5px 5px; background-repeat: no-repeat; }
+input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+input::placeholder, textarea::placeholder { color: var(--faint); }
+input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
+
+.switch { position: relative; display: inline-flex; width: 38px; height: 22px; flex: none; cursor: pointer; }
+.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 1; }
+.switch .sl { position: absolute; inset: 0; border-radius: 999px; background: #2a2a30; transition: background .15s; }
+.switch .sl::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #8d8d96; transition: transform .15s, background .15s; }
+.switch input:checked + .sl { background: var(--accent); }
+.switch input:checked + .sl::after { transform: translateX(16px); background: var(--accent-ink); }
+.switch input:focus-visible + .sl { box-shadow: 0 0 0 3px var(--accent-soft); }
+
+.check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text); font-size: 13px; user-select: none; }
+.check input { width: 16px; height: 16px; accent-color: var(--accent); margin: 0; }
+
+.seg { display: inline-flex; background: var(--field); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); padding: 3px; gap: 2px; height: 40px; }
+.seg button { border: 0; background: transparent; color: var(--muted); border-radius: 6px; padding: 0 12px; cursor: pointer; font-size: 12px; }
+.seg button.on { background: var(--surface-2); color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
+
+.out { font-variant-numeric: tabular-nums; color: var(--text); font-weight: 600; text-align: right; white-space: nowrap; }
+.out small, .muted { color: var(--muted); font-weight: 400; }
+
+.notice { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: var(--accent-soft); border: 1px solid rgba(233,181,74,.35); color: #f3d79c; border-radius: var(--radius); padding: 12px 16px; margin-bottom: 16px; font-size: 13px; }
+.notice .btn { margin-left: auto; }
+
+/* ---------- Estimate layout ---------- */
+.est-layout { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 1040px) { .est-layout { grid-template-columns: minmax(0, 1fr) 370px; } .est-side .summary { position: sticky; top: 78px; } }
+.rates-row { margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--border); }
+
+/* Generation lines */
+.lines { display: flex; flex-direction: column; gap: 10px; }
+.line { background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px; padding: 12px; }
+.line-top { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+.line-top .idx { font-family: var(--mono); color: var(--faint); font-size: 11px; width: 22px; flex: none; }
+.line-top input { height: 34px; background: transparent; border-color: transparent; font-weight: 600; padding-left: 6px; }
+.line-top input:hover { border-color: var(--border-strong); }
+.line-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); align-items: end; }
+.line-grid .fld.model { grid-column: span 2; }
+@media (max-width: 520px) { .line-grid { grid-template-columns: 1fr 1fr; } .line-grid .fld.model { grid-column: 1 / -1; } }
+.line-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
+.formula { color: var(--muted); font-size: 12px; font-family: var(--mono); }
+.drift { color: var(--accent); font-size: 12px; }
+.snap { height: 40px; display: flex; align-items: center; padding: 0 12px; border-radius: var(--radius-sm); border: 1px dashed var(--border-strong); color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; }
+.add-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+.empty { color: var(--faint); text-align: center; padding: 22px; border: 1px dashed var(--border); border-radius: 12px; font-size: 13px; }
+
+.mini-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-variant-numeric: tabular-nums; }
+.mini-table td, .mini-table th { padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.mini-table th { text-align: left; color: var(--muted); font-weight: 500; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.mini-table td:not(:first-child), .mini-table th:not(:first-child) { text-align: right; }
+.mini-table tr.total td { font-weight: 700; border-bottom: 0; color: var(--text); }
+.mini-table tr.sub td { color: var(--muted); }
+
+/* Services */
+.svc { border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; background: var(--surface-2); transition: border-color .15s; }
+.svc.on { border-color: var(--border-strong); }
+.svc-head { display: flex; align-items: center; gap: 12px; padding: 12px; }
+.svc-title { flex: 1; min-width: 0; }
+.svc-name { font-weight: 600; }
+.svc:not(.on) .svc-name { color: var(--muted); font-weight: 500; }
+.svc-desc { color: var(--faint); font-size: 12px; }
+.svc-title input { height: 32px; font-weight: 600; }
+.svc-title input.desc { height: 28px; font-weight: 400; font-size: 12px; margin-top: 4px; color: var(--muted); }
+.svc-body { padding: 0 12px 12px 62px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+.svc-body .fld { width: 130px; flex: 1 1 110px; max-width: 200px; }
+.svc-body .fld.grow { max-width: none; flex: 2 1 200px; }
+@media (max-width: 520px) { .svc-body { padding-left: 12px; } }
+
+.rows { display: flex; flex-direction: column; gap: 8px; }
+.row { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr) 150px 32px; align-items: center; }
+.row.r4 { grid-template-columns: minmax(0, 1fr) 130px 120px 32px; }
+@media (max-width: 520px) { .row { grid-template-columns: minmax(0,1fr) 110px 32px; } .row.r4 { grid-template-columns: 1fr 1fr 32px; } .row.r4 > :first-child { grid-column: 1 / -1; } }
+
+/* Summary */
+.summary { background: linear-gradient(180deg, #151517, #111113); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 20px; }
+.sum-label { font-size: 11px; color: var(--muted); letter-spacing: .16em; text-transform: uppercase; }
+.sum-total { font-size: 34px; font-weight: 700; letter-spacing: -.02em; margin: 4px 0 2px; font-variant-numeric: tabular-nums; word-break: break-word; }
+.sum-pre { color: var(--muted); font-size: 13px; }
+.sum-group { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border); }
+.sum-group h4 { margin: 0 0 6px; font-size: 11px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
+.sr { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; font-variant-numeric: tabular-nums; font-size: 13px; }
+.sr > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.sr > span:last-child { white-space: nowrap; }
+.sr.sub { color: var(--muted); padding-left: 10px; font-size: 12.5px; }
+.sr.strong { font-weight: 700; font-size: 14px; }
+.sr.big { font-weight: 700; font-size: 16px; color: var(--accent); }
+.sr.neg > span:last-child { color: var(--ok); }
+.margin-box { margin-top: 16px; border-radius: 10px; background: var(--field); border: 1px solid var(--border); padding: 12px; }
+.margin-box .sr.big { color: var(--ok); }
+.warn-list { margin: 12px 0 0; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); color: #f3d79c; font-size: 12px; list-style: none; }
+.warn-list li + li { margin-top: 4px; }
+.sum-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 16px; }
+
+.mobile-bar { display: none; }
+@media (max-width: 1039px) {
+  .mobile-bar { display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; align-items: center; gap: 12px;
+    padding: 10px max(16px, env(safe-area-inset-left)) calc(10px + env(safe-area-inset-bottom)); background: rgba(14,14,16,.94); border-top: 1px solid var(--border-strong); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .mobile-bar .mb-total { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .mobile-bar .mb-sub { font-size: 11px; color: var(--muted); }
+  .mobile-bar .btn { margin-left: auto; }
+}
+@media (max-width: 640px) {
+  .page-head h1 { font-size: 22px; }
+  .card { padding: 16px; }
+  .head-actions { width: 100%; }
+  .head-actions .btn { flex: 1 1 auto; }
+  .brand-sub { display: none; }
+  .nav button { padding: 6px 11px; }
+}
+
+/* Saved */
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+.toolbar input { max-width: 360px; }
+.cards { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); }
+.est-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.est-card.current { border-color: rgba(233,181,74,.5); }
+.est-card h3 { font-size: 16px; word-break: break-word; }
+.est-card .meta { color: var(--muted); font-size: 12px; }
+.est-card .amt { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.est-card .acts { display: flex; gap: 6px; margin-top: auto; flex-wrap: wrap; }
+.tag { display: inline-block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(233,181,74,.4); border-radius: 999px; padding: 1px 8px; margin-left: 6px; vertical-align: middle; }
+
+/* Settings */
+.model-cat { margin-bottom: 14px; }
+.model-cat h3 { font-size: 11px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
+.model-row { display: grid; grid-template-columns: minmax(0, 1.2fr) 130px minmax(0, 1.5fr) auto; gap: 12px; align-items: center; padding: 9px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); margin-bottom: 6px; }
+.model-row.archived { opacity: .55; }
+.model-row .mname { font-weight: 600; overflow-wrap: anywhere; }
+.model-row .mcost { font-variant-numeric: tabular-nums; color: var(--text); }
+.model-row .mnotes { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.model-row .macts { display: flex; gap: 4px; justify-content: flex-end; flex-wrap: wrap; }
+@media (max-width: 640px) { .model-row { grid-template-columns: 1fr auto; } .model-row .mnotes { grid-column: 1 / -1; } .model-row .macts { grid-column: 1 / -1; justify-content: flex-start; } }
+
+/* Modal & toast */
+.modal-backdrop { position: fixed; inset: 0; z-index: 50; background: rgba(0,0,0,.65); display: flex; align-items: center; justify-content: center; padding: 16px; backdrop-filter: blur(3px); }
+.modal { width: 100%; max-width: 480px; max-height: calc(100vh - 32px); overflow: auto; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 16px; padding: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.modal h2 { font-size: 18px; margin-bottom: 14px; }
+.modal-body { display: flex; flex-direction: column; gap: 12px; color: var(--muted); }
+.modal-body ul { margin: 0; padding-left: 18px; color: var(--text); font-size: 13px; }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+.toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(20px); opacity: 0; z-index: 60; background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 13px; transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100vw - 32px); }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.error { background: var(--danger); color: #1a0606; }
+
+/* ---------- Client document ---------- */
+.client-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; max-width: 860px; margin: 0 auto 16px; }
+.client-toolbar .hint { flex: 1; min-width: 160px; }
+.doc { max-width: 860px; margin: 0 auto; background: #faf9f6; color: #16161a; border-radius: 6px; padding: 56px 60px; box-shadow: 0 40px 100px rgba(0,0,0,.5); font-size: 13.5px; line-height: 1.5; }
+.doc-head { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; flex-wrap: wrap; padding-bottom: 28px; border-bottom: 2px solid #16161a; }
+.doc-logo { font-size: 30px; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; line-height: 1; }
+.doc-tagline { font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: #6b6b72; margin-top: 8px; }
+.doc-contact { text-align: right; color: #45454c; font-size: 12px; line-height: 1.6; white-space: pre-line; }
+.doc-title { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; padding: 28px 0; }
+.doc-title .k { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #8a8a90; }
+.doc-title h1 { font-size: 26px; margin-top: 4px; letter-spacing: -.01em; }
+.doc-meta { display: grid; grid-template-columns: auto auto; gap: 4px 18px; font-size: 12.5px; align-self: flex-end; }
+.doc-meta dt { color: #8a8a90; } .doc-meta dd { margin: 0; text-align: right; font-weight: 600; }
+.doc-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.doc-table th.sect { text-align: left; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #8a8a90; font-weight: 600; padding: 22px 0 8px; border-bottom: 1px solid #d9d7d0; }
+.doc-table td { padding: 11px 0; border-bottom: 1px solid #e7e5df; vertical-align: top; }
+.doc-table td.amt { text-align: right; white-space: nowrap; padding-left: 24px; font-weight: 600; }
+.doc-table .ln { font-weight: 600; } .doc-table .dt { color: #6b6b72; font-size: 12px; margin-top: 2px; }
+.doc-totals { margin-left: auto; width: min(380px, 100%); margin-top: 24px; font-variant-numeric: tabular-nums; }
+.doc-totals .tr { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
+.doc-totals .tr.grand { border-top: 2px solid #16161a; margin-top: 8px; padding-top: 12px; font-size: 20px; font-weight: 800; }
+.doc-totals .tr.pp { color: #45454c; font-size: 12.5px; }
+.doc-terms { margin-top: 36px; padding-top: 18px; border-top: 1px solid #d9d7d0; color: #45454c; font-size: 12.5px; display: grid; gap: 6px; }
+.doc-terms b { color: #16161a; }
+.doc-notes { white-space: pre-line; }
+.doc-foot { margin-top: 28px; color: #8a8a90; font-size: 11px; white-space: pre-line; }
+@media (max-width: 640px) { .doc { padding: 28px 20px; } .doc-contact { text-align: left; } .doc-logo { font-size: 24px; } }
+
+@media print {
+  @page { margin: 12mm; }
+  body { background: #fff !important; color: #000; }
+  .topbar, .client-toolbar, .mobile-bar, .toast, #modal-root, .no-print { display: none !important; }
+  main { padding: 0 !important; max-width: none; }
+  .doc { box-shadow: none; padding: 0; max-width: none; background: #fff; border-radius: 0; font-size: 12.5px; }
+  .doc-head { padding-bottom: 18px; }
+  .doc-title { padding: 18px 0 8px; }
+  .doc-table th.sect { padding: 14px 0 6px; }
+  .doc-table td { padding: 7px 0; }
+  .doc-totals { margin-top: 14px; }
+  .doc-totals .tr { padding: 4px 0; }
+  .doc-terms { margin-top: 18px; padding-top: 12px; }
+  .doc-foot { margin-top: 14px; }
+  .doc-table tr, .doc-totals, .doc-terms { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<header class="topbar no-print">
+  <div class="brand"><span class="brand-logo" id="brand-logo">Chiefs</span><span class="brand-sub">Estimate calculator</span></div>
+  <nav class="nav" id="nav">
+    <button data-nav="estimate">Estimate</button>
+    <button data-nav="saved">Saved</button>
+    <button data-nav="settings">Settings</button>
+  </nav>
+</header>
+<main id="app"><noscript>This calculator needs JavaScript enabled.</noscript></main>
+<div id="modal-root"></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="import-file" accept="application/json,.json" hidden>
+
+<!-- ===================================================================
+     ENGINE: pure data & calculation logic (no DOM). Also loaded by tests/calc.test.mjs.
+     =================================================================== -->
+<script id="engine">
+(function (root) {
+  'use strict';
+
+  var CATEGORIES = ['Video', 'Image', 'Audio', 'Upscale', 'Other'];
+  var CURRENCIES = ['USD', 'EUR', 'CZK'];
+  var SERVICE_DEFS = [
+    { key: 'preprod',      name: 'Pre-production',                          desc: 'Moodboard, concept, storyboard' },
+    { key: 'references',   name: 'Reference creation',                      desc: 'Character, location and prop sheets for consistency' },
+    { key: 'previz',       name: '3D previz',                               desc: 'Blocking, layout and camera previz in Blender' },
+    { key: 'prompting',    name: 'Prompting & generation supervision',      desc: 'Prompt design, generation and selection' },
+    { key: 'editing',      name: 'Editing',                                 desc: 'Montage' },
+    { key: 'grading',      name: 'Color grading',                           desc: '' },
+    { key: 'sound_design', name: 'Sound design',                            desc: 'Sound' },
+    { key: 'music',        name: 'Music',                                   desc: 'Sound' },
+    { key: 'voiceover',    name: 'Voiceover / lip-sync',                    desc: 'Sound' },
+    { key: 'delivery',     name: 'Upscale & final delivery',                desc: 'Final upscale, mastering and export' },
+    { key: 'direction',    name: 'Creative direction / project management', desc: '' }
+  ];
+
+  function uid(prefix) {
+    return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
+  }
+  function clone(x) { return x === undefined ? undefined : JSON.parse(JSON.stringify(x)); }
+  function isObj(x) { return !!x && typeof x === 'object' && !Array.isArray(x); }
+
+  /** Lenient number parser: accepts numbers, "1,5", "1 200", "" (→ 0). */
+  function num(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : 0;
+    if (typeof v === 'string') {
+      var n = parseFloat(v.replace(/[\s ]/g, '').replace(',', '.'));
+      return isFinite(n) ? n : 0;
+    }
+    return 0;
+  }
+  /** Round half away from zero, robust to binary float noise (187.825 → 187.83). */
+  function roundTo(x, dp) {
+    var f = Math.pow(10, dp);
+    var v = Number((Math.abs(x) * f).toPrecision(12));
+    return (x < 0 ? -1 : 1) * Math.round(v) / f;
+  }
+  function currencyDp(cur) { return cur === 'CZK' ? 0 : 2; }
+  function today() {
+    var d = new Date();
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+  }
+
+  function fmtMoney(amount, currency) {
+    var dp = currencyDp(currency);
+    var v = roundTo(num(amount), dp);
+    if (v === 0) v = 0; // no "-0"
+    try {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency || 'USD', minimumFractionDigits: dp, maximumFractionDigits: dp }).format(v);
+    } catch (e) { return (currency || '') + ' ' + v.toFixed(dp); }
+  }
+  function fmtNum(n, maxDp) {
+    return num(n).toLocaleString('en-US', { maximumFractionDigits: maxDp === undefined ? 2 : maxDp });
+  }
+
+  function mergeDefaults(def, val) {
+    if (val === undefined || val === null) return clone(def);
+    if (isObj(def) && isObj(val)) {
+      var o = {};
+      Object.keys(def).forEach(function (k) { o[k] = mergeDefaults(def[k], val[k]); });
+      Object.keys(val).forEach(function (k) { if (!(k in def)) o[k] = val[k]; });
+      return o;
+    }
+    return val;
+  }
+
+  /* ---------------- Settings ---------------- */
+  function defaultSettings() {
+    function m(id, name, category) { return { id: id, name: name, category: category, credits: 0, perSecond: false, notes: '', archived: false }; }
+    return {
+      schema: 1,
+      models: [
+        m('m_kling', 'Kling', 'Video'),
+        m('m_seedance', 'Seedance', 'Video'),
+        m('m_nanobanana', 'Nano Banana', 'Image'),
+        m('m_gpt', 'GPT', 'Image'),
+        m('m_seedream', 'Seedream', 'Image'),
+        m('m_upscale_video', 'Video upscale', 'Upscale'),
+        m('m_upscale_image', 'Image upscale', 'Upscale')
+      ],
+      creditPrice: 0,
+      fx: { EUR: 0.86, CZK: 21 },
+      defaultCurrency: 'USD',
+      hourlyRate: 50,
+      serviceRates: {},
+      wastePct: 20,
+      markupPct: 20,
+      markupOn: { credits: true, fixed: true, labor: false },
+      revisionsIncluded: 2,
+      revisionPrice: 150,
+      formatPrice: 50,
+      rushOptions: [
+        { id: 'r_standard', name: 'Standard', pct: 0 },
+        { id: 'r_fast', name: 'Fast', pct: 25 },
+        { id: 'r_urgent', name: 'Urgent', pct: 50 }
+      ],
+      usageOptions: [
+        { id: 'u_social', name: 'Social media', type: 'mult', value: 1 },
+        { id: 'u_commercial', name: 'Commercial', type: 'mult', value: 1.25 },
+        { id: 'u_ads', name: 'Advertising', type: 'mult', value: 1.5 }
+      ],
+      prepayPct: 50,
+      studio: { logo: 'Chiefs', tagline: 'AI Production Studio', name: '', email: '', phone: '', website: '', address: '', footer: 'This estimate is valid for 30 days. Prices exclude VAT.' }
+    };
+  }
+
+  function normalizeSettings(s) {
+    var d = defaultSettings();
+    if (!isObj(s)) return d;
+    var out = mergeDefaults(d, s);
+    out.models = Array.isArray(s.models) ? s.models.filter(isObj).map(function (m) {
+      return {
+        id: m.id ? String(m.id) : uid('m'),
+        name: String(m.name == null ? '' : m.name),
+        category: CATEGORIES.indexOf(m.category) >= 0 ? m.category : 'Other',
+        credits: num(m.credits),
+        perSecond: !!m.perSecond,
+        notes: String(m.notes == null ? '' : m.notes),
+        archived: !!m.archived
+      };
+    }) : d.models;
+    out.rushOptions = (Array.isArray(s.rushOptions) ? s.rushOptions : d.rushOptions).filter(isObj).map(function (r) {
+      return { id: r.id || uid('r'), name: String(r.name == null ? '' : r.name), pct: num(r.pct) };
+    });
+    out.usageOptions = (Array.isArray(s.usageOptions) ? s.usageOptions : d.usageOptions).filter(isObj).map(function (u) {
+      return { id: u.id || uid('u'), name: String(u.name == null ? '' : u.name), type: u.type === 'fixed' ? 'fixed' : 'mult', value: num(u.value) };
+    });
+    if (!isObj(out.serviceRates)) out.serviceRates = {};
+    if (CURRENCIES.indexOf(out.defaultCurrency) < 0) out.defaultCurrency = 'USD';
+    return out;
+  }
+
+  function findModel(settings, id) {
+    var list = (settings && settings.models) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function activeModels(settings, category) {
+    return ((settings && settings.models) || []).filter(function (m) { return !m.archived && m.category === category; });
+  }
+  function serviceRate(settings, key) {
+    var r = settings.serviceRates ? settings.serviceRates[key] : null;
+    return (r === null || r === undefined || r === '') ? num(settings.hourlyRate) : num(r);
+  }
+
+  /* ---------------- Estimate ---------------- */
+  var LINE_DEFAULT = { id: '', label: '', category: 'Video', modelId: 'custom', modelName: '', credits: 0, perSecond: false, gens: 1, duration: 0 };
+  var SERVICE_DEFAULT = { id: '', key: '', name: '', desc: '', enabled: false, mode: 'hours', hours: 0, rate: 0, fixed: 0, custom: false };
+
+  function newService(settings, def) {
+    return { id: uid('s'), key: def.key, name: def.name, desc: def.desc, enabled: false, mode: 'hours', hours: 0, rate: serviceRate(settings, def.key), fixed: 0, custom: false };
+  }
+  function newCustomService(settings) {
+    return { id: uid('s'), key: '', name: '', desc: '', enabled: true, mode: 'hours', hours: 0, rate: num(settings.hourlyRate), fixed: 0, custom: true };
+  }
+
+  function newEstimate(settings) {
+    settings = settings || defaultSettings();
+    var now = new Date().toISOString();
+    var rush = settings.rushOptions[0] || { id: 'custom', name: 'Standard', pct: 0 };
+    var usage = settings.usageOptions[0] || { id: 'custom', name: 'Custom', type: 'mult', value: 1 };
+    return {
+      id: uid('e'), createdAt: now, updatedAt: now,
+      name: '', client: '', date: today(), deadline: '', currency: settings.defaultCurrency || 'USD',
+      rates: { creditPrice: num(settings.creditPrice), EUR: num(settings.fx.EUR), CZK: num(settings.fx.CZK) },
+      wastePct: num(settings.wastePct),
+      lines: [],
+      services: SERVICE_DEFS.map(function (d) { return newService(settings, d); }),
+      formats: { enabled: false, label: '9:16, 1:1', count: 0, price: num(settings.formatPrice) },
+      fixedCosts: [],
+      revisions: { included: num(settings.revisionsIncluded), extra: 0, price: num(settings.revisionPrice) },
+      usage: { optionId: usage.id, name: usage.name, type: usage.type, value: num(usage.value) },
+      rush: { optionId: rush.id, name: rush.name, pct: num(rush.pct) },
+      discount: { type: 'pct', value: 0 },
+      markup: { pct: num(settings.markupPct), credits: !!settings.markupOn.credits, labor: !!settings.markupOn.labor, fixed: !!settings.markupOn.fixed },
+      prepayPct: num(settings.prepayPct),
+      clientNotes: '', internalNotes: ''
+    };
+  }
+
+  function normalizeEstimate(e) {
+    var d = newEstimate(defaultSettings());
+    if (!isObj(e)) return d;
+    var out = mergeDefaults(d, e);
+    out.lines = Array.isArray(e.lines) ? e.lines.filter(isObj).map(function (l) { var x = mergeDefaults(LINE_DEFAULT, l); if (!x.id) x.id = uid('l'); return x; }) : [];
+    out.services = Array.isArray(e.services) ? e.services.filter(isObj).map(function (s) { var x = mergeDefaults(SERVICE_DEFAULT, s); if (!x.id) x.id = uid('s'); return x; }) : d.services;
+    out.fixedCosts = Array.isArray(e.fixedCosts) ? e.fixedCosts.filter(isObj).map(function (f) { return { id: f.id || uid('f'), name: String(f.name == null ? '' : f.name), amount: num(f.amount) }; }) : [];
+    if (CURRENCIES.indexOf(out.currency) < 0) out.currency = 'USD';
+    if (!out.id) out.id = uid('e');
+    return out;
+  }
+
+  function applyModel(line, model) {
+    line.modelId = model.id;
+    line.modelName = model.name;
+    line.credits = num(model.credits);
+    line.perSecond = !!model.perSecond;
+  }
+  /** Creates a generation line with a snapshot of the model's current name & price. */
+  function makeLine(settings, category, modelId) {
+    var line = clone(LINE_DEFAULT);
+    line.id = uid('l');
+    line.category = category || 'Video';
+    line.duration = line.category === 'Video' ? 5 : 0;
+    setLineModel(line, settings, modelId || ((activeModels(settings, line.category)[0] || {}).id) || 'custom');
+    return line;
+  }
+  function setLineModel(line, settings, modelId) {
+    if (modelId === 'custom' || !findModel(settings, modelId)) {
+      if (line.modelId !== 'custom') { line.modelName = ''; }
+      line.modelId = 'custom';
+      return line;
+    }
+    applyModel(line, findModel(settings, modelId));
+    return line;
+  }
+  function lineCredits(l) {
+    var c = num(l.credits), g = num(l.gens);
+    return l.perSecond ? c * num(l.duration) * g : c * g;
+  }
+  function serviceAmountUSD(s) {
+    return s.mode === 'fixed' ? num(s.fixed) : num(s.hours) * num(s.rate);
+  }
+
+  /**
+   * Re-snapshot prices from current settings (models, credit price, FX, hourly rates,
+   * format & revision prices). Returns a NEW estimate plus a list of human-readable changes.
+   */
+  function refreshPrices(est, settings) {
+    var e = clone(est), changes = [], seen = {};
+    function note(msg) { if (!seen[msg]) { seen[msg] = 1; changes.push(msg); } }
+    (e.lines || []).forEach(function (l) {
+      if (l.modelId === 'custom') return;
+      var m = findModel(settings, l.modelId);
+      if (!m) return;
+      if (l.modelName !== m.name || num(l.credits) !== num(m.credits) || !!l.perSecond !== !!m.perSecond) {
+        note((l.modelName || m.name) + ': ' + fmtNum(l.credits, 4) + ' → ' + fmtNum(m.credits, 4) + ' credits/' + (m.perSecond ? 'sec' : 'gen') + (l.modelName !== m.name ? ' (renamed to ' + m.name + ')' : ''));
+        applyModel(l, m);
+      }
+    });
+    var r = e.rates || (e.rates = {});
+    [['creditPrice', num(settings.creditPrice), 'Credit price (USD)'], ['EUR', num(settings.fx.EUR), 'USD → EUR rate'], ['CZK', num(settings.fx.CZK), 'USD → CZK rate']].forEach(function (x) {
+      if (num(r[x[0]]) !== x[1]) { note(x[2] + ': ' + fmtNum(r[x[0]], 6) + ' → ' + fmtNum(x[1], 6)); r[x[0]] = x[1]; }
+    });
+    (e.services || []).forEach(function (s) {
+      if (s.custom || !s.key) return;
+      var rate = serviceRate(settings, s.key);
+      if (num(s.rate) !== rate) { note(s.name + ' hourly rate: $' + fmtNum(s.rate) + ' → $' + fmtNum(rate)); s.rate = rate; }
+    });
+    if (e.formats && num(e.formats.price) !== num(settings.formatPrice)) { note('Price per extra format: $' + fmtNum(e.formats.price) + ' → $' + fmtNum(settings.formatPrice)); e.formats.price = num(settings.formatPrice); }
+    if (e.revisions && num(e.revisions.price) !== num(settings.revisionPrice)) { note('Price per extra revision round: $' + fmtNum(e.revisions.price) + ' → $' + fmtNum(settings.revisionPrice)); e.revisions.price = num(settings.revisionPrice); }
+    return { estimate: e, changes: changes };
+  }
+
+  function duplicateEstimate(est) {
+    var e = clone(est), now = new Date().toISOString();
+    e.id = uid('e'); e.createdAt = now; e.updatedAt = now;
+    e.name = (e.name || 'Untitled') + ' (copy)';
+    return e;
+  }
+
+  function modelUsageCount(modelId, estimates) {
+    return (estimates || []).filter(function (e) { return (e.lines || []).some(function (l) { return l.modelId === modelId; }); }).length;
+  }
+
+  function joinAnd(arr) {
+    if (arr.length <= 1) return arr.join('');
+    return arr.slice(0, -1).join(', ') + ' and ' + arr[arr.length - 1];
+  }
+  function aiDetail(categories) {
+    function has(c) { return categories.some(function (x) { return x.category === c && x.credits > 0; }); }
+    var kinds = [];
+    if (has('Video')) kinds.push('video');
+    if (has('Image')) kinds.push('images');
+    if (has('Audio')) kinds.push('audio');
+    if (has('Other')) kinds.push('additional assets');
+    var incl = ['iterations'];
+    if (has('Upscale')) incl.push('upscaling');
+    return (kinds.length ? 'AI-generated ' + joinAnd(kinds) : 'AI generation') + ', incl. ' + joinAnd(incl);
+  }
+
+  /**
+   * Full calculation. All inputs are in USD; all outputs are in the estimate's currency.
+   *
+   *   AI cost      = credits × creditPrice; waste = AI cost × waste%
+   *   Labor        = services + extra formats + extra revision rounds
+   *   Markup       = markup% × (selected of: AI cost incl. waste, labor, fixed costs)
+   *   Subtotal     = AI + labor + fixed + markup         (sum of rounded client lines)
+   *   Rush fee     = rush% × (labor + markup)            (never on raw credit / fixed costs)
+   *   Usage rights = subtotal × (multiplier − 1)  or a fixed surcharge
+   *   Discount     = % of (subtotal + rush + usage)  or a fixed amount
+   *   Total        = subtotal + rush + usage − discount;  Prepayment = total × prepay%
+   *   Real cost    = AI cost incl. waste + fixed costs;  Margin = total − real cost
+   */
+  function calcEstimate(est) {
+    est = est || {};
+    var currency = CURRENCIES.indexOf(est.currency) >= 0 ? est.currency : 'USD';
+    var dp = currencyDp(currency);
+    var rates = est.rates || {};
+    var fx = currency === 'USD' ? 1 : num(rates[currency]);
+    var cp = num(rates.creditPrice);
+    var R = function (x) { return roundTo(x, dp); };
+    var cv = function (usd) { return usd * fx; };
+    var sum = function (arr, k) { return arr.reduce(function (a, x) { return a + x[k]; }, 0); };
+    var warnings = [];
+    if (currency !== 'USD' && fx <= 0) warnings.push('Exchange rate USD → ' + currency + ' is not set — totals will be 0.');
+
+    // --- AI generation
+    var cats = {};
+    CATEGORIES.forEach(function (c) { cats[c] = { credits: 0, lines: 0 }; });
+    var rawCredits = 0;
+    var lines = (est.lines || []).map(function (l) {
+      var credits = lineCredits(l);
+      var cat = cats[l.category] ? l.category : 'Other';
+      cats[cat].credits += credits; cats[cat].lines += 1;
+      rawCredits += credits;
+      return { id: l.id, credits: credits, cost: cv(credits * cp) };
+    });
+    var wastePct = num(est.wastePct);
+    var wasteCredits = rawCredits * wastePct / 100;
+    var totalCredits = rawCredits + wasteCredits;
+    var creditsCost = cv(rawCredits * cp);
+    var wasteCost = cv(wasteCredits * cp);
+    var genCost = creditsCost + wasteCost;
+    var categories = CATEGORIES.filter(function (c) { return cats[c].lines > 0; }).map(function (c) {
+      return { category: c, credits: cats[c].credits, lines: cats[c].lines, cost: cv(cats[c].credits * cp) };
+    });
+    if (rawCredits > 0 && cp <= 0) warnings.push('Credit price is 0 — set it in Settings and press “Refresh prices”, or edit the estimate rates.');
+
+    // --- Labor
+    var services = (est.services || []).map(function (s) {
+      return { id: s.id, name: String(s.name || '').trim() || 'Custom service', desc: String(s.desc || ''), enabled: !!s.enabled, mode: s.mode === 'fixed' ? 'fixed' : 'hours', hours: num(s.hours), rate: cv(num(s.rate)), amount: cv(serviceAmountUSD(s)) };
+    });
+    var laborItems = services.filter(function (s) { return s.enabled; }).map(function (s) {
+      return { kind: 'service', name: s.name, desc: s.desc, mode: s.mode, hours: s.hours, rate: s.rate, amount: s.amount };
+    });
+    var fm = est.formats || {};
+    var formats = fm.enabled ? cv(num(fm.count) * num(fm.price)) : 0;
+    if (fm.enabled) laborItems.push({ kind: 'formats', name: 'Extra delivery formats', desc: String(fm.label || ''), count: num(fm.count), price: cv(num(fm.price)), amount: formats });
+    var rv = est.revisions || {};
+    var revisions = cv(num(rv.extra) * num(rv.price));
+    if (num(rv.extra) > 0) laborItems.push({ kind: 'revisions', name: 'Additional revision rounds', count: num(rv.extra), price: cv(num(rv.price)), amount: revisions });
+    var labor = sum(laborItems, 'amount');
+
+    // --- Fixed costs
+    var fixedItems = (est.fixedCosts || []).map(function (f) {
+      return { id: f.id, name: String(f.name || '').trim() || 'Fixed cost', amount: cv(num(f.amount)) };
+    });
+    var fixed = sum(fixedItems, 'amount');
+
+    // --- Markup (hidden from client: folded into the line items it applies to)
+    var mk = est.markup || {};
+    var markupPct = num(mk.pct);
+    var mC = mk.credits ? markupPct / 100 : 0, mL = mk.labor ? markupPct / 100 : 0, mF = mk.fixed ? markupPct / 100 : 0;
+    var markupBase = (mk.credits ? genCost : 0) + (mk.labor ? labor : 0) + (mk.fixed ? fixed : 0);
+    var markupRaw = genCost * mC + labor * mL + fixed * mF;
+
+    // --- Client lines (rounded to currency precision; the subtotal is their exact sum)
+    var clientLines = [];
+    if (genCost !== 0) clientLines.push({ section: 'AI production', name: 'AI production', detail: aiDetail(categories), amount: R(genCost * (1 + mC)) });
+    laborItems.forEach(function (it) {
+      var amt = R(it.amount * (1 + mL));
+      if (amt === 0) return;
+      var detail = it.desc;
+      if (it.kind === 'formats') detail = it.count + ' additional format' + (it.count === 1 ? '' : 's') + (it.desc ? ' (' + it.desc + ')' : '');
+      if (it.kind === 'revisions') detail = it.count + ' round' + (it.count === 1 ? '' : 's') + ' beyond the included revisions';
+      clientLines.push({ section: it.kind === 'revisions' ? 'Revisions' : 'Services', name: it.name, detail: detail, amount: amt });
+    });
+    fixedItems.forEach(function (f) {
+      var amt = R(f.amount * (1 + mF));
+      if (amt !== 0) clientLines.push({ section: 'Licenses & third-party costs', name: f.name, detail: '', amount: amt });
+    });
+    var subtotal = R(sum(clientLines, 'amount'));
+    var markup = subtotal - genCost - labor - fixed; // effective markup incl. rounding
+
+    // --- Rush fee: on labor + markup only
+    var rs = est.rush || {};
+    var rushPct = num(rs.pct);
+    var rush = R((labor + markupRaw) * rushPct / 100);
+
+    // --- Usage rights
+    var us = est.usage || {};
+    var usageType = us.type === 'fixed' ? 'fixed' : 'mult';
+    var usageValue = num(us.value);
+    var usage = usageType === 'fixed' ? R(cv(usageValue)) : (usageValue > 0 ? R(subtotal * (usageValue - 1)) : 0);
+
+    // --- Discount
+    var preDiscount = R(subtotal + rush + usage);
+    var ds = est.discount || {};
+    var discountType = ds.type === 'fixed' ? 'fixed' : 'pct';
+    var discount = discountType === 'fixed' ? R(cv(num(ds.value))) : R(preDiscount * num(ds.value) / 100);
+    discount = Math.max(0, Math.min(discount, Math.max(0, preDiscount)));
+
+    var total = R(preDiscount - discount);
+    var prepayPct = num(est.prepayPct);
+    var prepay = R(total * prepayPct / 100);
+
+    var realCost = genCost + fixed;
+    var margin = total - realCost;
+    var marginExLabor = margin - labor;
+
+    return {
+      currency: currency, dp: dp, fx: fx, creditPrice: cp,
+      lines: lines, categories: categories,
+      rawCredits: rawCredits, wastePct: wastePct, wasteCredits: wasteCredits, totalCredits: totalCredits,
+      creditsCost: creditsCost, wasteCost: wasteCost, genCost: genCost,
+      services: services, laborItems: laborItems, labor: labor, formats: formats, revisions: revisions,
+      fixedItems: fixedItems, fixed: fixed,
+      markupPct: markupPct, markupBase: markupBase, markupRaw: markupRaw, markup: markup,
+      clientLines: clientLines, subtotal: subtotal,
+      rushPct: rushPct, rushName: String(rs.name || ''), rush: rush,
+      usageName: String(us.name || ''), usageType: usageType, usageValue: usageValue, usage: usage,
+      preDiscount: preDiscount, discountType: discountType, discountValue: num(ds.value), discount: discount,
+      total: total, prepayPct: prepayPct, prepay: prepay, balance: R(total - prepay),
+      realCost: realCost, margin: margin, marginPct: total > 0 ? margin / total * 100 : 0,
+      marginExLabor: marginExLabor, marginExLaborPct: total > 0 ? marginExLabor / total * 100 : 0,
+      warnings: warnings
+    };
+  }
+
+  root.Engine = {
+    CATEGORIES: CATEGORIES, CURRENCIES: CURRENCIES, SERVICE_DEFS: SERVICE_DEFS,
+    uid: uid, clone: clone, num: num, roundTo: roundTo, currencyDp: currencyDp, today: today,
+    fmtMoney: fmtMoney, fmtNum: fmtNum,
+    defaultSettings: defaultSettings, normalizeSettings: normalizeSettings,
+    findModel: findModel, activeModels: activeModels, serviceRate: serviceRate,
+    newEstimate: newEstimate, normalizeEstimate: normalizeEstimate, newCustomService: newCustomService,
+    makeLine: makeLine, setLineModel: setLineModel, lineCredits: lineCredits,
+    refreshPrices: refreshPrices, duplicateEstimate: duplicateEstimate, modelUsageCount: modelUsageCount,
+    calcEstimate: calcEstimate
+  };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+
+<!-- ===================================================================
+     UI
+     =================================================================== -->
+<script>
+(function () {
+  'use strict';
+  var E = window.Engine;
+  var KEYS = { settings: 'aiest.settings.v1', estimates: 'aiest.estimates.v1', draft: 'aiest.draft.v1', ui: 'aiest.ui.v1' };
+  var app = document.getElementById('app');
+
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
+  }
+  function load(key, fallback) {
+    try { var raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; } catch (e) { return fallback; }
+  }
+  function store(key, val) {
+    try { localStorage.setItem(key, JSON.stringify(val)); return true; }
+    catch (e) { toast('Could not write to browser storage (full or blocked).', 'error'); return false; }
+  }
+
+  /* ---------------- State ---------------- */
+  var settings = E.normalizeSettings(load(KEYS.settings, null));
+  var estimates = (load(KEYS.estimates, []) || []).map(E.normalizeEstimate);
+  var est, baseJson;
+  (function initDraft() {
+    var d = load(KEYS.draft, null);
+    if (d && d.est) { est = E.normalizeEstimate(d.est); baseJson = typeof d.baseJson === 'string' ? d.baseJson : ''; }
+    else { est = E.newEstimate(settings); baseJson = JSON.stringify(est); }
+  })();
+  var ui = Object.assign({ view: 'estimate', showArchived: false, search: '' }, load(KEYS.ui, {}) || {});
+  if (['estimate', 'saved', 'settings', 'client'].indexOf(ui.view) < 0) ui.view = 'estimate';
+
+  function saveSettings() { store(KEYS.settings, settings); $('#brand-logo').textContent = settings.studio.logo || 'Studio'; }
+  function saveEstimates() { store(KEYS.estimates, estimates); }
+  function saveDraft() { store(KEYS.draft, { est: est, baseJson: baseJson }); }
+  function saveUi() { store(KEYS.ui, { view: ui.view, showArchived: ui.showArchived }); }
+  function isSaved() { return estimates.some(function (x) { return x.id === est.id; }); }
+  function isDirty() { return JSON.stringify(est) !== baseJson; }
+  /** A blank, never-saved estimate follows Settings (so filling in Settings first just works). */
+  function freshenPristine() {
+    if (isSaved() || isDirty()) return;
+    var id = est.id;
+    est = E.newEstimate(settings); est.id = id;
+    baseJson = JSON.stringify(est); saveDraft();
+  }
+
+  /* ---------------- Helpers ---------------- */
+  function money(x) { return E.fmtMoney(x, est.currency); }
+  function credits(x) { return E.fmtNum(x, 2) + ' cr'; }
+  function pct(x) { return E.fmtNum(x, 2) + '%'; }
+  function fmtDate(iso) {
+    if (!iso) return '';
+    var d = new Date(iso.length === 10 ? iso + 'T00:00:00' : iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+  function getPath(obj, path) { return path.split('.').reduce(function (o, k) { return o == null ? undefined : o[k]; }, obj); }
+  function setPath(obj, path, val) {
+    var ks = path.split('.'), o = obj;
+    for (var i = 0; i < ks.length - 1; i++) { if (o[ks[i]] == null) o[ks[i]] = {}; o = o[ks[i]]; }
+    o[ks[ks.length - 1]] = val;
+  }
+  function readVal(el) {
+    if (el.type === 'checkbox') return el.checked;
+    var t = el.dataset.type;
+    if (t === 'num') return E.num(el.value);
+    if (t === 'int') return Math.max(0, Math.round(E.num(el.value)));
+    if (t === 'numOrNull') return el.value.trim() === '' ? null : E.num(el.value);
+    return el.value;
+  }
+  function numStr(v) { return v === null || v === undefined ? '' : String(v); }
+
+  /** Text/number input. opts: {bind|sbind, type, pre, suf, ph, cls, label, mode} */
+  function input(path, value, opts) {
+    opts = opts || {};
+    var isNum = opts.type === 'num' || opts.type === 'int' || opts.type === 'numOrNull';
+    var attr = (opts.scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '"';
+    var html = '<input type="' + (opts.html || 'text') + '" ' + attr + (opts.type ? ' data-type="' + opts.type + '"' : '') +
+      (isNum ? ' inputmode="decimal" autocomplete="off"' : '') + (opts.ph != null ? ' placeholder="' + esc(opts.ph) + '"' : '') +
+      (opts.cls ? ' class="' + opts.cls + '"' : '') + (opts.aria ? ' aria-label="' + esc(opts.aria) + '"' : '') +
+      ' value="' + esc(isNum ? numStr(value) : value) + '">';
+    if (opts.pre || opts.suf) {
+      html = '<div class="ctl' + (opts.pre ? ' has-pre' : '') + (opts.suf ? ' has-suf' : '') + '">' + (opts.pre ? '<span class="pre">' + esc(opts.pre) + '</span>' : '') + html + (opts.suf ? '<span class="suf">' + esc(opts.suf) + '</span>' : '') + '</div>';
+    }
+    return opts.label ? field(opts.label, html, opts.fcls) : html;
+  }
+  function field(label, html, cls) { return '<label class="fld' + (cls ? ' ' + cls : '') + '"><span class="lbl">' + esc(label) + '</span>' + html + '</label>'; }
+  function selectEl(attrs, options, value) {
+    return '<select ' + attrs + '>' + options.map(function (o) {
+      return '<option value="' + esc(o.value) + '"' + (String(o.value) === String(value) ? ' selected' : '') + '>' + esc(o.label) + '</option>';
+    }).join('') + '</select>';
+  }
+  function toggle(path, checked, scope, label) {
+    return '<label class="switch" title="' + esc(label || 'Toggle') + '"><input type="checkbox" ' + (scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '" data-rerender' + (checked ? ' checked' : '') + ' aria-label="' + esc(label || 'Toggle') + '"><span class="sl"></span></label>';
+  }
+  function checkbox(path, checked, label, scope) {
+    return '<label class="check"><input type="checkbox" ' + (scope === 'settings' ? 'data-sbind' : 'data-bind') + '="' + esc(path) + '"' + (checked ? ' checked' : '') + '> ' + esc(label) + '</label>';
+  }
+  function seg(path, value, options, scope) {
+    return '<div class="seg" role="group">' + options.map(function (o) {
+      return '<button type="button" class="' + (o.value === value ? 'on' : '') + '" data-action="set" data-path="' + esc(path) + '" data-value="' + esc(o.value) + '"' + (scope ? ' data-scope="' + scope + '"' : '') + '>' + esc(o.label) + '</button>';
+    }).join('') + '</div>';
+  }
+  function section(n, title, body, extra) {
+    return '<section class="card"><div class="sec-head"><span class="sec-num">' + n + '</span><h2>' + esc(title) + '</h2>' + (extra ? '<div class="sec-extra">' + extra + '</div>' : '') + '</div>' + body + '</section>';
+  }
+  function out(key, html, cls) { return '<div class="' + (cls || 'out') + '" data-out="' + esc(key) + '">' + (html || '') + '</div>'; }
+
+  /* ---------------- Toast & modal ---------------- */
+  var toastTimer;
+  function toast(msg, kind) {
+    var t = $('#toast');
+    t.textContent = msg; t.className = 'toast show' + (kind ? ' ' + kind : '');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.className = 'toast'; }, 2600);
+  }
+  function openModal(o) {
+    var root = $('#modal-root');
+    root.innerHTML = '<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true" aria-label="' + esc(o.title) + '"><h2>' + esc(o.title) + '</h2><div class="modal-body">' + (o.body || '') + '</div><div class="modal-actions">' +
+      o.actions.map(function (a, i) { return '<button type="button" class="btn ' + (a.kind || '') + '" data-modal-act="' + i + '">' + esc(a.label) + '</button>'; }).join('') + '</div></div></div>';
+    function close() { root.innerHTML = ''; document.removeEventListener('keydown', onKey); }
+    function onKey(e) {
+      if (e.key === 'Escape') { close(); if (o.onCancel) o.onCancel(); }
+      if (e.key === 'Enter' && e.target.tagName === 'INPUT') { var p = o.actions.findIndex(function (a) { return a.kind && a.kind.indexOf('primary') >= 0; }); if (p >= 0) root.querySelector('[data-modal-act="' + p + '"]').click(); }
+    }
+    document.addEventListener('keydown', onKey);
+    root.querySelector('.modal-backdrop').addEventListener('mousedown', function (e) { if (e.target.classList.contains('modal-backdrop')) { close(); if (o.onCancel) o.onCancel(); } });
+    $$('[data-modal-act]', root).forEach(function (b) {
+      b.addEventListener('click', function () {
+        var a = o.actions[+b.dataset.modalAct];
+        var r = a.onClick ? a.onClick(root) : undefined;
+        if (r !== false) close();
+      });
+    });
+    var f = root.querySelector('input, select, textarea') || root.querySelector('.btn.primary');
+    if (f) setTimeout(function () { f.focus(); if (f.select) f.select(); }, 30);
+  }
+  function confirmDialog(title, message, okLabel, danger) {
+    return new Promise(function (resolve) {
+      openModal({ title: title, body: '<div>' + message + '</div>', onCancel: function () { resolve(false); }, actions: [
+        { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(false); } },
+        { label: okLabel || 'OK', kind: danger ? 'danger solid primary' : 'primary', onClick: function () { resolve(true); } }
+      ] });
+    });
+  }
+  function promptDialog(title, label, value, okLabel) {
+    return new Promise(function (resolve) {
+      openModal({ title: title, body: field(label, '<input type="text" id="prompt-input" value="' + esc(value || '') + '">'), onCancel: function () { resolve(null); }, actions: [
+        { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(null); } },
+        { label: okLabel || 'OK', kind: 'primary', onClick: function (root) {
+          var v = root.querySelector('#prompt-input').value.trim();
+          if (!v) { root.querySelector('#prompt-input').focus(); return false; }
+          resolve(v);
+        } }
+      ] });
+    });
+  }
+
+  /* ================= ESTIMATE VIEW ================= */
+  function lineFormula(l) {
+    var c = E.num(l.credits), g = E.num(l.gens);
+    return l.perSecond ? E.fmtNum(c, 4) + ' cr/s × ' + E.fmtNum(l.duration) + ' s × ' + E.fmtNum(g) + ' gen' : E.fmtNum(c, 4) + ' cr × ' + E.fmtNum(g) + ' gen';
+  }
+
+  function outputs(c) {
+    var o = {};
+    o.title = esc(est.name || 'Untitled estimate');
+    var saved = isSaved(), dirty = isDirty();
+    o.status = !saved ? '<span class="dot warn"></span>Not saved yet' : dirty ? '<span class="dot warn"></span>Unsaved changes' : '<span class="dot ok"></span>Saved · ' + esc(fmtDate(est.updatedAt));
+    est.lines.forEach(function (l, i) {
+      var r = c.lines[i] || { credits: 0, cost: 0 };
+      o['line-' + i] = credits(r.credits) + ' <small>· ' + money(r.cost) + '</small>';
+      o['line-f-' + i] = esc(lineFormula(l));
+    });
+    est.services.forEach(function (s, i) { var r = c.services[i]; o['svc-' + i] = s.enabled ? money(r.amount) : ''; });
+    o.formats = est.formats.enabled ? money(c.formats) : '';
+    o.revisions = money(c.revisions);
+    o.rush = c.rush ? '+' + money(c.rush) : '—';
+    o.usage = c.usage ? (c.usage > 0 ? '+' : '') + money(c.usage) : 'Included';
+    o.discount = c.discount ? '−' + money(c.discount) : '—';
+    o.markup = money(c.markupRaw) + ' <small>&nbsp;on ' + money(c.markupBase) + '</small>';
+    o.prepay = money(c.prepay);
+    o['fixed-total'] = money(c.fixed);
+    o['gen-summary'] = renderGenSummary(c);
+    o.summary = renderSummary(c);
+    o['mb-total'] = money(c.total);
+    o['mb-sub'] = 'Prepay ' + money(c.prepay) + ' · margin ' + pct(c.marginPct);
+    return o;
+  }
+
+  function renderGenSummary(c) {
+    if (!est.lines.length) return '';
+    var rows = c.categories.map(function (x) {
+      return '<tr><td>' + esc(x.category) + ' <span class="muted">· ' + x.lines + ' line' + (x.lines === 1 ? '' : 's') + '</span></td><td>' + credits(x.credits) + '</td><td>' + money(x.cost) + '</td></tr>';
+    }).join('');
+    return '<table class="mini-table"><thead><tr><th>Category</th><th>Credits</th><th>Cost</th></tr></thead><tbody>' + rows +
+      '<tr class="sub"><td>Subtotal</td><td>' + credits(c.rawCredits) + '</td><td>' + money(c.creditsCost) + '</td></tr>' +
+      '<tr class="sub"><td>Waste buffer ' + pct(c.wastePct) + '</td><td>+' + credits(c.wasteCredits) + '</td><td>+' + money(c.wasteCost) + '</td></tr>' +
+      '<tr class="total"><td>Total</td><td>' + credits(c.totalCredits) + '</td><td>' + money(c.genCost) + '</td></tr></tbody></table>';
+  }
+
+  function sr(label, value, cls) { return '<div class="sr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
+
+  function renderSummary(c) {
+    var h = '<div class="sum-label">Client total</div><div class="sum-total">' + money(c.total) + '</div>' +
+      '<div class="sum-pre">Prepayment ' + pct(c.prepayPct) + ' · <b>' + money(c.prepay) + '</b></div>';
+    if (c.warnings.length) h += '<ul class="warn-list">' + c.warnings.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>';
+
+    h += '<div class="sum-group"><h4>AI generation</h4>';
+    if (!c.categories.length) h += sr('<span class="muted">No generation lines</span>', money(0), 'sub');
+    c.categories.forEach(function (x) { h += sr(esc(x.category) + ' · ' + credits(x.credits), money(x.cost), 'sub'); });
+    h += sr('Waste buffer ' + pct(c.wastePct) + ' · ' + credits(c.wasteCredits), money(c.wasteCost), 'sub');
+    h += sr('AI credits total · ' + credits(c.totalCredits), money(c.genCost), 'strong') + '</div>';
+
+    h += '<div class="sum-group"><h4>Labor</h4>';
+    if (!c.laborItems.length) h += sr('<span class="muted">No services enabled</span>', money(0), 'sub');
+    c.laborItems.forEach(function (it) {
+      var d = it.kind === 'service' ? (it.mode === 'fixed' ? 'fixed' : E.fmtNum(it.hours) + ' h × ' + money(it.rate)) : it.count + ' × ' + money(it.price);
+      h += sr(esc(it.name) + ' <span class="muted">· ' + d + '</span>', money(it.amount), 'sub');
+    });
+    h += sr('Labor total', money(c.labor), 'strong') + '</div>';
+
+    h += '<div class="sum-group"><h4>Fixed costs</h4>';
+    if (!c.fixedItems.length) h += sr('<span class="muted">None</span>', money(0), 'sub');
+    c.fixedItems.forEach(function (f) { h += sr(esc(f.name), money(f.amount), 'sub'); });
+    h += sr('Fixed costs total', money(c.fixed), 'strong') + '</div>';
+
+    h += '<div class="sum-group"><h4>Pricing</h4>';
+    h += sr('Markup ' + pct(c.markupPct), money(c.markup));
+    h += sr('Subtotal', money(c.subtotal), 'strong');
+    if (c.rush) h += sr('Rush fee · ' + esc(c.rushName || 'Rush') + ' +' + pct(c.rushPct), '+' + money(c.rush));
+    if (c.usage) h += sr('Usage rights · ' + esc(c.usageName || 'Custom') + ' ' + (c.usageType === 'mult' ? '×' + E.fmtNum(c.usageValue, 3) : 'fixed'), (c.usage > 0 ? '+' : '') + money(c.usage));
+    if (c.discount) h += sr('Discount' + (c.discountType === 'pct' ? ' ' + pct(c.discountValue) : ''), '−' + money(c.discount), 'neg');
+    h += sr('Client total', money(c.total), 'big');
+    h += sr('Prepayment ' + pct(c.prepayPct), money(c.prepay), 'sub');
+    h += sr('Balance on delivery', money(c.balance), 'sub') + '</div>';
+
+    h += '<div class="margin-box">' +
+      sr('Real cost <span class="muted">(credits + fixed)</span>', money(c.realCost)) +
+      sr('Margin', money(c.margin) + ' · ' + pct(c.marginPct), 'big') +
+      sr('Margin excl. your labor', money(c.marginExLabor) + ' · ' + pct(c.marginExLaborPct), 'sub') + '</div>';
+
+    h += '<div class="sum-actions"><button class="btn" data-action="client">Client version</button><button class="btn primary" data-action="save">Save</button></div>';
+    return h;
+  }
+
+  function modelOptions(l) {
+    var opts = E.activeModels(settings, l.category).map(function (m) { return { value: m.id, label: m.name }; });
+    if (l.modelId !== 'custom' && !opts.some(function (o) { return o.value === l.modelId; })) {
+      var m = E.findModel(settings, l.modelId);
+      opts.unshift({ value: l.modelId, label: (l.modelName || (m && m.name) || 'Model') + (m ? (m.archived ? ' (archived)' : ' (other category)') : ' (removed)') });
+    }
+    opts.push({ value: 'custom', label: 'Custom…' });
+    return opts;
+  }
+
+  function renderLine(l, i, o) {
+    var isCustom = l.modelId === 'custom';
+    var showDur = l.category === 'Video' || l.perSecond;
+    var m = isCustom ? null : E.findModel(settings, l.modelId);
+    var drift = m && (E.num(m.credits) !== E.num(l.credits) || !!m.perSecond !== !!l.perSecond || m.name !== l.modelName);
+    var p = 'lines.' + i + '.';
+    var h = '<div class="line"><div class="line-top"><span class="idx">' + String(i + 1).padStart(2, '0') + '</span>' +
+      input(p + 'label', l.label, { ph: 'Shot / asset name (optional)', aria: 'Line name' }) +
+      '<button class="icon-btn" title="Duplicate line" data-action="line-dup" data-i="' + i + '">⧉</button>' +
+      '<button class="icon-btn del" title="Remove line" data-action="line-del" data-i="' + i + '">✕</button></div><div class="line-grid">';
+    h += field('Category', selectEl('data-change="line-category" data-i="' + i + '"', E.CATEGORIES.map(function (c) { return { value: c, label: c }; }), l.category));
+    h += field('Model', selectEl('data-change="line-model" data-i="' + i + '"', modelOptions(l), l.modelId), 'model');
+    if (isCustom) {
+      h += input(p + 'modelName', l.modelName, { label: 'Custom name', ph: 'e.g. Veo' });
+      h += input(p + 'credits', l.credits, { label: l.perSecond ? 'Credits / sec' : 'Credits / gen', type: 'num' });
+      h += '<div class="fld"><span class="lbl">Pricing</span><div class="snap" style="border-style:solid">' + checkbox(p + 'perSecond', l.perSecond, 'Per second').replace('<input', '<input data-rerender') + '</div></div>';
+    } else {
+      h += '<div class="fld"><span class="lbl">Price (snapshot)</span><div class="snap" title="Saved with this estimate. Use Refresh prices to update.">' + E.fmtNum(l.credits, 4) + ' cr/' + (l.perSecond ? 'sec' : 'gen') + '</div></div>';
+    }
+    h += input(p + 'gens', l.gens, { label: 'Generations', type: 'num', ph: '0' });
+    if (showDur) h += input(p + 'duration', l.duration, { label: 'Duration', type: 'num', suf: 'sec' });
+    h += '</div><div class="line-foot"><span><span class="formula" data-out="line-f-' + i + '">' + o['line-f-' + i] + '</span>' +
+      (drift ? ' <span class="drift">· settings now ' + E.fmtNum(m.credits, 4) + ' cr/' + (m.perSecond ? 'sec' : 'gen') + '</span>' : '') +
+      (l.category === 'Video' && !l.perSecond ? ' <span class="muted" style="font-size:12px">· duration is informational (priced per generation)</span>' : '') + '</span>' +
+      out('line-' + i, o['line-' + i]) + '</div></div>';
+    return h;
+  }
+
+  function renderService(s, i, o) {
+    var p = 'services.' + i + '.';
+    var h = '<div class="svc' + (s.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle(p + 'enabled', s.enabled, null, 'Include ' + (s.name || 'service')) + '<div class="svc-title">';
+    if (s.custom) h += input(p + 'name', s.name, { ph: 'Custom service name', aria: 'Service name' }) + input(p + 'desc', s.desc, { ph: 'Short description for the client (optional)', cls: 'desc', aria: 'Description' });
+    else h += '<div class="svc-name">' + esc(s.name) + '</div>' + (s.desc ? '<div class="svc-desc">' + esc(s.desc) + '</div>' : '');
+    h += '</div>' + out('svc-' + i, o['svc-' + i]);
+    if (s.custom) h += '<button class="icon-btn del" title="Remove service" data-action="svc-del" data-i="' + i + '">✕</button>';
+    h += '</div>';
+    if (s.enabled) {
+      h += '<div class="svc-body">' + field('Pricing', seg(p + 'mode', s.mode, [{ value: 'hours', label: 'Hours' }, { value: 'fixed', label: 'Fixed' }]));
+      if (s.mode === 'fixed') h += input(p + 'fixed', s.fixed, { label: 'Fixed price', type: 'num', pre: '$' });
+      else h += input(p + 'hours', s.hours, { label: 'Hours', type: 'num', suf: 'h' }) + input(p + 'rate', s.rate, { label: 'Rate / hour', type: 'num', pre: '$' });
+      h += '</div>';
+    }
+    return h + '</div>';
+  }
+
+  function renderEstimate() {
+    var c = E.calcEstimate(est);
+    var o = outputs(c);
+    var drift = E.refreshPrices(est, settings).changes.length;
+    var curOpts = E.CURRENCIES.map(function (x) { return { value: x, label: x }; });
+
+    var h = '<div class="page-head"><div style="min-width:0"><div class="eyebrow">Estimate</div><h1 data-out="title">' + o.title + '</h1><div class="status" data-out="status">' + o.status + '</div></div>' +
+      '<div class="head-actions"><button class="btn" data-action="new">New</button><button class="btn" data-action="duplicate-current">Duplicate</button>' +
+      '<button class="btn" data-action="refresh-prices">Refresh prices</button><button class="btn" data-action="client">Client version</button><button class="btn primary" data-action="save">Save</button></div></div>';
+    if (drift) h += '<div class="notice"><span>' + drift + ' price' + (drift === 1 ? '' : 's') + ' in this estimate differ from your current Settings. The estimate keeps its own snapshot until you refresh.</span><button class="btn sm" data-action="refresh-prices">Review &amp; refresh</button></div>';
+
+    h += '<div class="est-layout"><div class="est-main">';
+
+    // 1. Project
+    h += section('01', 'Project',
+      '<div class="grid wide">' + input('name', est.name, { label: 'Project name', ph: 'e.g. Spring campaign teaser' }) + input('client', est.client, { label: 'Client', ph: 'Client name' }) + '</div>' +
+      '<div class="grid" style="margin-top:12px">' + input('date', est.date, { label: 'Date', html: 'date' }) + input('deadline', est.deadline, { label: 'Deadline', html: 'date' }) +
+      field('Output currency', selectEl('data-bind="currency" data-rerender', curOpts, est.currency)) + '</div>' +
+      '<div class="rates-row"><div class="grid">' + input('rates.creditPrice', est.rates.creditPrice, { label: 'Credit price (USD)', type: 'num', pre: '$' }) +
+      input('rates.EUR', est.rates.EUR, { label: '1 USD → EUR', type: 'num' }) + input('rates.CZK', est.rates.CZK, { label: '1 USD → CZK', type: 'num' }) + '</div>' +
+      '<p class="hint" style="margin:10px 0 0">Rates are a snapshot taken from Settings when the estimate was created. All money inputs below are in USD; totals are shown in ' + esc(est.currency) + '.</p></div>');
+
+    // 2. AI generation
+    var linesHtml = est.lines.length ? '<div class="lines">' + est.lines.map(function (l, i) { return renderLine(l, i, o); }).join('') + '</div>'
+      : '<div class="empty">No generation lines yet. Add a shot or asset below.</div>';
+    h += section('02', 'AI generation', linesHtml +
+      '<div class="add-row"><span class="hint">Add line:</span>' + E.CATEGORIES.map(function (cat) { return '<button class="btn dashed sm" data-action="add-line" data-cat="' + cat + '">+ ' + cat + '</button>'; }).join('') + '</div>' +
+      '<div data-out="gen-summary">' + o['gen-summary'] + '</div>',
+      input('wastePct', est.wastePct, { type: 'num', suf: '%', aria: 'Waste buffer', cls: '' }).replace('<div class="ctl', '<div style="width:110px" class="ctl') + '<span class="hint">waste buffer</span>');
+
+    // 3. Services
+    var sv = est.services.map(function (s, i) { return renderService(s, i, o); }).join('');
+    var f = est.formats;
+    sv += '<div class="svc' + (f.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle('formats.enabled', f.enabled, null, 'Include extra delivery formats') +
+      '<div class="svc-title"><div class="svc-name">Extra delivery formats</div><div class="svc-desc">Count × price per format</div></div>' + out('formats', o.formats) + '</div>' +
+      (f.enabled ? '<div class="svc-body">' + input('formats.label', f.label, { label: 'Formats', ph: '9:16, 1:1', fcls: 'grow' }) + input('formats.count', f.count, { label: 'Count', type: 'int' }) + input('formats.price', f.price, { label: 'Price / format', type: 'num', pre: '$' }) + '</div>' : '') + '</div>';
+    h += section('03', 'Services', sv + '<div class="add-row"><button class="btn dashed sm" data-action="add-service">+ Custom service</button></div>');
+
+    // 4. Fixed costs
+    var fx = est.fixedCosts.length ? '<div class="rows">' + est.fixedCosts.map(function (x, i) {
+      return '<div class="row">' + input('fixedCosts.' + i + '.name', x.name, { ph: 'Music license, voice actor, stock…', aria: 'Cost name' }) + input('fixedCosts.' + i + '.amount', x.amount, { type: 'num', pre: '$', aria: 'Amount' }) +
+        '<button class="icon-btn del" title="Remove" data-action="fixed-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div>' : '<div class="empty">No fixed costs. Music licenses, voice actors, stock footage…</div>';
+    h += section('04', 'Fixed costs', fx + '<div class="add-row"><button class="btn dashed sm" data-action="add-fixed">+ Fixed cost</button><span class="hint" style="margin-left:auto">Total <b class="num" style="color:var(--text)" data-out="fixed-total">' + o['fixed-total'] + '</b></span></div>');
+
+    // 5. Revisions
+    h += section('05', 'Revisions', '<div class="grid">' + input('revisions.included', est.revisions.included, { label: 'Included rounds', type: 'int' }) +
+      input('revisions.extra', est.revisions.extra, { label: 'Extra paid rounds expected', type: 'int' }) + input('revisions.price', est.revisions.price, { label: 'Price / extra round', type: 'num', pre: '$' }) +
+      '<div class="fld"><span class="lbl">Extra rounds total</span>' + out('revisions', o.revisions, 'snap out') + '</div></div>');
+
+    // 6-8. Usage, rush, discount
+    var uOpts = settings.usageOptions.map(function (u) { return { value: u.id, label: u.name + (u.type === 'mult' ? ' (×' + E.fmtNum(u.value, 3) + ')' : ' (+$' + E.fmtNum(u.value) + ')') }; });
+    if (est.usage.optionId !== 'custom' && !settings.usageOptions.some(function (u) { return u.id === est.usage.optionId; })) uOpts.unshift({ value: est.usage.optionId, label: est.usage.name + ' (saved)' });
+    uOpts.push({ value: 'custom', label: 'Custom…' });
+    h += section('06', 'Usage rights', '<div class="grid">' + field('License', selectEl('data-change="usage-option"', uOpts, est.usage.optionId)) +
+      (est.usage.optionId === 'custom' ? input('usage.name', est.usage.name, { label: 'Name', ph: 'e.g. Broadcast, 1 year' }) : '') +
+      field('Type', seg('usage.type', est.usage.type, [{ value: 'mult', label: 'Multiplier' }, { value: 'fixed', label: 'Fixed' }])) +
+      (est.usage.type === 'mult' ? input('usage.value', est.usage.value, { label: 'Multiplier on subtotal', type: 'num', pre: '×' }) : input('usage.value', est.usage.value, { label: 'Surcharge', type: 'num', pre: '$' })) +
+      '<div class="fld"><span class="lbl">Usage surcharge</span>' + out('usage', o.usage, 'snap out') + '</div></div>');
+
+    var rOpts = settings.rushOptions.map(function (r) { return { value: r.id, label: r.name + (E.num(r.pct) ? ' (+' + E.fmtNum(r.pct) + '%)' : '') }; });
+    if (est.rush.optionId !== 'custom' && !settings.rushOptions.some(function (r) { return r.id === est.rush.optionId; })) rOpts.unshift({ value: est.rush.optionId, label: est.rush.name + ' (saved)' });
+    rOpts.push({ value: 'custom', label: 'Custom…' });
+    h += section('07', 'Rush fee', '<div class="grid">' + field('Timeline', selectEl('data-change="rush-option"', rOpts, est.rush.optionId)) +
+      input('rush.pct', est.rush.pct, { label: 'Rush fee', type: 'num', suf: '%' }) + '<div class="fld"><span class="lbl">Rush amount</span>' + out('rush', o.rush, 'snap out') + '</div></div>' +
+      '<p class="hint" style="margin:10px 0 0">Applied to labor + markup only — never to raw credit or fixed costs.</p>');
+
+    h += section('08', 'Discount', '<div class="grid">' + field('Type', seg('discount.type', est.discount.type, [{ value: 'pct', label: '%' }, { value: 'fixed', label: 'Fixed' }])) +
+      (est.discount.type === 'pct' ? input('discount.value', est.discount.value, { label: 'Discount', type: 'num', suf: '%' }) : input('discount.value', est.discount.value, { label: 'Discount', type: 'num', pre: '$' })) +
+      '<div class="fld"><span class="lbl">Discount amount</span>' + out('discount', o.discount, 'snap out') + '</div></div>');
+
+    // 9. Markup & payment
+    h += section('09', 'Markup & payment', '<div class="grid">' + input('markup.pct', est.markup.pct, { label: 'Markup', type: 'num', suf: '%' }) +
+      '<div class="fld"><span class="lbl">Markup applies to</span><div style="display:flex;gap:14px;flex-wrap:wrap;min-height:40px;align-items:center">' +
+      checkbox('markup.credits', est.markup.credits, 'AI credits') + checkbox('markup.fixed', est.markup.fixed, 'Fixed costs') + checkbox('markup.labor', est.markup.labor, 'Labor') + '</div></div>' +
+      '<div class="fld"><span class="lbl">Markup amount</span>' + out('markup', o.markup, 'snap out') + '</div></div>' +
+      '<div class="grid" style="margin-top:12px">' + input('prepayPct', est.prepayPct, { label: 'Prepayment', type: 'num', suf: '%' }) +
+      '<div class="fld"><span class="lbl">Prepayment amount</span>' + out('prepay', o.prepay, 'snap out') + '</div></div>');
+
+    // 10. Notes
+    h += section('10', 'Notes', '<div class="grid wide">' +
+      field('Notes for the client (shown on client version)', '<textarea data-bind="clientNotes" placeholder="Scope, assumptions, delivery details…">' + esc(est.clientNotes) + '</textarea>') +
+      field('Internal notes (never shown to client)', '<textarea data-bind="internalNotes" placeholder="Anything for yourself…">' + esc(est.internalNotes) + '</textarea>') + '</div>');
+
+    h += '</div><aside class="est-side"><div class="summary" id="summary" data-out="summary">' + o.summary + '</div></aside></div>';
+    h += '<div class="mobile-bar"><div><div class="mb-total" data-out="mb-total">' + o['mb-total'] + '</div><div class="mb-sub" data-out="mb-sub">' + o['mb-sub'] + '</div></div><button class="btn sm" data-action="scroll-summary">Breakdown ↓</button></div>';
+    return h;
+  }
+
+  function updateDerived() {
+    var o = outputs(E.calcEstimate(est));
+    $$('[data-out]', app).forEach(function (el) { var v = o[el.dataset.out]; if (v !== undefined && el.innerHTML !== v) el.innerHTML = v; });
+  }
+
+  /* ================= CLIENT VIEW ================= */
+  function renderClient() {
+    var c = E.calcEstimate(est), s = settings.studio;
+    var contact = [s.name, s.address, s.email, s.phone, s.website].filter(function (x) { return x && String(x).trim(); }).map(esc).join('\n');
+    var groups = [];
+    c.clientLines.forEach(function (l) {
+      var g = groups.find(function (x) { return x.name === l.section; });
+      if (!g) groups.push(g = { name: l.section, lines: [] });
+      g.lines.push(l);
+    });
+    var meta = [['Client', est.client], ['Date', fmtDate(est.date)], ['Deadline', fmtDate(est.deadline)], ['Currency', est.currency]].filter(function (x) { return x[1]; });
+
+    var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">← Back to estimate</button><span class="hint">Client version — internal costs, credits, model names and margin are hidden.</span><button class="btn primary" data-action="print">Print / Save PDF</button></div>';
+    h += '<article class="doc"><header class="doc-head"><div><div class="doc-logo">' + esc(s.logo || 'Studio') + '</div>' + (s.tagline ? '<div class="doc-tagline">' + esc(s.tagline) + '</div>' : '') + '</div>' +
+      (contact ? '<div class="doc-contact">' + contact + '</div>' : '') + '</header>';
+    h += '<div class="doc-title"><div><div class="k">Estimate</div><h1>' + esc(est.name || 'Untitled project') + '</h1></div><dl class="doc-meta">' +
+      meta.map(function (m) { return '<dt>' + esc(m[0]) + '</dt><dd>' + esc(m[1]) + '</dd>'; }).join('') + '</dl></div>';
+    h += '<table class="doc-table"><tbody>';
+    if (!groups.length) h += '<tr><td class="dt">No line items yet.</td><td></td></tr>';
+    groups.forEach(function (g) {
+      h += '<tr><th class="sect" colspan="2">' + esc(g.name) + '</th></tr>';
+      g.lines.forEach(function (l) { h += '<tr><td><div class="ln">' + esc(l.name) + '</div>' + (l.detail ? '<div class="dt">' + esc(l.detail) + '</div>' : '') + '</td><td class="amt">' + money(l.amount) + '</td></tr>'; });
+    });
+    h += '</tbody></table><div class="doc-totals">';
+    function tr(label, value, cls) { return '<div class="tr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
+    h += tr('Subtotal', money(c.subtotal));
+    if (c.rush) h += tr('Rush fee' + (c.rushName ? ' — ' + esc(c.rushName) : '') + ' (+' + pct(c.rushPct) + ')', money(c.rush));
+    if (c.usage) h += tr('Usage rights — ' + esc(c.usageName || 'Custom'), (c.usage < 0 ? '−' : '') + money(Math.abs(c.usage)));
+    if (c.discount) h += tr('Discount' + (c.discountType === 'pct' ? ' (' + pct(c.discountValue) + ')' : ''), '−' + money(c.discount));
+    h += tr('Total', money(c.total), 'grand');
+    if (c.prepayPct > 0) h += tr('Prepayment ' + pct(c.prepayPct) + ' — due before start', money(c.prepay), 'pp') + tr('Balance on delivery', money(c.balance), 'pp');
+    h += '</div><div class="doc-terms">';
+    var inc = E.num(est.revisions.included);
+    h += '<div><b>Revisions:</b> ' + (inc ? inc + ' revision round' + (inc === 1 ? '' : 's') + ' included' : 'No revision rounds included') +
+      (E.num(est.revisions.extra) > 0 ? '; ' + E.num(est.revisions.extra) + ' additional round' + (E.num(est.revisions.extra) === 1 ? '' : 's') + ' priced above' : '') + '.</div>';
+    h += '<div><b>Usage rights:</b> ' + esc(c.usageName || 'Custom') + (c.usage ? '' : ' (included)') + '.</div>';
+    if (c.rush) h += '<div><b>Timeline:</b> ' + esc(c.rushName || 'Rush') + ' delivery' + (est.deadline ? ' by ' + esc(fmtDate(est.deadline)) : '') + '.</div>';
+    if (est.clientNotes && est.clientNotes.trim()) h += '<div class="doc-notes">' + esc(est.clientNotes.trim()) + '</div>';
+    h += '</div>' + (s.footer ? '<div class="doc-foot">' + esc(s.footer) + '</div>' : '') + '</article>';
+    return h;
+  }
+
+  /* ================= SAVED VIEW ================= */
+  function renderSavedList() {
+    var q = (ui.search || '').toLowerCase().trim();
+    var list = estimates.slice().sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); })
+      .filter(function (e) { return !q || (e.name + ' ' + e.client).toLowerCase().indexOf(q) >= 0; });
+    if (!estimates.length) return '<div class="empty">No saved estimates yet. Build one on the Estimate tab and press Save.</div>';
+    if (!list.length) return '<div class="empty">Nothing matches “' + esc(ui.search) + '”.</div>';
+    return '<div class="cards">' + list.map(function (e) {
+      var c = E.calcEstimate(e), cur = e.id === est.id;
+      return '<div class="est-card' + (cur ? ' current' : '') + '"><div><h3>' + esc(e.name || 'Untitled') + (cur ? '<span class="tag">open</span>' : '') + '</h3><div class="meta">' + esc(e.client || 'No client') + ' · ' + esc(fmtDate(e.date)) + '</div></div>' +
+        '<div class="amt">' + E.fmtMoney(c.total, e.currency) + '</div><div class="meta">Margin ' + E.fmtMoney(c.margin, e.currency) + ' · ' + pct(c.marginPct) + ' · updated ' + esc(fmtDate(e.updatedAt)) + '</div>' +
+        '<div class="acts"><button class="btn sm primary" data-action="open" data-id="' + esc(e.id) + '">Open</button><button class="btn sm" data-action="dup-saved" data-id="' + esc(e.id) + '">Duplicate</button><button class="btn sm danger" data-action="del-saved" data-id="' + esc(e.id) + '">Delete</button></div></div>';
+    }).join('') + '</div>';
+  }
+  function renderSaved() {
+    return '<div class="page-head"><div><div class="eyebrow">Library</div><h1>Saved estimates</h1></div><div class="head-actions">' +
+      '<button class="btn" data-action="export">Export data</button><button class="btn" data-action="import">Import data</button><button class="btn primary" data-action="new">New estimate</button></div></div>' +
+      '<div class="toolbar"><input type="search" data-search placeholder="Search by project or client…" value="' + esc(ui.search) + '" aria-label="Search"></div><div data-out="saved-list">' + renderSavedList() + '</div>';
+  }
+
+  /* ================= SETTINGS VIEW ================= */
+  /** Number of distinct estimates (saved + the open draft) whose lines reference a model. */
+  function modelUsage(id) {
+    var ids = {};
+    estimates.concat([est]).forEach(function (e) { if (E.modelUsageCount(id, [e])) ids[e.id] = 1; });
+    return Object.keys(ids).length;
+  }
+  function renderModels() {
+    var archivedCount = settings.models.filter(function (m) { return m.archived; }).length;
+    var h = '';
+    E.CATEGORIES.forEach(function (cat) {
+      var ms = settings.models.filter(function (m) { return m.category === cat && (ui.showArchived || !m.archived); });
+      h += '<div class="model-cat"><h3>' + cat + '</h3>';
+      if (!ms.length) h += '<div class="hint" style="padding:4px 0 8px">No models.</div>';
+      ms.forEach(function (m) {
+        var used = modelUsage(m.id);
+        h += '<div class="model-row' + (m.archived ? ' archived' : '') + '"><div class="mname">' + esc(m.name || '(unnamed)') + (m.archived ? '<span class="tag">archived</span>' : '') + '</div>' +
+          '<div class="mcost">' + E.fmtNum(m.credits, 4) + ' cr / ' + (m.perSecond ? 'sec' : 'gen') + '</div><div class="mnotes">' + esc(m.notes) + (used ? (m.notes ? ' · ' : '') + 'used in ' + used + ' estimate' + (used === 1 ? '' : 's') : '') + '</div><div class="macts">' +
+          '<button class="btn sm" data-action="model-edit" data-id="' + esc(m.id) + '">Edit</button>' +
+          (m.archived ? '<button class="btn sm" data-action="model-restore" data-id="' + esc(m.id) + '">Restore</button>' : '<button class="btn sm" data-action="model-archive" data-id="' + esc(m.id) + '">Archive</button>') +
+          (used ? '' : '<button class="btn sm danger" data-action="model-delete" data-id="' + esc(m.id) + '">Delete</button>') + '</div></div>';
+      });
+      h += '</div>';
+    });
+    return h + '<div class="add-row"><button class="btn primary sm" data-action="model-add">+ Add model</button>' +
+      '<label class="check" style="margin-left:auto"><input type="checkbox" data-action-check="toggle-archived"' + (ui.showArchived ? ' checked' : '') + '> Show archived (' + archivedCount + ')</label></div>' +
+      '<p class="hint">Archived models are hidden from selection but stay in old estimates. Models used in a saved estimate can only be archived, not deleted.</p>';
+  }
+
+  function renderSettings() {
+    var S = { scope: 'settings' };
+    function si(path, value, opts) { return input(path, value, Object.assign({}, S, opts)); }
+    var h = '<div class="page-head"><div><div class="eyebrow">Configuration</div><h1>Settings</h1><div class="status">Changes save automatically. Existing estimates keep their own price snapshots.</div></div></div>';
+
+    h += section('A', 'Models & tools', renderModels());
+
+    h += section('B', 'Pricing & currency', '<div class="grid">' + si('creditPrice', settings.creditPrice, { label: 'Price of 1 credit (USD)', type: 'num', pre: '$' }) +
+      si('fx.EUR', settings.fx.EUR, { label: '1 USD → EUR', type: 'num' }) + si('fx.CZK', settings.fx.CZK, { label: '1 USD → CZK', type: 'num' }) +
+      field('Default output currency', selectEl('data-sbind="defaultCurrency"', E.CURRENCIES.map(function (x) { return { value: x, label: x }; }), settings.defaultCurrency)) + '</div>');
+
+    var rates = E.SERVICE_DEFS.map(function (d) {
+      return si('serviceRates.' + d.key, settings.serviceRates[d.key], { label: d.name, type: 'numOrNull', pre: '$', ph: 'default' });
+    }).join('');
+    h += section('C', 'Hourly rates', '<div class="grid">' + si('hourlyRate', settings.hourlyRate, { label: 'Default hourly rate', type: 'num', pre: '$' }) + '</div>' +
+      '<div class="sub-title">Per-service rates <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400">— leave empty to use the default</span></div><div class="grid">' + rates + '</div>');
+
+    h += section('D', 'Estimate defaults', '<div class="grid">' +
+      si('wastePct', settings.wastePct, { label: 'Waste buffer', type: 'num', suf: '%' }) + si('markupPct', settings.markupPct, { label: 'Markup', type: 'num', suf: '%' }) +
+      si('revisionsIncluded', settings.revisionsIncluded, { label: 'Included revisions', type: 'int' }) + si('revisionPrice', settings.revisionPrice, { label: 'Price / extra revision', type: 'num', pre: '$' }) +
+      si('formatPrice', settings.formatPrice, { label: 'Price / extra format', type: 'num', pre: '$' }) + si('prepayPct', settings.prepayPct, { label: 'Prepayment', type: 'num', suf: '%' }) + '</div>' +
+      '<div class="sub-title">Markup applies to</div><div style="display:flex;gap:16px;flex-wrap:wrap">' +
+      checkbox('markupOn.credits', settings.markupOn.credits, 'AI credits', 'settings') + checkbox('markupOn.fixed', settings.markupOn.fixed, 'Fixed costs', 'settings') + checkbox('markupOn.labor', settings.markupOn.labor, 'Labor', 'settings') + '</div>');
+
+    var rush = '<div class="rows">' + settings.rushOptions.map(function (r, i) {
+      return '<div class="row">' + si('rushOptions.' + i + '.name', r.name, { aria: 'Name', ph: 'Name' }) + si('rushOptions.' + i + '.pct', r.pct, { type: 'num', suf: '%', aria: 'Percent' }) +
+        '<button class="icon-btn del" title="Remove" data-action="rush-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="rush-add">+ Rush option</button></div>';
+    h += section('E', 'Rush fee options', rush);
+
+    var usage = '<div class="rows">' + settings.usageOptions.map(function (u, i) {
+      return '<div class="row r4">' + si('usageOptions.' + i + '.name', u.name, { aria: 'Name', ph: 'Name' }) +
+        selectEl('data-sbind="usageOptions.' + i + '.type" data-rerender aria-label="Type"', [{ value: 'mult', label: 'Multiplier' }, { value: 'fixed', label: 'Fixed $' }], u.type) +
+        si('usageOptions.' + i + '.value', u.value, { type: 'num', pre: u.type === 'mult' ? '×' : '$', aria: 'Value' }) +
+        '<button class="icon-btn del" title="Remove" data-action="usage-del" data-i="' + i + '">✕</button></div>';
+    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="usage-add">+ Usage option</button><span class="hint">A “Custom…” option is always available in the estimate.</span></div>';
+    h += section('F', 'Usage rights options', usage);
+
+    var st = settings.studio;
+    h += section('G', 'Studio & client version', '<div class="grid wide">' + si('studio.logo', st.logo, { label: 'Text logo' }) + si('studio.tagline', st.tagline, { label: 'Tagline' }) +
+      si('studio.name', st.name, { label: 'Studio / legal name' }) + si('studio.email', st.email, { label: 'Email' }) + si('studio.phone', st.phone, { label: 'Phone' }) +
+      si('studio.website', st.website, { label: 'Website' }) + '</div><div class="grid wide" style="margin-top:12px">' +
+      field('Address / company details', '<textarea data-sbind="studio.address" placeholder="Street, city, company ID, VAT ID…">' + esc(st.address) + '</textarea>') +
+      field('Footer note on client version', '<textarea data-sbind="studio.footer">' + esc(st.footer) + '</textarea>') + '</div>');
+
+    h += section('H', 'Data', '<p class="hint" style="margin-top:0">Everything is stored in this browser (localStorage). Export a JSON backup to move settings and saved estimates to another device.</p>' +
+      '<div class="add-row"><button class="btn" data-action="export">Export data (JSON)</button><button class="btn" data-action="import">Import data…</button>' +
+      '<button class="btn danger" data-action="reset-settings">Reset settings</button><button class="btn danger" data-action="wipe">Delete all data</button></div>');
+    return h;
+  }
+
+  /* ================= Render & navigation ================= */
+  function render() {
+    $$('#nav button').forEach(function (b) { b.classList.toggle('active', b.dataset.nav === (ui.view === 'client' ? 'estimate' : ui.view)); });
+    $('#brand-logo').textContent = settings.studio.logo || 'Studio';
+    var y = window.scrollY;
+    if (ui.view === 'saved') app.innerHTML = renderSaved();
+    else if (ui.view === 'settings') app.innerHTML = renderSettings();
+    else if (ui.view === 'client') app.innerHTML = renderClient();
+    else app.innerHTML = renderEstimate();
+    window.scrollTo(0, y);
+  }
+  function go(view) {
+    if (view === 'estimate') freshenPristine();
+    if (ui.view !== view) { ui.view = view; saveUi(); render(); window.scrollTo(0, 0); }
+    else render();
+  }
+
+  /* ---------------- Estimate actions ---------------- */
+  function loadEstimate(e) {
+    est = E.clone(e);
+    baseJson = JSON.stringify(est);
+    saveDraft();
+  }
+  async function guardDiscard() {
+    if (!isDirty()) return true;
+    return confirmDialog('Discard changes?', 'The current estimate has unsaved changes. Continue without saving?', 'Discard', true);
+  }
+  async function saveCurrent() {
+    if (!String(est.name || '').trim()) {
+      var n = await promptDialog('Save estimate', 'Project name', '', 'Save');
+      if (!n) return;
+      est.name = n;
+    }
+    var idx = estimates.findIndex(function (x) { return x.id === est.id; });
+    if (idx < 0) {
+      var same = estimates.find(function (x) { return x.name.trim().toLowerCase() === est.name.trim().toLowerCase(); });
+      if (same) {
+        var choice = await new Promise(function (resolve) {
+          openModal({ title: 'Project name already exists', body: '<div>A saved estimate called “' + esc(same.name) + '” already exists.</div>', onCancel: function () { resolve(null); }, actions: [
+            { label: 'Cancel', kind: 'ghost', onClick: function () { resolve(null); } },
+            { label: 'Keep both', onClick: function () { resolve('both'); } },
+            { label: 'Overwrite', kind: 'primary', onClick: function () { resolve('overwrite'); } }
+          ] });
+        });
+        if (!choice) return;
+        if (choice === 'overwrite') { est.id = same.id; est.createdAt = same.createdAt; idx = estimates.indexOf(same); }
+      }
+    }
+    est.updatedAt = new Date().toISOString();
+    if (idx >= 0) estimates[idx] = E.clone(est); else estimates.unshift(E.clone(est));
+    saveEstimates();
+    baseJson = JSON.stringify(est);
+    saveDraft();
+    toast('Saved “' + est.name + '”');
+    render();
+  }
+  function doRefreshPrices() {
+    var r = E.refreshPrices(est, settings);
+    if (!r.changes.length) { toast('All prices already match your settings'); return; }
+    var before = E.calcEstimate(est).total, after = E.calcEstimate(r.estimate).total;
+    openModal({ title: 'Refresh prices from Settings', body:
+      '<div>These snapshot values will be updated to your current settings:</div><ul>' + r.changes.map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('') + '</ul>' +
+      '<div>Client total: <b style="color:var(--text)">' + money(before) + '</b> → <b style="color:var(--accent)">' + money(after) + '</b></div>',
+      actions: [{ label: 'Cancel', kind: 'ghost' }, { label: 'Refresh prices', kind: 'primary', onClick: function () {
+        est = r.estimate; saveDraft(); render(); toast('Prices refreshed');
+      } }] });
+  }
+
+  /* ---------------- Settings actions ---------------- */
+  function editModel(id) {
+    var m = id ? E.clone(E.findModel(settings, id)) : { id: null, name: '', category: 'Video', credits: 0, perSecond: false, notes: '', archived: false };
+    if (!m) return;
+    var body = field('Name', '<input type="text" id="mm-name" value="' + esc(m.name) + '" placeholder="e.g. Veo 3">') +
+      '<div class="grid">' + field('Category', selectEl('id="mm-cat"', E.CATEGORIES.map(function (c) { return { value: c, label: c }; }), m.category)) +
+      field('Cost in credits', '<input type="text" inputmode="decimal" id="mm-credits" value="' + esc(m.credits) + '">') + '</div>' +
+      '<label class="check"><input type="checkbox" id="mm-ps"' + (m.perSecond ? ' checked' : '') + '> Price is per second of video (credits × duration × generations)</label>' +
+      field('Notes', '<textarea id="mm-notes" placeholder="Resolution, mode, plan…">' + esc(m.notes) + '</textarea>') +
+      (id ? '<div class="hint">Changing the price affects new lines only. Existing estimates keep their snapshot until you press “Refresh prices” in that estimate.</div>' : '');
+    openModal({ title: id ? 'Edit model' : 'Add model', body: body, actions: [{ label: 'Cancel', kind: 'ghost' }, { label: id ? 'Save' : 'Add model', kind: 'primary', onClick: function (root) {
+      var name = root.querySelector('#mm-name').value.trim();
+      if (!name) { root.querySelector('#mm-name').focus(); return false; }
+      var data = { name: name, category: root.querySelector('#mm-cat').value, credits: E.num(root.querySelector('#mm-credits').value), perSecond: root.querySelector('#mm-ps').checked, notes: root.querySelector('#mm-notes').value };
+      if (id) Object.assign(E.findModel(settings, id), data);
+      else settings.models.push(Object.assign({ id: E.uid('m'), archived: false }, data));
+      saveSettings(); render(); toast(id ? 'Model updated' : 'Model added');
+    } }] });
+  }
+
+  function exportData() {
+    var go = function () {
+      var data = { app: 'ai-estimate-calculator', schema: 1, exportedAt: new Date().toISOString(), settings: settings, estimates: estimates };
+      var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'estimates-backup-' + E.today() + '.json';
+      document.body.appendChild(a); a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+      toast('Exported ' + estimates.length + ' estimate' + (estimates.length === 1 ? '' : 's') + ' + settings');
+    };
+    if (isDirty()) {
+      confirmDialog('Unsaved estimate', 'The estimate you are editing has unsaved changes and will not be included. Export anyway?', 'Export').then(function (ok) { if (ok) go(); });
+    } else go();
+  }
+  function importData(text) {
+    var data;
+    try { data = JSON.parse(text); } catch (e) { toast('Not a valid JSON file', 'error'); return; }
+    if (!data || typeof data !== 'object' || (!data.settings && !Array.isArray(data.estimates))) { toast('This file is not an estimate-calculator backup', 'error'); return; }
+    var inEst = Array.isArray(data.estimates) ? data.estimates.map(E.normalizeEstimate) : [];
+    var inSet = data.settings ? E.normalizeSettings(data.settings) : null;
+    openModal({ title: 'Import data', body: '<div>File contains <b style="color:var(--text)">' + inEst.length + ' estimate' + (inEst.length === 1 ? '' : 's') + '</b>' + (inSet ? ' and settings with <b style="color:var(--text)">' + inSet.models.length + ' models</b>' : '') + '.</div>' +
+      '<ul><li><b>Merge</b> — keep your settings, add missing models, add estimates (same estimate → newer version wins).</li><li><b>Replace all</b> — overwrite settings and saved estimates on this device.</li></ul>',
+      actions: [{ label: 'Cancel', kind: 'ghost' },
+        { label: 'Merge', onClick: function () {
+          if (inSet) inSet.models.forEach(function (m) { if (!E.findModel(settings, m.id)) settings.models.push(m); });
+          var added = 0;
+          inEst.forEach(function (e) {
+            var i = estimates.findIndex(function (x) { return x.id === e.id; });
+            if (i < 0) { estimates.push(e); added++; } else if (String(e.updatedAt) > String(estimates[i].updatedAt)) { estimates[i] = e; added++; }
+          });
+          saveSettings(); saveEstimates(); render(); toast('Merged · ' + added + ' estimate' + (added === 1 ? '' : 's') + ' added/updated');
+        } },
+        { label: 'Replace all', kind: 'danger solid primary', onClick: function () {
+          if (inSet) settings = inSet;
+          estimates = inEst;
+          saveSettings(); saveEstimates(); render(); toast('Data replaced from backup');
+        } }] });
+  }
+
+  /* ---------------- Events ---------------- */
+  document.getElementById('nav').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-nav]'); if (b) go(b.dataset.nav);
+  });
+  document.getElementById('import-file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0]; if (!f) return;
+    var r = new FileReader();
+    r.onload = function () { importData(String(r.result)); };
+    r.readAsText(f); e.target.value = '';
+  });
+
+  app.addEventListener('input', function (e) {
+    var t = e.target;
+    if (t.type === 'checkbox' || t.tagName === 'SELECT') return; // handled on change
+    if (t.dataset.bind) { setPath(est, t.dataset.bind, readVal(t)); saveDraft(); updateDerived(); }
+    else if (t.dataset.sbind) { setPath(settings, t.dataset.sbind, readVal(t)); saveSettings(); }
+    else if (t.hasAttribute('data-search')) { ui.search = t.value; $('[data-out="saved-list"]').innerHTML = renderSavedList(); }
+  });
+
+  app.addEventListener('change', function (e) {
+    var t = e.target, i = +t.dataset.i;
+    if (t.dataset.actionCheck === 'toggle-archived') { ui.showArchived = t.checked; saveUi(); render(); return; }
+    if (t.dataset.change) {
+      var v = t.value;
+      if (t.dataset.change === 'line-category') {
+        var l = est.lines[i]; l.category = v;
+        if (v === 'Video' && !E.num(l.duration)) l.duration = 5;
+        E.setLineModel(l, settings, (E.activeModels(settings, v)[0] || {}).id || 'custom');
+      } else if (t.dataset.change === 'line-model') {
+        E.setLineModel(est.lines[i], settings, v);
+      } else if (t.dataset.change === 'usage-option') {
+        if (v === 'custom') est.usage = { optionId: 'custom', name: 'Custom', type: est.usage.type, value: est.usage.value };
+        else { var u = settings.usageOptions.find(function (x) { return x.id === v; }); if (u) est.usage = { optionId: u.id, name: u.name, type: u.type, value: E.num(u.value) }; }
+      } else if (t.dataset.change === 'rush-option') {
+        if (v === 'custom') est.rush = { optionId: 'custom', name: 'Custom', pct: est.rush.pct };
+        else { var r = settings.rushOptions.find(function (x) { return x.id === v; }); if (r) est.rush = { optionId: r.id, name: r.name, pct: E.num(r.pct) }; }
+      }
+      saveDraft(); render(); return;
+    }
+    if (t.tagName === 'SELECT' || t.type === 'checkbox') {
+      if (t.dataset.bind) { setPath(est, t.dataset.bind, readVal(t)); saveDraft(); }
+      else if (t.dataset.sbind) { setPath(settings, t.dataset.sbind, readVal(t)); saveSettings(); }
+      if (t.hasAttribute('data-rerender')) render(); else if (t.dataset.bind) updateDerived();
+    }
+  });
+
+  app.addEventListener('click', async function (e) {
+    var b = e.target.closest('[data-action]');
+    if (!b || !app.contains(b)) return;
+    var a = b.dataset.action, i = +b.dataset.i, id = b.dataset.id;
+    switch (a) {
+      case 'set':
+        setPath(b.dataset.scope === 'settings' ? settings : est, b.dataset.path, b.dataset.value);
+        if (b.dataset.scope === 'settings') saveSettings(); else saveDraft();
+        render(); break;
+      case 'new':
+        if (!(await guardDiscard())) return;
+        est = E.newEstimate(settings); baseJson = JSON.stringify(est); saveDraft(); go('estimate'); window.scrollTo(0, 0); break;
+      case 'save': await saveCurrent(); break;
+      case 'duplicate-current':
+        est = E.duplicateEstimate(est); baseJson = ''; saveDraft(); render(); toast('Duplicated — this copy is not saved yet'); break;
+      case 'refresh-prices': doRefreshPrices(); break;
+      case 'client': go('client'); window.scrollTo(0, 0); break;
+      case 'back': go('estimate'); break;
+      case 'print': window.print(); break;
+      case 'scroll-summary': var s = $('#summary'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
+      case 'add-line': {
+        var last = est.lines[est.lines.length - 1];
+        est.lines.push(E.makeLine(settings, b.dataset.cat || (last && last.category) || 'Video'));
+        saveDraft(); render();
+        var ins = $$('.line .line-top input', app); if (ins.length) ins[ins.length - 1].focus({ preventScroll: true });
+        break;
+      }
+      case 'line-dup': { var cp = E.clone(est.lines[i]); cp.id = E.uid('l'); est.lines.splice(i + 1, 0, cp); saveDraft(); render(); break; }
+      case 'line-del': est.lines.splice(i, 1); saveDraft(); render(); break;
+      case 'add-service': est.services.push(E.newCustomService(settings)); saveDraft(); render(); break;
+      case 'svc-del': est.services.splice(i, 1); saveDraft(); render(); break;
+      case 'add-fixed': est.fixedCosts.push({ id: E.uid('f'), name: '', amount: 0 }); saveDraft(); render();
+        var fi = $$('.rows .row input', app); if (fi.length >= 2) fi[fi.length - 2].focus({ preventScroll: true }); break;
+      case 'fixed-del': est.fixedCosts.splice(i, 1); saveDraft(); render(); break;
+
+      case 'open': {
+        if (id === est.id && !isDirty()) { go('estimate'); break; }
+        if (!(await guardDiscard())) return;
+        var found = estimates.find(function (x) { return x.id === id; });
+        if (found) { loadEstimate(found); go('estimate'); window.scrollTo(0, 0); }
+        break;
+      }
+      case 'dup-saved': {
+        var src = estimates.find(function (x) { return x.id === id; });
+        if (src) { var d = E.duplicateEstimate(src); estimates.unshift(d); saveEstimates(); render(); toast('Duplicated as “' + d.name + '”'); }
+        break;
+      }
+      case 'del-saved': {
+        var del = estimates.find(function (x) { return x.id === id; });
+        if (del && await confirmDialog('Delete estimate?', 'Delete “' + esc(del.name || 'Untitled') + '” permanently? This cannot be undone.', 'Delete', true)) {
+          estimates = estimates.filter(function (x) { return x.id !== id; }); saveEstimates(); render(); toast('Deleted');
+        }
+        break;
+      }
+      case 'export': exportData(); break;
+      case 'import': $('#import-file').click(); break;
+
+      case 'model-add': editModel(null); break;
+      case 'model-edit': editModel(id); break;
+      case 'model-archive': E.findModel(settings, id).archived = true; saveSettings(); render(); toast('Archived — hidden from selection'); break;
+      case 'model-restore': E.findModel(settings, id).archived = false; saveSettings(); render(); toast('Restored'); break;
+      case 'model-delete': {
+        var m = E.findModel(settings, id);
+        if (modelUsage(id)) { toast('Model is used in an estimate — archive it instead', 'error'); break; }
+        if (await confirmDialog('Delete model?', 'Delete “' + esc(m.name) + '”? It is not used in any estimate.', 'Delete', true)) {
+          settings.models = settings.models.filter(function (x) { return x.id !== id; }); saveSettings(); render();
+        }
+        break;
+      }
+      case 'rush-add': settings.rushOptions.push({ id: E.uid('r'), name: '', pct: 0 }); saveSettings(); render(); break;
+      case 'rush-del': settings.rushOptions.splice(i, 1); saveSettings(); render(); break;
+      case 'usage-add': settings.usageOptions.push({ id: E.uid('u'), name: '', type: 'mult', value: 1 }); saveSettings(); render(); break;
+      case 'usage-del': settings.usageOptions.splice(i, 1); saveSettings(); render(); break;
+      case 'reset-settings':
+        if (await confirmDialog('Reset settings?', 'Restore all settings (models, rates, options, studio details) to defaults? Saved estimates are not affected.', 'Reset', true)) {
+          settings = E.defaultSettings(); saveSettings(); render(); toast('Settings reset');
+        }
+        break;
+      case 'wipe':
+        if (await confirmDialog('Delete all data?', 'This permanently deletes all settings and saved estimates from this browser. Export a backup first if you need it.', 'Delete everything', true)) {
+          Object.keys(KEYS).forEach(function (k) { try { localStorage.removeItem(KEYS[k]); } catch (err) { /* ignore */ } });
+          location.reload();
+        }
+        break;
+    }
+  });
+
+  // Keep data in sync if the app is open in two tabs.
+  window.addEventListener('storage', function (e) {
+    if (e.key === KEYS.settings) { settings = E.normalizeSettings(load(KEYS.settings, null)); if (ui.view !== 'estimate') render(); }
+    if (e.key === KEYS.estimates) { estimates = (load(KEYS.estimates, []) || []).map(E.normalizeEstimate); if (ui.view === 'saved') render(); }
+  });
+
+  if (ui.view === 'estimate') freshenPristine();
+  render();
+})();
+</script>
+</body>
+</html>
