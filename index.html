@@ -381,6 +381,29 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
   .doc-block { margin-top: 18px; }
   .pkg-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }
+.tag-ok { color: var(--ok, #58c493); border-color: currentColor; }
+.tag-muted { color: var(--muted); border-color: var(--border); }
+.cloud-btn { position: relative; }
+.cloud-dot { position: absolute; right: 3px; bottom: 3px; width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--surface); background: var(--faint); }
+.cloud-dot.ok { background: var(--ok, #58c493); }
+.cloud-dot.syncing, .cloud-dot.loading { background: var(--accent); }
+.cloud-dot.error, .cloud-dot.noaccess { background: var(--danger, #ef6464); }
+.cloud-dot.off, .cloud-dot.offline, .cloud-dot.unavailable { background: var(--faint); }
+.share-mode .topbar { display: none; }
+.share-mode main { padding-top: 24px; }
+.share-wrap { max-width: 860px; margin: 40px auto; }
+.share-accepted { color: var(--ok, #58c493); font-weight: 600; }
+.accept-box { max-width: 860px; margin: 18px auto 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; }
+.accept-box h3 { margin: 0 0 12px; font-size: 16px; }
+.accept-box.done { border-color: var(--ok, #58c493); color: var(--text); }
+.accept-box .grid { margin-top: 4px; }
+.pkg-pick { display: grid; gap: 8px; margin: 6px 0 14px; }
+.pkg-opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-size: 13.5px; }
+.pkg-opt input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+.pkg-opt:has(input:checked) { border-color: var(--accent); }
+.acc-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.acc-err { color: var(--danger, #ef6464); font-size: 13px; margin-top: 8px; min-height: 1em; }
+@media print { .accept-box.done { border: 1px solid #58c493; background: #fff; color: #16161a; max-width: none; margin: 18px 0 0; } }
 </style>
 </head>
 <body>
@@ -391,6 +414,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     <button data-nav="saved">Saved</button>
     <button data-nav="settings">Settings</button>
   </nav>
+  <button type="button" class="theme-btn cloud-btn" id="cloud-btn" aria-label="Cloud"></button>
   <button type="button" class="theme-btn" id="theme-btn" aria-label="Theme"></button>
   <div class="lang-switch" id="lang-switch" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="ru">RU</button></div>
 </header>
@@ -1362,6 +1386,60 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     d.setDate(d.getDate() + n);
     return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   }
+  /* ---------- Cloud sync & client share links ---------- */
+  Object.assign(I18N.en, {
+    'cloud.title': 'Team cloud', 'cloud.off': 'Not signed in — estimates stay in this browser',
+    'cloud.ok': 'Synced', 'cloud.syncing': 'Syncing…', 'cloud.error': 'Sync error — working locally', 'cloud.offline': 'Offline — working locally',
+    'cloud.noaccess': 'This email is not on the team', 'cloud.unavailable': 'Cloud unavailable — working locally', 'cloud.loading': 'Connecting…',
+    'cloud.intro': 'Sign in with the same email as in Chiefs Planner. Estimates and settings are then shared by the team and kept in sync across devices; you can also send clients a link to accept an estimate.',
+    'cloud.signedAs': 'Signed in as {email}.', 'cloud.okText': 'Estimates and calculator settings are shared with the team and synced automatically.',
+    'cloud.lastSync': 'Last sync: {t}', 'cloud.noaccessText': 'Signed in as {email}, but this email is not in the team list, so nothing is synced.',
+    'cloud.email': 'Email', 'cloud.sendCode': 'Send code', 'cloud.code': 'Code from the email sent to {email}', 'cloud.codeTitle': 'Enter the code',
+    'cloud.verify': 'Sign in', 'cloud.signIn': 'Sign in', 'cloud.signOut': 'Sign out', 'cloud.syncNow': 'Sync now', 'cloud.close': 'Close',
+    'cloud.signedIn': 'Signed in — syncing', 'cloud.signedOut': 'Signed out', 'cloud.failed': 'Failed: {e}',
+    'share.btn': '🔗 Client link', 'share.title': 'Link for the client', 'share.needSignIn': 'Sign in to the team cloud to create client links',
+    'share.none': 'The client gets a read-only page with this document (both languages), can pick a package and accept the estimate. On acceptance a project with tasks appears in the Planner and you both get a notification.',
+    'share.create': 'Create link', 'share.copy': 'Copy link', 'share.copied': 'Link copied', 'share.update': 'Update with current version',
+    'share.updated': 'The link now shows the current version', 'share.revoke': 'Revoke', 'share.revoked': 'Link revoked',
+    'share.newVersion': 'New version', 'share.version': 'Version {v}', 'share.notOpened': 'Not opened yet',
+    'share.views': function (v) { return 'Opened ' + v.n + ' time' + (v.n === 1 ? '' : 's') + ', last ' + v.d; },
+    'share.acceptedBy': 'Accepted by {name} on {date}', 'share.pkg': 'Package: {p}', 'share.lockedHint': 'An accepted version is locked. Changes to the estimate need a new version with a new link.',
+    'share.revokeConfirm': 'The client will no longer be able to open this link.',
+    'share.hint': 'Estimate for review', 'share.print': 'Print / Save PDF', 'share.loading': 'Loading…',
+    'share.gone': 'This link is no longer valid. Please ask the studio for a new one.', 'share.loadErr': 'Could not load the estimate. Check the connection and reload the page.',
+    'share.acceptTitle': 'Accept the estimate', 'share.choosePkg': 'Package', 'share.name': 'Your name', 'share.email': 'Email (optional)',
+    'share.agree': 'I have read the estimate and agree with its scope, price and terms.', 'share.accept': 'Accept estimate',
+    'share.acceptHint': 'The studio is notified immediately. This is a confirmation of the scope and price, not a payment.',
+    'share.errName': 'Please enter your name', 'share.errAgree': 'Please confirm that you agree', 'share.errPkg': 'Please choose a package',
+    'share.acceptErr': 'Could not accept the estimate. Please try again.', 'share.tagAccepted': '✓ Accepted', 'share.tagShared': '🔗 Sent · {n} views', 'share.thanks': 'Thank you! The studio has been notified.'
+  });
+  Object.assign(I18N.ru, {
+    'cloud.title': 'Облако команды', 'cloud.off': 'Вход не выполнен — сметы хранятся в этом браузере',
+    'cloud.ok': 'Синхронизировано', 'cloud.syncing': 'Синхронизация…', 'cloud.error': 'Ошибка синхронизации — работаем локально', 'cloud.offline': 'Нет сети — работаем локально',
+    'cloud.noaccess': 'Этого email нет в команде', 'cloud.unavailable': 'Облако недоступно — работаем локально', 'cloud.loading': 'Подключение…',
+    'cloud.intro': 'Войдите с тем же email, что и в Chiefs Planner. Сметы и настройки станут общими для команды и будут синхронизироваться между устройствами; ещё можно отправить клиенту ссылку для принятия сметы.',
+    'cloud.signedAs': 'Вы вошли как {email}.', 'cloud.okText': 'Сметы и настройки калькулятора общие для команды и синхронизируются автоматически.',
+    'cloud.lastSync': 'Последняя синхронизация: {t}', 'cloud.noaccessText': 'Вы вошли как {email}, но этого email нет в списке команды, поэтому ничего не синхронизируется.',
+    'cloud.email': 'Email', 'cloud.sendCode': 'Отправить код', 'cloud.code': 'Код из письма на {email}', 'cloud.codeTitle': 'Введите код',
+    'cloud.verify': 'Войти', 'cloud.signIn': 'Войти', 'cloud.signOut': 'Выйти', 'cloud.syncNow': 'Синхронизировать', 'cloud.close': 'Закрыть',
+    'cloud.signedIn': 'Вход выполнен — синхронизация', 'cloud.signedOut': 'Вы вышли', 'cloud.failed': 'Ошибка: {e}',
+    'share.btn': '🔗 Ссылка клиенту', 'share.title': 'Ссылка для клиента', 'share.needSignIn': 'Войдите в облако команды, чтобы создавать ссылки для клиентов',
+    'share.none': 'Клиент увидит страницу с этим документом (на двух языках) только для чтения, сможет выбрать пакет и принять смету. После принятия в Планере появится проект с задачами, а вам обоим придёт уведомление.',
+    'share.create': 'Создать ссылку', 'share.copy': 'Скопировать ссылку', 'share.copied': 'Ссылка скопирована', 'share.update': 'Обновить до текущей версии',
+    'share.updated': 'По ссылке теперь текущая версия', 'share.revoke': 'Отозвать', 'share.revoked': 'Ссылка отозвана',
+    'share.newVersion': 'Новая версия', 'share.version': 'Версия {v}', 'share.notOpened': 'Ещё не открывали',
+    'share.views': function (v) { return 'Открывали ' + v.n + ' ' + plural('ru', v.n, ['раз', 'раза', 'раз']) + ', последний — ' + v.d; },
+    'share.acceptedBy': 'Принято: {name}, {date}', 'share.pkg': 'Пакет: {p}', 'share.lockedHint': 'Принятая версия заблокирована. Для изменений сметы нужна новая версия с новой ссылкой.',
+    'share.revokeConfirm': 'Клиент больше не сможет открыть эту ссылку.',
+    'share.hint': 'Смета на согласование', 'share.print': 'Печать / PDF', 'share.loading': 'Загрузка…',
+    'share.gone': 'Ссылка больше не действует. Попросите у студии новую.', 'share.loadErr': 'Не удалось загрузить смету. Проверьте соединение и обновите страницу.',
+    'share.acceptTitle': 'Принять смету', 'share.choosePkg': 'Пакет', 'share.name': 'Ваше имя', 'share.email': 'Email (необязательно)',
+    'share.agree': 'Я ознакомился со сметой и согласен с объёмом работ, стоимостью и условиями.', 'share.accept': 'Принять смету',
+    'share.acceptHint': 'Студия получит уведомление сразу. Это подтверждение объёма и стоимости, а не оплата.',
+    'share.errName': 'Введите имя', 'share.errAgree': 'Подтвердите согласие', 'share.errPkg': 'Выберите пакет',
+    'share.acceptErr': 'Не удалось принять смету. Попробуйте ещё раз.', 'share.tagAccepted': '✓ Принята', 'share.tagShared': '🔗 Отправлена · {n} просм.', 'share.thanks': 'Спасибо! Студия получила уведомление.'
+  });
+
   /** Consecutive calendar-day ranges for the timeline stages. */
   function timelineRows(e) {
     var tl = e.timeline, cursor = tl.start || e.date || E.today(), total = 0;
@@ -1442,8 +1520,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
   if (['estimate', 'saved', 'settings', 'client'].indexOf(ui.view) < 0) ui.view = 'estimate';
   if (E.LANGS.indexOf(ui.lang) < 0) ui.lang = 'en';
 
-  function saveSettings() { store(KEYS.settings, settings); renderBrand(); }
-  function saveEstimates() { store(KEYS.estimates, estimates); }
+  function saveSettings() { store(KEYS.settings, settings); renderBrand(); settingsChanged(); }
+  function saveEstimates() { store(KEYS.estimates, estimates); schedulePush(); }
   function saveDraft() { store(KEYS.draft, { est: est, baseJson: baseJson }); }
   function saveUi() { store(KEYS.ui, { view: ui.view, showArchived: ui.showArchived, lang: ui.lang }); }
   function isSaved() { return estimates.some(function (x) { return x.id === est.id; }); }
@@ -1998,7 +2076,16 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     }
   }
   function renderClient() {
-    var c = E.calcEstimate(est), s = settings.studio, L = est.docLang === 'ru' ? 'ru' : 'en';
+    var L = est.docLang === 'ru' ? 'ru' : 'en';
+    var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">' + t('client.back') + '</button><span class="hint">' + t('client.hint') + '</span>' +
+      '<div class="seg" role="group" aria-label="' + esc(t('client.lang')) + '">' + ['en', 'ru'].map(function (lg) {
+        return '<button type="button" class="' + (L === lg ? 'on' : '') + '" data-action="set" data-path="docLang" data-value="' + lg + '">' + lg.toUpperCase() + '</button>';
+      }).join('') + '</div><button class="btn" data-action="share">' + t('share.btn') + '</button><button class="btn primary" data-action="print">' + t('client.print') + '</button></div>';
+    return h + clientDoc(L);
+  }
+  /** The client document (<article>) in one language — shown in the client view and frozen into share links. */
+  function clientDoc(lang) {
+    var c = E.calcEstimate(est), s = settings.studio, L = lang === 'ru' ? 'ru' : 'en';
     var T = function (k, v) { return tr(L, k, v); };
     var dm = function (x) { return money(x, L); };
     var usd = function (x) { return dm(E.num(x) * c.fx); };
@@ -2016,11 +2103,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     var rushName = est.rush.optionId === 'custom' && !c.rushName ? '' : dataName(L, est.rush.optionId, c.rushName);
     var lic = est.license;
 
-    var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">' + t('client.back') + '</button><span class="hint">' + t('client.hint') + '</span>' +
-      '<div class="seg" role="group" aria-label="' + esc(t('client.lang')) + '">' + ['en', 'ru'].map(function (lg) {
-        return '<button type="button" class="' + (L === lg ? 'on' : '') + '" data-action="set" data-path="docLang" data-value="' + lg + '">' + lg.toUpperCase() + '</button>';
-      }).join('') + '</div><button class="btn primary" data-action="print">' + t('client.print') + '</button></div>';
-    h += '<article class="doc" lang="' + L + '"><header class="doc-head"><div class="doc-brand">' + docLogo() + (tagline ? '<div class="doc-tagline">' + esc(tagline) + '</div>' : '') + '</div>' +
+    var h = '<article class="doc" lang="' + L + '"><header class="doc-head"><div class="doc-brand">' + docLogo() + (tagline ? '<div class="doc-tagline">' + esc(tagline) + '</div>' : '') + '</div>' +
       (contact ? '<div class="doc-contact">' + contact + '</div>' : '') + '</header>';
     h += '<div class="doc-title"><div><div class="k">' + T('doc.estimate') + '</div><h1>' + esc(est.name || T('doc.untitled')) + '</h1></div><dl class="doc-meta">' +
       meta.map(function (m) { return '<dt>' + esc(m[0]) + '</dt><dd>' + esc(m[1]) + '</dd>'; }).join('') + '</dl></div>';
@@ -2109,6 +2192,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
   }
 
   /* ================= SAVED VIEW ================= */
+  function shareTag(id) {
+    var x = cloud.member && cloud.shares[id];
+    if (!x) return '';
+    return x.accepted_at ? '<span class="tag tag-ok">' + esc(t('share.tagAccepted')) + '</span>' : '<span class="tag tag-muted">' + esc(t('share.tagShared', { n: x.views })) + '</span>';
+  }
   function renderSavedList() {
     var q = (ui.search || '').toLowerCase().trim();
     var list = estimates.slice().sort(function (a, b) { return String(b.updatedAt).localeCompare(String(a.updatedAt)); })
@@ -2117,7 +2205,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     if (!list.length) return '<div class="empty">' + esc(t('saved.noMatch', { q: ui.search })) + '</div>';
     return '<div class="cards">' + list.map(function (e) {
       var c = E.calcEstimate(e), cur = e.id === est.id;
-      return '<div class="est-card' + (cur ? ' current' : '') + '"><div><h3>' + esc(e.name || t('untitled')) + (cur ? '<span class="tag">' + t('saved.open') + '</span>' : '') + '</h3><div class="meta">' + esc(e.client || t('saved.noClient')) + ' · ' + esc(fmtDate(e.date)) + '</div></div>' +
+      return '<div class="est-card' + (cur ? ' current' : '') + '"><div><h3>' + esc(e.name || t('untitled')) + (cur ? '<span class="tag">' + t('saved.open') + '</span>' : '') + shareTag(e.id) + '</h3><div class="meta">' + esc(e.client || t('saved.noClient')) + ' · ' + esc(fmtDate(e.date)) + '</div></div>' +
         '<div class="amt">' + E.fmtMoney(c.total, e.currency, ui.lang) + '</div><div class="meta">' + esc(t('saved.meta', { m: E.fmtMoney(c.margin, e.currency, ui.lang), p: pct(c.marginPct), d: fmtDate(e.updatedAt) })) + '</div>' +
         '<div class="acts"><button class="btn sm primary" data-action="open" data-id="' + esc(e.id) + '">' + t('btn.open') + '</button><button class="btn sm" data-action="dup-saved" data-id="' + esc(e.id) + '">' + t('btn.duplicate') + '</button><button class="btn sm danger" data-action="del-saved" data-id="' + esc(e.id) + '">' + t('btn.delete') + '</button></div></div>';
     }).join('') + '</div>';
@@ -2232,10 +2320,12 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
 
   /* ================= Render & navigation ================= */
   function render() {
+    if (share.token) { renderShare(); return; }
     document.documentElement.lang = ui.lang;
     $$('#nav button').forEach(function (b) { b.classList.toggle('active', b.dataset.nav === (ui.view === 'client' ? 'estimate' : ui.view)); b.textContent = t('nav.' + b.dataset.nav); });
     $$('#lang-switch button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === ui.lang); });
     renderBrand();
+    renderCloud();
     var y = window.scrollY;
     if (ui.view === 'saved') app.innerHTML = renderSaved();
     else if (ui.view === 'settings') app.innerHTML = renderSettings();
@@ -2391,6 +2481,341 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
     reader.readAsDataURL(file);
   }
 
+  /* ================= Cloud: team sync & client share links (Supabase) ================= */
+  // The publishable key is public by design; Row Level Security on the server protects the data.
+  var SB_URL = 'https://wvyvyodquijdxqdidcft.supabase.co';
+  var SB_KEY = 'sb_publishable_IWfmRIz4DrgZrMJPzuQ3uQ_-ol9Ee2x';
+  var SB_LIB = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js';
+  var SYNC_KEY = 'aiest.sync.v1';
+  /** Built-in services → planner work types (by key) for tasks created on acceptance. */
+  var WORK_TYPE_OF = { preprod: 'previz', references: 'photo', previz: 'previz', prompting: 'video', editing: 'video_editing', grading: 'video_editing', sound_design: 'sound', music: 'sound', voiceover: 'sound', delivery: 'video' };
+  // sync: { email, est: {id: updatedAt last seen in the cloud}, settingsAt, settingsDirty }
+  var cloud = { sb: null, email: null, state: 'loading', member: false, sync: load(SYNC_KEY, null) || {}, timer: null, busy: false, last: null, err: '', shares: {} };
+
+  function saveSync() { try { localStorage.setItem(SYNC_KEY, JSON.stringify(cloud.sync)); } catch (e) { /* ignore */ } }
+  function loadLib() {
+    if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
+    return new Promise(function (resolve, reject) {
+      var sc = document.createElement('script');
+      sc.src = SB_LIB; sc.async = true; sc.crossOrigin = 'anonymous';
+      sc.onload = function () { if (window.supabase && window.supabase.createClient) resolve(window.supabase); else reject(new Error('library missing')); };
+      sc.onerror = function () { reject(new Error('library failed to load')); };
+      document.head.appendChild(sc);
+    });
+  }
+  function cloudInit() {
+    loadLib().then(function (lib) {
+      // Same project and default storage key as Chiefs Planner → one sign-in covers both apps on this site.
+      cloud.sb = lib.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: false } });
+      cloud.sb.auth.onAuthStateChange(function (ev, session) {
+        var em = session && session.user && session.user.email ? session.user.email.toLowerCase() : null;
+        if (em === cloud.email && cloud.state !== 'loading') return;
+        cloud.email = em;
+        setTimeout(cloudStart, 0); // never call the client from inside its own auth callback
+      });
+    }).catch(function () { cloud.state = 'unavailable'; renderCloud(); });
+  }
+  async function cloudStart() {
+    cloud.member = false;
+    if (!cloud.email) { cloud.state = 'off'; renderCloud(); if (ui.view === 'saved') render(); return; }
+    if (cloud.sync.email !== cloud.email) { cloud.sync = { email: cloud.email, est: {} }; saveSync(); }
+    cloud.state = 'syncing'; renderCloud();
+    var r = await cloud.sb.from('members').select('id').limit(1);
+    if (r.error) { cloudFail(r.error); return; }
+    cloud.member = r.data.length > 0;
+    if (!cloud.member) { cloud.state = 'noaccess'; renderCloud(); return; }
+    await cloudPull();
+  }
+  function cloudFail(e) {
+    cloud.state = navigator.onLine === false ? 'offline' : 'error';
+    cloud.err = String((e && e.message) || e);
+    renderCloud();
+  }
+  function estRow(e) { return { id: e.id, data: e, name: String(e.name || '').slice(0, 300), client: String(e.client || '').slice(0, 300), deleted: false }; }
+  async function upsertEstimates(list) {
+    if (!list.length) return;
+    var r = await cloud.sb.from('estimates').upsert(list.map(estRow));
+    if (r.error) throw r.error;
+    list.forEach(function (e) { cloud.sync.est[e.id] = String(e.updatedAt); });
+    saveSync();
+  }
+  /** Merge cloud ↔ local (newest updatedAt wins per estimate; deletions are tombstones), then settings. */
+  async function cloudPull() {
+    if (!cloud.member) return;
+    if (cloud.busy) return;
+    cloud.busy = true; cloud.state = 'syncing'; renderCloud();
+    var changed = false;
+    try {
+      var r = await cloud.sb.from('estimates').select('id, data, deleted');
+      if (r.error) throw r.error;
+      var known = cloud.sync.est || (cloud.sync.est = {}), remote = {}, byId = {}, push = [];
+      estimates.forEach(function (e) { byId[e.id] = e; });
+      r.data.forEach(function (row) {
+        remote[row.id] = row;
+        var at = String((row.data && row.data.updatedAt) || ''), local = byId[row.id];
+        if (row.deleted) {
+          if (local && String(local.updatedAt) <= at) { delete byId[row.id]; changed = true; }
+          else if (local) push.push(local);
+          delete known[row.id];
+        } else if (!local || at > String(local.updatedAt)) { byId[row.id] = E.normalizeEstimate(row.data); known[row.id] = at; changed = true; }
+        else if (at < String(local.updatedAt)) push.push(local);
+        else known[row.id] = at;
+      });
+      // Local estimates the cloud has never seen: the one-time import (and anything saved while offline).
+      estimates.forEach(function (e) { if (!remote[e.id]) push.push(e); });
+      if (changed) {
+        estimates = Object.keys(byId).map(function (id) { return byId[id]; });
+        store(KEYS.estimates, estimates);
+        var fresh = byId[est.id];
+        if (fresh && !isDirty() && JSON.stringify(fresh) !== baseJson) loadEstimate(fresh);
+      }
+      saveSync();
+      await upsertEstimates(push);
+      changed = (await pullSettings()) || changed;
+      await loadShares();
+      cloud.state = 'ok'; cloud.last = new Date();
+    } catch (e) { cloudFail(e); }
+    cloud.busy = false;
+    renderCloud();
+    if (changed && ui.view !== 'estimate') render();
+  }
+  async function pullSettings() {
+    var r = await cloud.sb.from('calc_settings').select('data, updated_at').eq('id', 'team').maybeSingle();
+    if (r.error) throw r.error;
+    if (!r.data || (cloud.sync.settingsDirty && cloud.sync.settingsAt)) { await pushSettings(); return false; }
+    if (r.data.updated_at === cloud.sync.settingsAt) return false;
+    settings = E.normalizeSettings(r.data.data);
+    store(KEYS.settings, settings);
+    cloud.sync.settingsAt = r.data.updated_at; cloud.sync.settingsDirty = false; saveSync();
+    renderBrand();
+    return true;
+  }
+  async function pushSettings() {
+    var r = await cloud.sb.from('calc_settings').upsert({ id: 'team', data: settings }).select('updated_at').single();
+    if (r.error) throw r.error;
+    cloud.sync.settingsAt = r.data.updated_at; cloud.sync.settingsDirty = false; saveSync();
+  }
+  function settingsChanged() {
+    if (!cloud || !cloud.member) return;
+    cloud.sync.settingsDirty = true; saveSync(); schedulePush();
+  }
+  function schedulePush() {
+    if (!cloud || !cloud.member) return;
+    clearTimeout(cloud.timer); cloud.timer = setTimeout(cloudPush, 1200);
+  }
+  /** Upload what changed locally since the last sync. */
+  async function cloudPush() {
+    if (!cloud.member) return;
+    if (cloud.busy) { schedulePush(); return; }
+    var known = cloud.sync.est || (cloud.sync.est = {}), ids = {}, up = [];
+    estimates.forEach(function (e) { ids[e.id] = true; if (known[e.id] !== String(e.updatedAt)) up.push(e); });
+    var gone = Object.keys(known).filter(function (id) { return !ids[id]; });
+    if (!up.length && !gone.length && !cloud.sync.settingsDirty) return;
+    cloud.busy = true; cloud.state = 'syncing'; renderCloud();
+    try {
+      await upsertEstimates(up);
+      if (gone.length) {
+        var now = new Date().toISOString();
+        var r = await cloud.sb.from('estimates').upsert(gone.map(function (id) { return { id: id, data: { updatedAt: now }, name: '', client: '', deleted: true }; }));
+        if (r.error) throw r.error;
+        gone.forEach(function (id) { delete known[id]; }); saveSync();
+      }
+      if (cloud.sync.settingsDirty) await pushSettings();
+      cloud.state = 'ok'; cloud.last = new Date();
+    } catch (e) { cloudFail(e); }
+    cloud.busy = false; renderCloud();
+  }
+  async function loadShares() {
+    var r = await cloud.sb.from('estimate_shares').select('estimate_id, version, revoked, views, accepted_at').order('version', { ascending: true });
+    if (r.error) return;
+    var m = {};
+    r.data.forEach(function (x) { if (!x.revoked) m[x.estimate_id] = x; });
+    cloud.shares = m;
+  }
+  var lastPull = 0;
+  function pullSoon() { if (cloud.member && Date.now() - lastPull > 20000) { lastPull = Date.now(); cloudPull(); } }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') pullSoon(); });
+  window.addEventListener('online', pullSoon);
+
+  var CLOUD_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 1 0-1.4-8.8A6 6 0 0 0 4.2 12.5 3.5 3.5 0 0 0 6.5 19z"/></svg>';
+  function renderCloud() {
+    var b = $('#cloud-btn');
+    if (!b) return;
+    var st = cloud.state, label = t('cloud.' + st) + (cloud.email && st !== 'off' ? ' · ' + cloud.email : '');
+    b.innerHTML = CLOUD_ICON + '<span class="cloud-dot ' + st + '"></span>';
+    b.title = label; b.setAttribute('aria-label', t('cloud.title') + ': ' + label);
+    b.dataset.state = st;
+  }
+  function timeText(d) { return d ? d.toLocaleTimeString(ui.lang === 'ru' ? 'ru-RU' : 'en-GB', { hour: '2-digit', minute: '2-digit' }) : '—'; }
+  async function signInFlow() {
+    var email = await promptDialog(t('cloud.signIn'), t('cloud.email'), cloud.sync.email || '', t('cloud.sendCode'));
+    if (!email) return;
+    email = email.trim().toLowerCase();
+    var r = await cloud.sb.auth.signInWithOtp({ email: email, options: { shouldCreateUser: true } });
+    if (r.error) { toast(t('cloud.failed', { e: r.error.message }), 'error'); return; }
+    var code = await promptDialog(t('cloud.codeTitle'), t('cloud.code', { email: email }), '', t('cloud.verify'));
+    if (!code) return;
+    var v = await cloud.sb.auth.verifyOtp({ email: email, token: code.replace(/\D/g, ''), type: 'email' });
+    if (v.error) { toast(t('cloud.failed', { e: v.error.message }), 'error'); return; }
+    toast(t('cloud.signedIn'));
+  }
+  function openCloud() {
+    var st = cloud.state, body, actions = [{ label: t('cloud.close'), kind: 'ghost' }];
+    if (st === 'loading' || st === 'unavailable' || !cloud.sb) { body = '<div>' + esc(t('cloud.' + st)) + '</div>'; }
+    else if (st === 'off') {
+      body = '<div>' + esc(t('cloud.intro')) + '</div>';
+      actions.push({ label: t('cloud.signIn'), kind: 'primary', onClick: function () { setTimeout(signInFlow, 0); } });
+    } else if (st === 'noaccess') {
+      body = '<div>' + esc(t('cloud.noaccessText', { email: cloud.email })) + '</div>';
+      actions.push({ label: t('cloud.signOut'), onClick: function () { cloud.sb.auth.signOut(); toast(t('cloud.signedOut')); } });
+    } else {
+      body = '<div>' + esc(t('cloud.signedAs', { email: cloud.email })) + ' ' + esc(t('cloud.okText')) + '</div><div class="hint" style="margin-top:8px">' +
+        esc(t('cloud.' + st)) + ' · ' + esc(t('cloud.lastSync', { t: timeText(cloud.last) })) + (cloud.err && st !== 'ok' ? '<br>' + esc(cloud.err) : '') + '</div>';
+      actions.push({ label: t('cloud.signOut'), onClick: function () { cloud.sb.auth.signOut(); toast(t('cloud.signedOut')); } });
+      actions.push({ label: t('cloud.syncNow'), kind: 'primary', onClick: function () { cloudPull(); } });
+    }
+    openModal({ title: t('cloud.title'), body: body, actions: actions });
+  }
+
+  /** Frozen copy of the client document for a share link. `plan` is private (used to create planner tasks). */
+  function shareDoc() {
+    var c = E.calcEstimate(est), L = est.docLang === 'ru' ? 'ru' : 'en';
+    var pk = est.packages.enabled ? est.packages.items.map(function (p, i) {
+      return { name_en: pkgName('en', p), name_ru: pkgName('ru', p), price: money((c.packages[i] || {}).price || 0, L) };
+    }) : [];
+    var stages = est.timeline.enabled ? timelineRows(est).rows.map(function (r) {
+      return { name_en: stageName('en', r.stage), name_ru: stageName('ru', r.stage), from: r.from, to: r.to };
+    }) : [];
+    var services = est.services.filter(function (s) { return s.enabled; }).map(function (s) {
+      return { name_en: svcName('en', s), name_ru: svcName('ru', s), hours: s.mode === 'hours' ? E.num(s.hours) : 0, work_type: (!s.custom && WORK_TYPE_OF[s.key]) || null };
+    });
+    return {
+      name: est.name, client: est.client, lang: L, currency: est.currency, total: money(c.total, L),
+      html: { en: clientDoc('en'), ru: clientDoc('ru') },
+      packages: pk, recommended: est.packages.enabled ? E.num(est.packages.recommended) : null,
+      plan: { stages: stages, services: services, deadline: est.deadline || null }
+    };
+  }
+  function shareUrl(token) { return location.origin + location.pathname + '#share=' + token; }
+  async function shareFlow() {
+    if (!cloud.member) { toast(t('share.needSignIn'), 'error'); openCloud(); return; }
+    if (!isSaved() || isDirty()) { await saveCurrent(); if (!isSaved() || isDirty()) return; }
+    var r = await cloud.sb.from('estimate_shares').select('token, version, revoked, views, last_viewed_at, accepted_at, accepted_name, accepted_package, packages:doc->packages')
+      .eq('estimate_id', est.id).order('version', { ascending: false });
+    if (r.error) { toast(t('cloud.failed', { e: r.error.message }), 'error'); return; }
+    var all = r.data, cur = all.find(function (x) { return !x.revoked; }) || null, next = (all[0] ? all[0].version : 0) + 1;
+    var actions = [{ label: t('cloud.close'), kind: 'ghost' }], body;
+    var create = async function () {
+      var doc = shareDoc();
+      var ins = await cloud.sb.from('estimate_shares').insert({ estimate_id: est.id, version: next, doc: doc }).select('token').single();
+      if (ins.error) { toast(t('cloud.failed', { e: ins.error.message }), 'error'); return; }
+      doc.url = shareUrl(ins.data.token);
+      await cloud.sb.from('estimate_shares').update({ doc: doc }).eq('token', ins.data.token);
+      await copyText(doc.url);
+      await loadShares(); if (ui.view === 'saved') render();
+      shareFlow();
+    };
+    if (!cur) {
+      body = '<div>' + esc(t('share.none')) + '</div>';
+      actions.push({ label: t('share.create'), kind: 'primary', onClick: function () { create(); } });
+    } else {
+      var url = shareUrl(cur.token), dl = function (iso) { return new Date(iso).toLocaleString(ui.lang === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
+      var status = cur.accepted_at
+        ? '<div class="share-accepted">✓ ' + esc(t('share.acceptedBy', { name: cur.accepted_name, date: dl(cur.accepted_at) })) +
+          (cur.accepted_package != null && cur.packages && cur.packages[cur.accepted_package] ? ' · ' + esc(t('share.pkg', { p: cur.packages[cur.accepted_package][ui.lang === 'ru' ? 'name_ru' : 'name_en'] })) : '') + '</div>'
+        : '<div class="hint">' + esc(cur.views ? t('share.views', { n: cur.views, d: dl(cur.last_viewed_at) }) : t('share.notOpened')) + '</div>';
+      body = '<div class="hint" style="margin-bottom:6px">' + esc(t('share.version', { v: cur.version })) + '</div><input type="text" readonly id="share-url" value="' + esc(url) + '" data-share-url>' +
+        '<div style="margin-top:10px">' + status + '</div>' + (cur.accepted_at ? '<div class="hint" style="margin-top:8px">' + esc(t('share.lockedHint')) + '</div>' : '');
+      actions.push({ label: t('share.revoke'), kind: 'danger', onClick: function () {
+        setTimeout(async function () {
+          if (!(await confirmDialog(t('share.revoke'), esc(t('share.revokeConfirm')), t('share.revoke'), true))) return;
+          var u = await cloud.sb.from('estimate_shares').update({ revoked: true }).eq('token', cur.token);
+          if (u.error) toast(t('cloud.failed', { e: u.error.message }), 'error'); else { toast(t('share.revoked')); await loadShares(); if (ui.view === 'saved') render(); }
+        }, 0);
+      } });
+      if (cur.accepted_at) actions.push({ label: t('share.newVersion'), onClick: function () { create(); } });
+      else actions.push({ label: t('share.update'), onClick: function () {
+        var doc = shareDoc(); doc.url = url;
+        cloud.sb.from('estimate_shares').update({ doc: doc }).eq('token', cur.token).then(function (u) { toast(u.error ? t('cloud.failed', { e: u.error.message }) : t('share.updated'), u.error ? 'error' : ''); });
+      } });
+      actions.push({ label: t('share.copy'), kind: 'primary', onClick: function () { copyText(url); } });
+    }
+    openModal({ title: t('share.title') + ' — ' + (est.name || t('untitled')), body: body, actions: actions });
+  }
+  async function copyText(text) {
+    try { await navigator.clipboard.writeText(text); toast(t('share.copied')); }
+    catch (e) { var i = $('#share-url'); if (i) { i.select(); document.execCommand('copy'); toast(t('share.copied')); } }
+  }
+
+  /* ---------- Public share page (#share=<token>): what the client sees ---------- */
+  var share = { token: null, data: null, lang: browserLang, err: false };
+  async function rpc(name, args) {
+    var res = await fetch(SB_URL + '/rest/v1/rpc/' + name, { method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(args) });
+    var body = await res.json().catch(function () { return null; });
+    if (!res.ok) throw new Error((body && body.message) || ('HTTP ' + res.status));
+    return body;
+  }
+  async function startShare(token) {
+    share.token = token;
+    document.body.classList.add('share-mode');
+    app.innerHTML = '<div class="share-wrap"><div class="empty">' + esc(tr(share.lang, 'share.loading')) + '</div></div>';
+    try { share.data = await rpc('get_shared_estimate', { p_token: token }); } catch (e) { share.err = true; }
+    if (share.data && share.data.doc) share.lang = share.data.doc.lang === 'ru' ? 'ru' : 'en';
+    renderShare();
+  }
+  function renderShare() {
+    var d = share.data, L = share.lang, T = function (k, v) { return tr(L, k, v); };
+    document.documentElement.lang = L;
+    if (!d || !d.doc) { app.innerHTML = '<div class="share-wrap"><div class="empty" data-share-state="gone">' + esc(T(share.err ? 'share.loadErr' : 'share.gone')) + '</div></div>'; return; }
+    var doc = d.doc, pk = doc.packages || [], acc = d.accepted;
+    var pkName = function (i) { return pk[i] ? pk[i][L === 'ru' ? 'name_ru' : 'name_en'] : ''; };
+    var h = '<div class="client-toolbar no-print"><span class="hint">' + esc(T('share.hint')) + '</span>' +
+      '<div class="seg" role="group" aria-label="Language">' + ['en', 'ru'].map(function (lg) {
+        return '<button type="button" class="' + (L === lg ? 'on' : '') + '" data-share-lang="' + lg + '">' + lg.toUpperCase() + '</button>';
+      }).join('') + '</div><button class="btn" data-share-act="print">' + esc(T('share.print')) + '</button></div>';
+    h += (doc.html && (doc.html[L] || doc.html.en)) || '';
+    if (acc) {
+      var when = new Date(acc.at).toLocaleDateString(L === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      h += '<section class="accept-box done" data-share-state="accepted"><b>✓ ' + esc(T('share.acceptedBy', { name: acc.name, date: when })) + '</b>' +
+        (acc.package != null && pkName(acc.package) ? '<div>' + esc(T('share.pkg', { p: pkName(acc.package) })) + '</div>' : '') + '</section>';
+    } else {
+      h += '<section class="accept-box no-print" data-share-state="open"><h3>' + esc(T('share.acceptTitle')) + '</h3>';
+      if (pk.length) {
+        h += '<div class="lbl">' + esc(T('share.choosePkg')) + '</div><div class="pkg-pick">' + pk.map(function (p, i) {
+          return '<label class="pkg-opt"><input type="radio" name="acc-pkg" value="' + i + '"' + (doc.recommended === i ? ' checked' : '') + '><span><b>' + esc(pkName(i)) + '</b> · ' + esc(p.price) + '</span></label>';
+        }).join('') + '</div>';
+      }
+      h += '<div class="grid">' + field(T('share.name'), '<input type="text" id="acc-name" autocomplete="name" maxlength="200">') +
+        field(T('share.email'), '<input type="email" id="acc-email" autocomplete="email" maxlength="200">') + '</div>' +
+        '<label class="check" style="margin:10px 0 14px"><input type="checkbox" id="acc-agree"> ' + esc(T('share.agree')) + '</label>' +
+        '<div class="acc-row"><button class="btn primary" data-share-act="accept">' + esc(T('share.accept')) + '</button><span class="hint">' + esc(T('share.acceptHint')) + '</span></div>' +
+        '<div class="acc-err" id="acc-err" role="alert"></div></section>';
+    }
+    app.innerHTML = h;
+  }
+  async function acceptShare() {
+    var L = share.lang, T = function (k) { return tr(L, k); }, err = $('#acc-err'), btn = $('[data-share-act="accept"]');
+    var name = $('#acc-name').value.trim(), email = $('#acc-email').value.trim(), pick = $('input[name="acc-pkg"]:checked');
+    var pk = (share.data.doc.packages || []).length;
+    if (pk && !pick) { err.textContent = T('share.errPkg'); return; }
+    if (name.length < 2) { err.textContent = T('share.errName'); $('#acc-name').focus(); return; }
+    if (!$('#acc-agree').checked) { err.textContent = T('share.errAgree'); return; }
+    err.textContent = ''; btn.disabled = true;
+    try {
+      share.data.accepted = await rpc('accept_shared_estimate', { p_token: share.token, p_name: name, p_email: email || null, p_package: pick ? +pick.value : null });
+      renderShare(); toast(T('share.thanks'));
+    } catch (e) { err.textContent = T('share.acceptErr'); btn.disabled = false; }
+  }
+  app.addEventListener('click', function (e) {
+    if (!share.token) return;
+    var lb = e.target.closest('[data-share-lang]');
+    if (lb) { share.lang = lb.dataset.shareLang; renderShare(); return; }
+    var b = e.target.closest('[data-share-act]');
+    if (!b) return;
+    if (b.dataset.shareAct === 'print') window.print();
+    if (b.dataset.shareAct === 'accept') acceptShare();
+  });
+
   /* ================= Events ================= */
   document.getElementById('nav').addEventListener('click', function (e) {
     var b = e.target.closest('[data-nav]'); if (b) go(b.dataset.nav);
@@ -2487,6 +2912,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
       case 'client': go('client'); window.scrollTo(0, 0); break;
       case 'back': go('estimate'); break;
       case 'print': window.print(); break;
+      case 'share': shareFlow(); break;
       case 'scroll-summary': var s = $('#summary'); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' }); break;
       case 'add-line': {
         var last = est.lines[est.lines.length - 1];
@@ -2570,8 +2996,15 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: var(--picker-filte
 
   var icon = document.querySelector('link[rel="icon"]');
   if (icon) { icon.type = 'image/jpeg'; icon.href = CHIEFS_LOGO; }
-  if (ui.view === 'estimate') freshenPristine();
-  render();
+  var shareToken = (/^#share=([0-9a-f]{32})$/.exec(location.hash) || [])[1];
+  if (shareToken) startShare(shareToken);
+  else {
+    document.getElementById('cloud-btn').addEventListener('click', openCloud);
+    if (ui.view === 'estimate') freshenPristine();
+    render();
+    renderCloud();
+    cloudInit();
+  }
 })();
 </script>
 </body>

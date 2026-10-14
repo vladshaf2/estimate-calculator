@@ -104,7 +104,9 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
 .pop label:hover { background: var(--surface-2); }
 
 /* List */
-.quick { display: flex; gap: 8px; margin-bottom: 10px; }
+.quick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.quick-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; width: 100%; font-size: 12.5px; }
+.quick-preview > .muted { margin-right: 2px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .quick input { height: 40px; background: var(--surface); }
 .tasks { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
 .task-row { display: flex; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--border); align-items: flex-start; cursor: pointer; }
@@ -211,3 +213,9 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
   .two { grid-template-columns: 1fr; }
   .drawer { width: 100%; border-left: 0; }
 }
+
+/* Notifications card */
+.notify-kinds { display: grid; gap: 6px; }
+.check-line { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; cursor: pointer; }
+.check-line input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex: none; }
+.chip.on { color: var(--ok, #58c493); border-color: currentColor; }

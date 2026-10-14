@@ -154,6 +154,30 @@ The **client version** hides credits, model names, markup and margin:
 - The usage license, rush fee and discount are shown as separate lines when they apply.
 - The document also shows the number of included revision rounds, the prepayment amount and any client notes.
 
+## Team cloud and client links
+
+The cloud button in the top bar (next to the theme button) connects the calculator to the team's Supabase project, the same one the planner uses.
+
+**Sign in.** Use the same email as in the planner. If you are already signed in to the planner on this site, the calculator picks up that session automatically. The dot on the button shows the state: green = synced, yellow = syncing, red = error or not on the team, grey = signed out or offline.
+
+**Sync.**
+- Saved estimates and calculator settings become shared by the team and sync across devices.
+- The newest version of each estimate wins. Deletions sync too.
+- On the first sign-in, estimates already saved in this browser are uploaded.
+- The browser keeps a copy, so the calculator still works offline or signed out.
+
+**Client link.** In the client view, **🔗 Client link** creates a link to a read-only page with the client document, in English and Russian. The estimate is saved first if needed.
+- The client can pick a package and accept with their name. Email is optional.
+- On acceptance:
+  - the planner gets a project in "Clients" with a kick-off task and one task per timeline stage and per enabled service;
+  - stage tasks get the stage end date; service tasks get the deadline and a matching work type;
+  - both team members get a notification.
+- The link dialog shows how many times the client opened the page and who accepted it. **Update** pushes the current version to the same link. **Revoke** turns the link off.
+- An accepted version is locked. **New version** makes a new link.
+- The **Saved** tab marks estimates as *Sent* or *Accepted*.
+
+Under the hood: tables `estimates`, `calc_settings` and `estimate_shares`, and the functions `get_shared_estimate` and `accept_shared_estimate` (see `planner/supabase/migrations/`). The client page uses only these two functions. Internal costs never leave the team: the link stores the rendered client document and the plan, not the estimate.
+
 ## Backup and moving between devices
 
 **Settings → Data** (or the **Saved** tab):

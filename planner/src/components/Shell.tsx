@@ -3,6 +3,7 @@ import { useStore } from '../data/store';
 import type { Task } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
 import { NO_FILTERS, SMART_LISTS, countList, type Filters, type ListRef } from '../lib/smart';
+import { refreshPush } from '../lib/push';
 import { PRAGUE, dayKey, zonedToUtc } from '../lib/time';
 import { BoardView } from './BoardView';
 import { CalendarView } from './CalendarView';
@@ -47,7 +48,7 @@ function parseHash(): { view: View; list: ListRef; task: string | null } {
 export function Shell() {
   const store = useStore();
   const { db, me, backend, online, toasts } = store;
-  const { t, nm } = useI18n();
+  const { t, nm, lang } = useI18n();
   const init = useMemo(parseHash, []);
   const [view, setView] = useState<View>(init.view);
   const [list, setListState] = useState<ListRef>(init.list);
@@ -97,10 +98,17 @@ export function Shell() {
       remind_at: null, platform: null, publish_at: null, hook: '', caption: '', links: [], checklist: [], sort_order: Date.now(),
       created_by: null, created_at: now, updated_at: now, completed_at: null, ...extra,
     };
+    if (extra.work_type_ids) task.work_type_ids = [...new Set([...filters.types, ...extra.work_type_ids])];
+    // A parsed workspace without a project drops the project inherited from the current list.
+    if (extra.workspace_id && !extra.project_id && task.project_id && db.projects[task.project_id]?.workspace_id !== extra.workspace_id) task.project_id = null;
     if (!task.workspace_id) return null;
     store.create('tasks', task);
     return task;
   }, [db, list, filters, me, store]);
+
+  // Notifications are written in the member's language: keep it in step with the UI.
+  useEffect(() => { if (me && me.lang !== lang && backend.kind === 'supabase') store.update('members', me.id, { lang }); }, [me?.id, me?.lang, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (backend.push) refreshPush(backend.push).catch(() => {}); }, [backend]);
 
   // Keyboard shortcuts.
   useEffect(() => {

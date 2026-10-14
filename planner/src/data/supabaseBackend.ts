@@ -97,5 +97,21 @@ export function createSupabaseBackend(url: string, key: string): Backend {
       const { error } = await sb.from(table).delete().eq('id', id);
       if (error) throw error;
     },
+
+    push: {
+      async publicKey() {
+        const { data, error } = await sb.rpc('push_public_key');
+        if (error) throw error;
+        return (data as string | null) || null;
+      },
+      async save(sub) {
+        const { error } = await sb.rpc('push_subscribe', { p_endpoint: sub.endpoint, p_p256dh: sub.keys?.p256dh, p_auth: sub.keys?.auth, p_ua: navigator.userAgent });
+        if (error) throw error;
+      },
+      async test() {
+        const { error } = await sb.rpc('push_test');
+        if (error) throw error;
+      },
+    },
   };
 }

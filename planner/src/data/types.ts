@@ -7,8 +7,16 @@ export interface Member {
   name_ru: string;
   color: string;
   lang: Lang;
+  /** Push notification switches per kind; missing = on. */
+  notify?: Partial<Record<NotifyKind, boolean>>;
+  /** Quiet hours in Prague time (hour 0–23); messages wait until `quiet_to`. */
+  quiet_from?: number | null;
+  quiet_to?: number | null;
   created_at?: string;
 }
+
+export type NotifyKind = 'remind' | 'due' | 'post' | 'assigned' | 'accepted';
+export const NOTIFY_KINDS: NotifyKind[] = ['remind', 'due', 'post', 'assigned', 'accepted'];
 
 export interface Workspace {
   id: string;
