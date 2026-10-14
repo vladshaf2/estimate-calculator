@@ -9,6 +9,7 @@
   --radius: 12px; --sidebar: 248px;
   --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
   color-scheme: dark;
 }
 /* Light theme: explicit choice, or "Auto" on a light device (theme.ts sets data-theme). */
@@ -201,7 +202,7 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
   .sidebar.open { transform: none; box-shadow: 30px 0 80px var(--shadow); }
   .scrim.open { display: block; position: fixed; inset: 0; z-index: 49; background: var(--scrim); }
   .menu-btn { display: inline-flex; }
-  .topbar { padding: 8px 10px; padding-top: max(8px, env(safe-area-inset-top)); }
+  .topbar { padding: 8px 10px; }
   .topbar .search { order: 10; flex-basis: 100%; max-width: none; }
   .content { padding: 14px 12px 120px; }
   .fab { display: flex; position: fixed; right: 18px; bottom: calc(22px + var(--safe-b)); width: 54px; height: 54px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); border: 0; font-size: 28px; align-items: center; justify-content: center; z-index: 35; box-shadow: 0 10px 30px var(--shadow); }
@@ -233,3 +234,10 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
 .add-h { font-size: 13px; color: var(--muted); font-weight: 600; margin: 22px 2px 8px; text-transform: uppercase; letter-spacing: .06em; }
 @media (max-width: 640px) { .add-submit { justify-self: stretch; } }
 .side-item.add-item { color: var(--accent-text, var(--accent)); font-weight: 600; margin-bottom: 4px; }
+
+/* Installed app on iPhone: keep everything clear of the status bar / Dynamic Island and the home indicator. */
+.main { padding-top: var(--safe-t); }
+.sidebar { padding-top: var(--safe-t); }
+.side-foot { padding-bottom: calc(10px + var(--safe-b)); }
+.drawer { padding-top: var(--safe-t); }
+.center { padding-top: max(24px, var(--safe-t)); padding-bottom: max(24px, var(--safe-b)); }
