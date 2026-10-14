@@ -41,6 +41,10 @@ On the client document, built-in texts are translated. This covers:
 
 The tagline and footer note have separate EN and RU fields in Settings. Text you type yourself (project name, custom services, fixed-cost names, client notes, renamed options) is shown exactly as typed, so write it in the language of the document.
 
+## Theme
+
+The button next to EN/RU in the top bar switches the theme: **Auto** (follows the device setting), **Light** or **Dark**. The choice is saved per device and shared with the planner. The client document is always printed in light colors.
+
 ## Logo
 
 **Settings → Studio & client version → Logo** offers three options:
