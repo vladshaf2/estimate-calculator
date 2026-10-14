@@ -25,12 +25,13 @@ const roundtrip = (x) => JSON.parse(JSON.stringify(x)); // what localStorage doe
  *   Fixed: music license 200
  *   Markup 20% on credits + fixed: (15 + 200) × 0.2               = 43
  *   Subtotal 15 + 1030 + 200 + 43                                   = 1,288
+ *   License "Digital Ads" +40% of the creative fee (1030 + 43)     = 429.20
+ *   Subtotal 1288 + 429.20                                          = 1,717.20
  *   Rush Fast 25% on labor + markup: (1030 + 43) × 0.25            = 268.25
- *   Usage Commercial ×1.25: 1288 × 0.25                            = 322
- *   Before discount                                                 = 1,878.25
- *   Discount 10%: 187.825 → 187.83
- *   Total 1,690.42 · prepayment 50% = 845.21
- *   Real cost 15 + 200 = 215 · margin 1,475.42
+ *   Before discount                                                 = 1,985.45
+ *   Discount 10%: 198.545 → 198.55
+ *   Total 1,786.90 · prepayment 50% = 893.45
+ *   Real cost 15 + 200 = 215 · margin 1,571.90
  */
 function example1() {
   const s = E.defaultSettings();
@@ -53,13 +54,12 @@ function example1() {
   e.fixedCosts.push({ id: 'f1', name: 'Music license', amount: 200 });
   const fast = s.rushOptions.find((r) => r.name === 'Fast');
   e.rush = { optionId: fast.id, name: fast.name, pct: fast.pct };
-  const commercial = s.usageOptions.find((u) => u.name === 'Commercial');
-  e.usage = { optionId: commercial.id, name: commercial.name, type: commercial.type, value: commercial.value };
+  e.license = E.newLicense(s, 'digital');
   e.discount = { type: 'pct', value: 10 };
   return { s, e };
 }
 
-test('example 1: credits, waste buffer, labor, markup, rush, usage, discount (USD)', () => {
+test('example 1: credits, waste buffer, labor, markup, license, rush, discount (USD)', () => {
   const { e } = example1();
   const c = E.calcEstimate(e);
 
@@ -73,16 +73,18 @@ test('example 1: credits, waste buffer, labor, markup, rush, usage, discount (US
   assert.equal(c.labor, 1030);
   assert.equal(c.fixed, 200);
   assert.equal(E.roundTo(c.markupRaw, 2), 43);
-  assert.equal(c.subtotal, 1288);
-  assert.equal(c.rush, 268.25, 'rush = 25% × (labor 1030 + markup 43), not on credits/fixed');
-  assert.equal(c.usage, 322);
-  assert.equal(c.preDiscount, 1878.25);
-  assert.equal(c.discount, 187.83);
-  assert.equal(c.total, 1690.42);
-  assert.equal(c.prepay, 845.21);
+  assert.equal(c.licensePct, 40);
+  assert.equal(c.license, 429.2, 'license = 40% × (labor 1030 + markup 43)');
+  assert.equal(c.renewal, 171.68, 'renewal = 40% of the license fee');
+  assert.equal(c.subtotal, 1717.2);
+  assert.equal(c.rush, 268.25, 'rush = 25% × (labor 1030 + markup 43), not on credits/fixed/license');
+  assert.equal(c.usage, 0);
+  assert.equal(c.preDiscount, 1985.45);
+  assert.equal(c.discount, 198.55);
+  assert.equal(c.total, 1786.9);
+  assert.equal(c.prepay, 893.45);
   assert.equal(E.roundTo(c.realCost, 2), 215);
-  assert.equal(E.roundTo(c.margin, 2), 1475.42);
-  assert.equal(E.roundTo(c.marginPct, 2), 87.28);
+  assert.equal(E.roundTo(c.margin, 2), 1571.9);
 
   // Client lines hide markup inside line items and add up exactly to the subtotal.
   assert.deepEqual(roundtrip(c.clientLines.map((l) => [l.section, l.kind, l.key || l.name || '', l.amount])), [
@@ -92,9 +94,10 @@ test('example 1: credits, waste buffer, labor, markup, rush, usage, discount (US
     ['services', 'formats', '', 80],
     ['revisions', 'revisions', '', 150],
     ['third', 'fixed', 'Music license', 240],
+    ['license', 'license', '', 429.2],
   ]);
   assert.deepEqual(roundtrip(c.clientLines[0].cats), ['Video', 'Image']);
-  assert.equal(c.clientLines.reduce((a, l) => a + l.amount, 0), c.subtotal);
+  assert.equal(E.roundTo(c.clientLines.reduce((a, l) => a + l.amount, 0), 2), c.subtotal);
   // No model names or credit info leak into client lines.
   const clientText = JSON.stringify(c.clientLines);
   assert.ok(!/Kling|Nano Banana|credit/i.test(clientText), clientText);
@@ -124,14 +127,16 @@ test('waste buffer scales credits cost and is editable per estimate', () => {
 
 /**
  * Example 2 (CZK, 1 USD = 23 CZK) — custom model, per-service rate, markup on labor,
- * fixed usage surcharge, fixed discount, 0-decimal currency rounding.
+ * custom license, fixed discount, 0-decimal currency rounding.
  *   Custom image 5 cr × 10 = 50 cr + 20% waste = 60 cr × $0.10 = $6 → 138 CZK
  *   Color grading 4 h × $60 = $240 → 5,520 CZK;  stock $30 → 690 CZK
- *   Markup 10% on everything: client lines 151.8→152, 6,072, 759 → subtotal 6,983
- *   Usage fixed $100 → 2,300;  discount fixed $50 → 1,150
- *   Total 8,133 CZK · prepayment 30% = 2,439.9 → 2,440
+ *   Markup 10% on everything (634.8): client lines 151.8→152, 6,072, 759 = 6,983
+ *   Custom license: organic social 0 + paid ads 30 + Czech Republic −10 + 6 months −10
+ *                   + exclusive style 25 = 35% × (5,520 + 634.8) = 2,154.18 → 2,154
+ *   Subtotal 9,137;  discount fixed $50 → 1,150
+ *   Total 7,987 CZK · prepayment 30% = 2,396.1 → 2,396
  */
-test('example 2: CZK, custom model, fixed usage surcharge and fixed discount', () => {
+test('example 2: CZK, custom model, custom license and fixed discount', () => {
   const s = E.defaultSettings();
   s.creditPrice = 0.1;
   s.fx.CZK = 23;
@@ -148,7 +153,9 @@ test('example 2: CZK, custom model, fixed usage surcharge and fixed discount', (
   assert.equal(svc(e, 'editing').rate, 50, 'default hourly rate when no override');
   Object.assign(svc(e, 'grading'), { enabled: true, hours: 4 });
   e.fixedCosts.push({ id: 'f', name: 'Stock footage', amount: 30 });
-  e.usage = { optionId: 'custom', name: 'Broadcast', type: 'fixed', value: 100 };
+  e.license = Object.assign(e.license, { mode: 'custom', media: ['social', 'ads'], territory: 'cz', term: '6', excl: 'style' });
+  e.license.pct = E.licensePct(s, e.license);
+  assert.equal(e.license.pct, 35);
   e.discount = { type: 'fixed', value: 50 };
 
   const c = E.calcEstimate(e);
@@ -156,16 +163,21 @@ test('example 2: CZK, custom model, fixed usage surcharge and fixed discount', (
   assert.equal(E.roundTo(c.genCost, 2), 138);
   assert.equal(c.labor, 5520);
   assert.equal(c.fixed, 690);
-  assert.equal(c.subtotal, 6983);
+  assert.equal(c.license, 2154);
+  assert.equal(c.subtotal, 9137);
   assert.equal(c.rush, 0);
-  assert.equal(c.usage, 2300);
   assert.equal(c.discount, 1150);
-  assert.equal(c.total, 8133);
-  assert.equal(c.prepay, 2440);
+  assert.equal(c.total, 7987);
+  assert.equal(c.prepay, 2396);
   assert.equal(E.roundTo(c.realCost, 2), 828);
-  assert.equal(E.fmtMoney(c.total, 'CZK').replace(/\s/g, ' '), 'CZK 8,133');
-  assert.equal(E.fmtMoney(c.total, 'CZK', 'ru').replace(/\s/g, ' '), '8 133 CZK');
+  assert.equal(E.fmtMoney(c.total, 'CZK').replace(/\s/g, ' '), 'CZK 7,987');
+  assert.equal(E.fmtMoney(c.total, 'CZK', 'ru').replace(/\s/g, ' '), '7 987 CZK');
   assert.equal(E.fmtMoney(1690.42, 'USD', 'ru').replace(/\s/g, ' '), '1 690,42 $');
+
+  // A custom license never goes below 0, however small the scope.
+  assert.equal(E.licensePct(s, { mode: 'custom', media: ['social'], territory: 'cz', term: '6', excl: 'none' }), 0);
+  // Full buyout = ×2.5 of the creative fee, i.e. +150%.
+  assert.equal(E.licensePct(s, { mode: 'preset', preset: 'buyout' }), 150);
 
   // A fixed discount can never push the total below zero.
   e.discount.value = 1e6;
@@ -176,7 +188,7 @@ test('changing model prices in settings does not alter a saved estimate', () => 
   const { s, e } = example1();
   const saved = roundtrip(e); // saved to localStorage
   const before = E.calcEstimate(saved).total;
-  assert.equal(before, 1690.42);
+  assert.equal(before, 1786.9);
 
   // Change settings: model price, credit price, FX, hourly rate; archive a used model.
   E.findModel(s, 'm_kling').credits = 20;
@@ -184,6 +196,7 @@ test('changing model prices in settings does not alter a saved estimate', () => 
   s.creditPrice = 0.1;
   s.fx.EUR = 2;
   s.hourlyRate = 999;
+  s.license.presets.digital = 50;
 
   assert.equal(E.calcEstimate(saved).total, before, 'saved estimate keeps its snapshot');
   assert.equal(saved.lines[0].credits, 10);
@@ -201,6 +214,7 @@ test('changing model prices in settings does not alter a saved estimate', () => 
   assert.ok(has('model', { name: 'Kling', from: 10, to: 20 }), JSON.stringify(r.changes));
   assert.ok(has('creditPrice', { from: 0.05, to: 0.1 }));
   assert.ok(has('rate', { key: 'editing', from: 50, to: 999 }));
+  assert.ok(has('license', { from: 40, to: 50 }));
   assert.equal(saved.lines[0].credits, 10);
   assert.equal(E.calcEstimate(saved).total, before);
   // The estimate used a hand-edited $40/format; refresh resets it to the settings default ($50).
@@ -232,4 +246,41 @@ test('normalizing imported data fills in missing fields', () => {
   assert.equal(s.creditPrice, 0.2);
   assert.equal(s.models[0].category, 'Other');
   assert.equal(s.rushOptions.length, 3);
+});
+
+test('estimates saved before the license module keep their exact old total', () => {
+  // The first version stored usage rights as a multiplier on the subtotal and had no license field.
+  const { e } = example1();
+  const old = roundtrip(e);
+  delete old.license; delete old.sourceFiles; delete old.packages; delete old.terms;
+  old.usage = { optionId: 'u_commercial', name: 'Commercial', type: 'mult', value: 1.25 };
+  const n = E.normalizeEstimate(old);
+  assert.equal(n.license.mode, 'legacy');
+  const c = E.calcEstimate(n);
+  // Same numbers as the original v1 hand calculation: usage 1288 × 0.25 = 322 → total 1,690.42.
+  assert.equal(c.license, 0);
+  assert.equal(c.usage, 322);
+  assert.equal(c.total, 1690.42);
+  assert.ok(!c.clientLines.some((l) => l.kind === 'license'));
+});
+
+test('source files add-on adds a line and counts as labor', () => {
+  const { e } = example1();
+  e.license = E.newLicense(E.defaultSettings(), 'social'); // 0% → license line "included"
+  e.rush.pct = 0; e.discount.value = 0;
+  const before = E.calcEstimate(e);
+  assert.equal(before.license, 0);
+  e.sourceFiles = { addon: true, price: 300 };
+  const c = E.calcEstimate(e);
+  assert.equal(c.labor, 1330);
+  assert.equal(c.total - before.total, 300);
+  assert.ok(c.clientLines.some((l) => l.kind === 'source' && l.amount === 300));
+});
+
+test('packages: percentage of the total or a fixed amount', () => {
+  const { e } = example1();
+  e.packages.enabled = true;
+  e.packages.items[2] = Object.assign(e.packages.items[2], { mode: 'fixed', value: 5000 });
+  const c = E.calcEstimate(e);
+  assert.deepEqual(roundtrip(c.packages.map((p) => p.price)), [E.roundTo(1786.9 * 0.7, 2), 1786.9, 5000]);
 });
