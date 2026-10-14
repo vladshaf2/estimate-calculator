@@ -174,5 +174,21 @@
  "notify.when.accepted": "когда клиент принимает смету",
  "notify.quiet": "Тихие часы",
  "notify.quietFrom": "С",
- "notify.quietTo": "До"
+ "notify.quietTo": "До",
+ "nav.add": "Новая задача",
+ "add.ph": "Что нужно сделать?",
+ "add.where": "Куда",
+ "add.noProject": "Без проекта",
+ "add.newProject": "Новый проект",
+ "add.newProjectPrompt": "Название проекта",
+ "add.when": "Когда",
+ "add.noDate": "Без срока",
+ "add.today": "Сегодня",
+ "add.tomorrow": "Завтра",
+ "add.pickDate": "Выбрать дату",
+ "add.who": "Кто",
+ "add.nobody": "Никто",
+ "add.types": "Тип",
+ "add.submit": "Добавить задачу",
+ "add.recent": "Только что добавлено"
 }

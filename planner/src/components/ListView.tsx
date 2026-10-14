@@ -21,7 +21,7 @@ export function useCompletion() {
   };
 }
 
-function TaskRow({ task }: { task: Task }) {
+export function TaskRow({ task }: { task: Task }) {
   const { db, update } = useStore();
   const { t } = useI18n();
   const { openTask, openId } = useUi();
@@ -89,7 +89,7 @@ export function ListView() {
 }
 
 /** What the quick-add line will set, shown while typing. */
-function QuickPreview({ p }: { p: QuickParse }) {
+export function QuickPreview({ p }: { p: QuickParse }) {
   const { db } = useStore();
   const { t, nm, lang } = useI18n();
   const when = quickWhen(p);

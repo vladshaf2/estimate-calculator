@@ -219,3 +219,17 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
 .check-line { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; cursor: pointer; }
 .check-line input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex: none; }
 .chip.on { color: var(--ok, #58c493); border-color: currentColor; }
+
+/* Start screen: add a task */
+.add-view { max-width: 720px; }
+.add-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: grid; gap: 14px; }
+.add-title { height: 48px; font-size: 16px; }
+.add-row { display: grid; gap: 7px; }
+.add-row .lbl { margin: 0; }
+.chip.toggle.ghost { border-style: dashed; color: var(--muted); }
+.chips-wrap input.chip-date { width: auto; flex: none; min-width: 0; height: 28px; padding: 0 10px; border-radius: 999px; font-size: 12.5px; border: 1px solid var(--border-strong); background: transparent; color: var(--muted); }
+.chips-wrap input.chip-date.on { color: var(--text); border-color: var(--text); }
+.add-submit { height: 42px; justify-self: start; padding: 0 22px; }
+.add-h { font-size: 13px; color: var(--muted); font-weight: 600; margin: 22px 2px 8px; text-transform: uppercase; letter-spacing: .06em; }
+@media (max-width: 640px) { .add-submit { justify-self: stretch; } }
+.side-item.add-item { color: var(--accent-text, var(--accent)); font-weight: 600; margin-bottom: 4px; }
