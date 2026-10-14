@@ -1,9 +1,11 @@
-import { useState, type KeyboardEvent } from 'react';
+import { useMemo, useState, type KeyboardEvent } from 'react';
 import { useStore } from '../data/store';
 import type { Task } from '../data/types';
 import { useI18n } from '../i18n';
 import { inList, isDone, matchesFilters, visibleTasks } from '../lib/smart';
-import { TaskMeta } from './bits';
+import { parseQuick, quickToTask, quickWhen, type QuickParse } from '../lib/quickAdd';
+import { ALMATY, fmtDay } from '../lib/time';
+import { Chip, TaskMeta } from './bits';
 import { useUi } from './Shell';
 
 /** Status to use when a task is ticked / unticked. */
@@ -60,22 +62,56 @@ export function ListView() {
   const { list, filters, search, showDone, addTask, openTask } = useUi();
   const { toast } = useStore();
   const [draft, setDraft] = useState('');
+  const [focused, setFocused] = useState(false);
+  const parsed = useMemo(() => (draft.trim() ? parseQuick(draft, { db, meId: me?.id || null, now: new Date() }) : null), [draft, db, me]);
   const tasks = visibleTasks({ db, now: new Date(), meId: me?.id || null }, list, filters, search, showDone);
 
   return (
     <>
       <form className="quick" onSubmit={(e) => {
         e.preventDefault();
-        const task = addTask(draft);
+        if (!parsed) return;
+        const task = addTask(parsed.title, quickToTask(parsed));
         if (!task) return;
         setDraft('');
         // A task that doesn't fit the current list (e.g. "Posts this week" without a date) opens so it doesn't vanish.
         if (!inList(task, list, { db, now: new Date(), meId: me?.id || null }, true) || !matchesFilters(task, filters)) { toast(t('toast.created')); openTask(task.id); }
       }}>
-        <input id="quick-add" type="text" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={t('quick.ph')} aria-label={t('quick.ph')} autoComplete="off" />
+        <input id="quick-add" type="text" value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={t('quick.ph')} aria-label={t('quick.ph')} title={t('quick.help')} autoComplete="off"
+          onFocus={() => setFocused(true)} onBlur={() => setFocused(false)} />
+        {focused && !draft && <div className="quick-preview muted" data-quick-help>{t('quick.help')}</div>}
+        {parsed && parsed.chips.length > 0 && <QuickPreview p={parsed} />}
       </form>
       <div className="muted" style={{ fontSize: 12.5, margin: '0 2px 8px' }}>{t('count.tasks', { n: tasks.length })}</div>
       {tasks.length ? <div className="tasks">{tasks.map((x) => <TaskRow key={x.id} task={x} />)}</div> : <div className="empty">{t('list.empty')}</div>}
     </>
+  );
+}
+
+/** What the quick-add line will set, shown while typing. */
+function QuickPreview({ p }: { p: QuickParse }) {
+  const { db } = useStore();
+  const { t, nm, lang } = useI18n();
+  const when = quickWhen(p);
+  const chips = [];
+  for (const id of p.work_type_ids) { const w = db.work_types[id]; if (w) chips.push(<Chip key={'t' + id} color={w.color}>{nm(w)}</Chip>); }
+  const st = p.status_id && db.statuses[p.status_id];
+  if (st) chips.push(<Chip key="s" color={st.color}>{nm(st)}</Chip>);
+  const pr = p.project_id && db.projects[p.project_id];
+  if (pr) chips.push(<Chip key="p" color={pr.color}>{pr.name}</Chip>);
+  const ws = !pr && p.workspace_id && db.workspaces[p.workspace_id];
+  if (ws) chips.push(<Chip key="w" color={ws.color}>{nm(ws)}</Chip>);
+  const m = p.assignee_id && db.members[p.assignee_id];
+  if (m) chips.push(<Chip key="a" color={m.color}>{nm(m)}</Chip>);
+  if (p.priority) chips.push(<Chip key="!">{'!'.repeat(p.priority)} {t(('prio.' + p.priority) as 'prio.1')}</Chip>);
+  if (p.platform) chips.push(<Chip key="pl">📣 {p.platform[0].toUpperCase() + p.platform.slice(1)}</Chip>);
+  if (when) {
+    const time = p.time ? ' ' + (p.zone === ALMATY ? `${p.time} ${t('tz.almaty')} → ${when.time} ${t('tz.prague')}` : when.time) : (p.platform ? ' 12:00' : '');
+    chips.push(<Chip key="d">{p.platform ? '📣' : '📅'} {fmtDay(when.date, lang, { weekday: 'short', day: 'numeric', month: 'short' })}{time}</Chip>);
+  }
+  return (
+    <div className="quick-preview" data-quick-preview>
+      <span className="muted">{p.title}</span>{chips}
+    </div>
   );
 }

@@ -97,6 +97,9 @@ export function Shell() {
       remind_at: null, platform: null, publish_at: null, hook: '', caption: '', links: [], checklist: [], sort_order: Date.now(),
       created_by: null, created_at: now, updated_at: now, completed_at: null, ...extra,
     };
+    if (extra.work_type_ids) task.work_type_ids = [...new Set([...filters.types, ...extra.work_type_ids])];
+    // A parsed workspace without a project drops the project inherited from the current list.
+    if (extra.workspace_id && !extra.project_id && task.project_id && db.projects[task.project_id]?.workspace_id !== extra.workspace_id) task.project_id = null;
     if (!task.workspace_id) return null;
     store.create('tasks', task);
     return task;

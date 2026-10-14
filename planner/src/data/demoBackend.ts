@@ -10,7 +10,7 @@ const MEMBERS = [
   { id: 'demo_igor', email: 'igor@demo', name_en: 'Igor', name_ru: 'Игорь', color: '#60a5fa', lang: 'ru' as const },
 ];
 
-function seed(): Snapshot {
+export function seed(): Snapshot {
   const s = emptySnapshot();
   const now = new Date().toISOString();
   MEMBERS.forEach((m) => (s.members[m.id] = { ...m, created_at: now }));
