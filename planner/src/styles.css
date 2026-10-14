@@ -213,3 +213,9 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
   .two { grid-template-columns: 1fr; }
   .drawer { width: 100%; border-left: 0; }
 }
+
+/* Notifications card */
+.notify-kinds { display: grid; gap: 6px; }
+.check-line { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; cursor: pointer; }
+.check-line input[type="checkbox"] { width: 16px; height: 16px; margin-top: 2px; flex: none; }
+.chip.on { color: var(--ok, #58c493); border-color: currentColor; }

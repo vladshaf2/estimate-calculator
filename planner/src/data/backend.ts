@@ -21,4 +21,14 @@ export interface Backend {
   insert<K extends TableName>(table: K, row: Partial<Tables[K]> & { id: string }): Promise<Tables[K]>;
   update<K extends TableName>(table: K, id: string, patch: Partial<Tables[K]>): Promise<Tables[K]>;
   remove(table: TableName, id: string): Promise<void>;
+  /** Web Push (Supabase only). */
+  push?: PushApi;
+}
+
+export interface PushApi {
+  /** VAPID public key (base64url), or null before the server is initialised. */
+  publicKey(): Promise<string | null>;
+  save(sub: PushSubscriptionJSON): Promise<void>;
+  /** Queue a test notification to all of my devices. */
+  test(): Promise<void>;
 }

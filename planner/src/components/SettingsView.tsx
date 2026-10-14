@@ -1,3 +1,4 @@
+import { NotifySettings } from './NotifySettings';
 import { useStore } from '../data/store';
 import type { Status, WorkType, Workspace } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
@@ -89,6 +90,7 @@ export function SettingsView() {
         <p className="muted" style={{ fontSize: 12.5, marginBottom: 0 }}>{t('set.shortcuts')}</p>
         <p className="muted" style={{ fontSize: 12.5, marginBottom: 0 }}>{t('set.install')}</p>
       </section>
+      <NotifySettings />
       <OrderedEditor table="statuses" title="set.statuses" newLabel="set.newStatus" confirmKey="set.confirmStatus" />
       <OrderedEditor table="work_types" title="set.types" newLabel="set.newType" confirmKey="set.confirmType" />
       <OrderedEditor table="workspaces" title="set.workspaces" newLabel="set.newWorkspace" confirmKey="set.confirmWorkspace" />

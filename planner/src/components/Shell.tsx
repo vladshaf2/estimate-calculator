@@ -3,6 +3,7 @@ import { useStore } from '../data/store';
 import type { Task } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
 import { NO_FILTERS, SMART_LISTS, countList, type Filters, type ListRef } from '../lib/smart';
+import { refreshPush } from '../lib/push';
 import { PRAGUE, dayKey, zonedToUtc } from '../lib/time';
 import { BoardView } from './BoardView';
 import { CalendarView } from './CalendarView';
@@ -47,7 +48,7 @@ function parseHash(): { view: View; list: ListRef; task: string | null } {
 export function Shell() {
   const store = useStore();
   const { db, me, backend, online, toasts } = store;
-  const { t, nm } = useI18n();
+  const { t, nm, lang } = useI18n();
   const init = useMemo(parseHash, []);
   const [view, setView] = useState<View>(init.view);
   const [list, setListState] = useState<ListRef>(init.list);
@@ -104,6 +105,10 @@ export function Shell() {
     store.create('tasks', task);
     return task;
   }, [db, list, filters, me, store]);
+
+  // Notifications are written in the member's language: keep it in step with the UI.
+  useEffect(() => { if (me && me.lang !== lang && backend.kind === 'supabase') store.update('members', me.id, { lang }); }, [me?.id, me?.lang, lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { if (backend.push) refreshPush(backend.push).catch(() => {}); }, [backend]);
 
   // Keyboard shortcuts.
   useEffect(() => {
