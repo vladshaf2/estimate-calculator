@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import type { Backend } from '../data/backend';
 import { useI18n } from '../i18n';
-import { LangSwitch } from './bits';
+import { LangSwitch, ThemeSwitch } from './bits';
 
 export function Login({ backend }: { backend: Backend }) {
   const { t } = useI18n();
@@ -23,7 +23,7 @@ export function Login({ backend }: { backend: Backend }) {
       <div className="login">
         <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div className="logo-mark" />
-          <LangSwitch />
+          <div className="row"><ThemeSwitch compact /><LangSwitch /></div>
         </div>
         <h1>{t('login.title')}</h1>
         <p className="muted" style={{ marginTop: 0 }}>{t('login.hint')}</p>

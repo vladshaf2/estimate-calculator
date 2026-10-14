@@ -12,6 +12,17 @@
   <link rel="icon" type="image/png" href="./favicon.png">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <title>Chiefs Planner</title>
+  <script>
+    // Apply the saved theme before first paint (no dark flash on the light theme).
+    (function () {
+      try {
+        var c = localStorage.getItem('planner.theme') || 'auto';
+        var light = c === 'light' || (c === 'auto' && matchMedia('(prefers-color-scheme: light)').matches);
+        document.documentElement.dataset.theme = light ? 'light' : 'dark';
+        if (light) document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f5f4f0');
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>

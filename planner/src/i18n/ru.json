@@ -140,5 +140,9 @@
   "few": "{n} дня",
   "many": "{n} дней",
   "other": "{n} дня"
- }
+ },
+ "set.theme": "Тема",
+ "theme.auto": "Авто",
+ "theme.light": "Светлая",
+ "theme.dark": "Тёмная"
 }

@@ -103,7 +103,7 @@ export function TaskDetail({ id, onClose }: { id: string; onClose: () => void })
             <label className="lbl">{t('detail.due')}</label>
             <div className="row">
               <input type="date" value={due.date} onChange={(e) => setDue(e.target.value, dueTime)} data-field="due-date" />
-              <input type="time" value={dueTime} onChange={(e) => setDue(due.date || utcToZoned(new Date().toISOString(), PRAGUE).date, e.target.value)} style={{ width: 120 }} data-field="due-time" />
+              <input type="time" value={dueTime} onChange={(e) => setDue(due.date || utcToZoned(new Date().toISOString(), PRAGUE).date, e.target.value)} style={{ width: 150, flex: 'none' }} data-field="due-time" />
               {task.due_at && <button className="btn ghost sm" onClick={() => setDue('', '')}>{t('detail.clear')}</button>}
             </div>
             <div className="zone-out">{t('detail.dueHint')}</div>
@@ -112,7 +112,7 @@ export function TaskDetail({ id, onClose }: { id: string; onClose: () => void })
             <label className="lbl">{t('detail.remind')}</label>
             <div className="row">
               <input type="date" value={remind.date} onChange={(e) => setRemind(e.target.value, remind.time)} />
-              <input type="time" value={remind.date ? remind.time : ''} onChange={(e) => remind.date && setRemind(remind.date, e.target.value)} style={{ width: 120 }} />
+              <input type="time" value={remind.date ? remind.time : ''} onChange={(e) => remind.date && setRemind(remind.date, e.target.value)} style={{ width: 150, flex: 'none' }} />
               {task.remind_at && <button className="btn ghost sm" onClick={() => setRemind('', '')}>{t('detail.clear')}</button>}
             </div>
           </div>
@@ -142,7 +142,7 @@ export function TaskDetail({ id, onClose }: { id: string; onClose: () => void })
               <label className="lbl">{t('detail.publish')}</label>
               <div className="row">
                 <input type="date" value={pub.date} onChange={(e) => setPub(e.target.value, pub.time)} data-field="publish-date" />
-                <input type="time" value={pub.date ? pub.time : ''} onChange={(e) => setPub(pub.date || utcToZoned(new Date().toISOString(), zone).date, e.target.value)} style={{ width: 120 }} data-field="publish-time" />
+                <input type="time" value={pub.date ? pub.time : ''} onChange={(e) => setPub(pub.date || utcToZoned(new Date().toISOString(), zone).date, e.target.value)} style={{ width: 150, flex: 'none' }} data-field="publish-time" />
                 {task.publish_at && <button className="btn ghost sm" onClick={() => set({ publish_at: null })}>{t('detail.clear')}</button>}
               </div>
               {task.publish_at && <div className="zone-out" data-out="zones"><b>{postTimes(task.publish_at, lang, t)}</b></div>}

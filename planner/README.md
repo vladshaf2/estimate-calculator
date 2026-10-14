@@ -24,6 +24,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
 - **Smart lists:** Today, Overdue, Needs fix, Waiting for client, Posts this week, Assigned to me, All.
 - **Filters** by status, type, assignee, workspace and project, plus **search** across titles, notes, hooks and captions.
 - **Settings:** statuses, work types, workspaces and projects can be added, renamed in both languages, recolored, reordered and deleted.
+- **Themes:** Auto (follows the phone or computer setting), Light and Dark. Switch in the sidebar or Settings; the choice is saved per device.
 - **Languages:** Russian and English. The choice is saved per device, and all strings live in `src/i18n/ru.json` and `src/i18n/en.json`.
 - **Real-time sync** between users (Supabase Realtime). Changes appear instantly on your own screen and are sent to the server in the background.
 - **Offline:** the app opens without a connection and shows the last loaded data.
