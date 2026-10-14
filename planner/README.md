@@ -17,6 +17,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - Due dates, reminders and the calendar use **Prague** time.
   - Post publish times are shown in **Prague and Almaty** side by side. You can enter them in either zone.
   - Daylight saving time is handled through IANA time zones, not fixed offsets.
+- **Start screen: New task.** The app opens on a form to add a task and choose where it goes: workspace and project (a new project can be created right there), date, assignee and work types. The choice is remembered for the next task, and the tasks just added are listed below the form. Lists, board and calendar are in the menu. `N` opens this screen from anywhere.
 - **Quick add** in one line, for example `Teaser #reel #ig @igor fri 18:00 +ala !!`:
   - `#` picks a work type, status, project or workspace (English or Russian name, prefix is enough);
   - `@` assigns someone (`@me`/`@я`); `!`, `!!`, `!!!` or `!high`/`!низкий` set the priority;
@@ -46,7 +47,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
 - **Real-time sync** between users (Supabase Realtime). Changes appear instantly on your own screen and are sent to the server in the background.
 - **Offline:** the app opens without a connection and shows the last loaded data.
 - **Keyboard shortcuts:**
-  - `N`: new task
+  - `N`: new task (start screen)
   - `/`: search
   - `1`–`4`: List / Board / Calendar / Settings
   - `Esc`: close

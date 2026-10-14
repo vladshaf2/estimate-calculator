@@ -8,13 +8,15 @@ import { PRAGUE, dayKey, zonedToUtc } from '../lib/time';
 import { BoardView } from './BoardView';
 import { CalendarView } from './CalendarView';
 import { FilterBar } from './FilterBar';
+import { AddView } from './AddView';
 import { ListView } from './ListView';
 import { SettingsView } from './SettingsView';
 import { TaskDetail } from './TaskDetail';
 import { LangSwitch, ThemeSwitch, newId } from './bits';
 
-export type View = 'list' | 'board' | 'calendar' | 'settings';
-const VIEWS: View[] = ['list', 'board', 'calendar', 'settings'];
+export type View = 'add' | 'list' | 'board' | 'calendar' | 'settings';
+const VIEWS: View[] = ['add', 'list', 'board', 'calendar', 'settings'];
+const KEY_VIEWS: View[] = ['list', 'board', 'calendar', 'settings'];
 
 interface Ui {
   view: View; setView(v: View): void;
@@ -35,7 +37,8 @@ const SMART_ICONS: Record<string, string> = { today: '☀', overdue: '⏰', need
 
 function parseHash(): { view: View; list: ListRef; task: string | null } {
   const [, v, l, task] = location.hash.split('/');
-  const view = VIEWS.includes(v as View) ? (v as View) : 'list';
+  // No hash (opening the app) → the "New task" start screen.
+  const view = VIEWS.includes(v as View) ? (v as View) : 'add';
   let list: ListRef = { kind: 'smart', id: 'today' };
   if (l) {
     const [kind, id] = decodeURIComponent(l).split(':');
@@ -74,7 +77,7 @@ export function Shell() {
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  const setList = useCallback((l: ListRef) => { setListState(l); setMenu(false); setView((v) => (v === 'settings' ? 'list' : v)); }, []);
+  const setList = useCallback((l: ListRef) => { setListState(l); setMenu(false); setView((v) => (v === 'settings' || v === 'add' ? 'list' : v)); }, []);
 
   const listTitle = list.kind === 'smart' ? t(('smart.' + list.id) as TKey)
     : list.kind === 'workspace' ? nm(db.workspaces[list.id]) : (db.projects[list.id]?.name || '');
@@ -120,9 +123,9 @@ export function Shell() {
       if (e.key === '/') { e.preventDefault(); searchRef.current?.focus(); }
       else if (e.key === 'n' || e.key === 'N' || e.key === 'т' || e.key === 'Т') {
         e.preventDefault();
-        setView('list'); setOpenId(null);
-        window.setTimeout(() => document.getElementById('quick-add')?.focus(), 30);
-      } else if (['1', '2', '3', '4'].includes(e.key)) setView(VIEWS[Number(e.key) - 1]);
+        setView('add'); setOpenId(null);
+        window.setTimeout(() => document.getElementById('add-title')?.focus(), 30);
+      } else if (['1', '2', '3', '4'].includes(e.key)) setView(KEY_VIEWS[Number(e.key) - 1]);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -139,10 +142,13 @@ export function Shell() {
         <aside className={'sidebar' + (menu ? ' open' : '')}>
           <div className="brand"><span className="logo-mark" /><small>Planner</small></div>
           <nav className="side-scroll">
+            <button className={'side-item add-item' + (view === 'add' ? ' on' : '')} onClick={() => { setView('add'); setMenu(false); }} data-nav-add>
+              <span className="ic">＋</span>{t('nav.add')}
+            </button>
             <div className="side-h">{t('side.lists')}</div>
             {SMART_LISTS.map((id) => {
               const n = countList(ctx, { kind: 'smart', id });
-              const on = list.kind === 'smart' && list.id === id && view !== 'settings';
+              const on = list.kind === 'smart' && list.id === id && view !== 'settings' && view !== 'add';
               return (
                 <button key={id} className={'side-item' + (on ? ' on' : '')} onClick={() => setList({ kind: 'smart', id })} data-list={id}>
                   <span className="ic">{SMART_ICONS[id]}</span>{t(('smart.' + id) as TKey)}
@@ -153,12 +159,12 @@ export function Shell() {
             <div className="side-h">{t('side.workspaces')}</div>
             {workspaces.map((w) => (
               <div key={w.id}>
-                <button className={'side-item' + (list.kind === 'workspace' && list.id === w.id && view !== 'settings' ? ' on' : '')} onClick={() => setList({ kind: 'workspace', id: w.id })}>
+                <button className={'side-item' + (list.kind === 'workspace' && list.id === w.id && view !== 'settings' && view !== 'add' ? ' on' : '')} onClick={() => setList({ kind: 'workspace', id: w.id })}>
                   <span className="ic" style={{ color: w.color }}>●</span>{nm(w)}
                   <span className="count">{countList(ctx, { kind: 'workspace', id: w.id }) || ''}</span>
                 </button>
                 {Object.values(db.projects).filter((p) => p.workspace_id === w.id && !p.archived).sort((a, b) => a.name.localeCompare(b.name)).map((p) => (
-                  <button key={p.id} className={'side-item sub' + (list.kind === 'project' && list.id === p.id && view !== 'settings' ? ' on' : '')} onClick={() => setList({ kind: 'project', id: p.id })}>
+                  <button key={p.id} className={'side-item sub' + (list.kind === 'project' && list.id === p.id && view !== 'settings' && view !== 'add' ? ' on' : '')} onClick={() => setList({ kind: 'project', id: p.id })}>
                     <span style={{ color: p.color }}>▪</span> {p.name}
                     <span className="count">{countList(ctx, { kind: 'project', id: p.id }) || ''}</span>
                   </button>
@@ -185,21 +191,22 @@ export function Shell() {
               ))}
             </div>
             <span className="spacer" />
-            <input ref={searchRef} className="search" type="search" placeholder={t('search.ph')} value={search} onChange={(e) => setSearch(e.target.value)} aria-label={t('search.ph')} />
+            <input ref={searchRef} className="search" type="search" placeholder={t('search.ph')} value={search} onChange={(e) => { setSearch(e.target.value); if (view === 'add' || view === 'settings') setView('list'); }} aria-label={t('search.ph')} />
           </div>
           <div className="content">
             {view !== 'settings' && (
               <div className="page-h">
-                <h1>{listTitle}</h1>
+                <h1>{view === 'add' ? t('nav.add') : listTitle}</h1>
               </div>
             )}
-            {view !== 'settings' && <FilterBar />}
+            {view !== 'settings' && view !== 'add' && <FilterBar />}
+            {view === 'add' && <AddView />}
             {view === 'list' && <ListView />}
             {view === 'board' && <BoardView />}
             {view === 'calendar' && <CalendarView />}
             {view === 'settings' && <SettingsView />}
           </div>
-          {view !== 'settings' && (
+          {view !== 'settings' && view !== 'add' && (
             <button className="fab" aria-label={t('new.task')} onClick={() => { const task = addTask(t('new.task')); if (task) setOpenId(task.id); }}>+</button>
           )}
         </main>

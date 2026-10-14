@@ -170,5 +170,21 @@
  "notify.when.accepted": "when a client accepts an estimate",
  "notify.quiet": "Quiet hours",
  "notify.quietFrom": "From",
- "notify.quietTo": "To"
+ "notify.quietTo": "To",
+ "nav.add": "New task",
+ "add.ph": "What needs to be done?",
+ "add.where": "Where",
+ "add.noProject": "No project",
+ "add.newProject": "New project",
+ "add.newProjectPrompt": "Project name",
+ "add.when": "When",
+ "add.noDate": "No date",
+ "add.today": "Today",
+ "add.tomorrow": "Tomorrow",
+ "add.pickDate": "Pick a date",
+ "add.who": "Who",
+ "add.nobody": "Nobody",
+ "add.types": "Type",
+ "add.submit": "Add task",
+ "add.recent": "Just added"
 }
