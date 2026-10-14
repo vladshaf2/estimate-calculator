@@ -1,0 +1,60 @@
+# Tests both apps on every push / PR and publishes the site on main:
+#   /            → estimate calculator (index.html)
+#   /planner/    → Chiefs Planner (built from planner/)
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+name: Test & deploy site
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: planner/package-lock.json
+      - name: Calculator tests
+        run: node --test tests/calc.test.mjs
+      - name: Planner — install
+        working-directory: planner
+        run: npm ci
+      - name: Planner — typecheck, tests, build
+        working-directory: planner
+        run: npm run typecheck && npm test && npm run build
+      - name: Assemble site
+        run: |
+          mkdir -p _site/planner
+          cp index.html _site/
+          cp -r planner/dist/. _site/planner/
+          touch _site/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: _site
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

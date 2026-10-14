@@ -1,5 +1,7 @@
 # Estimate Calculator — AI production studio
 
+> This repository also contains **[Chiefs Planner](planner/README.md)**, the team's task and content planner, published at `/planner/`.
+
 A single-file web app (`index.html`) for pricing AI video and image production work. It has no backend and no build step. Everything is stored in your browser's `localStorage`.
 
 ## Hosting
