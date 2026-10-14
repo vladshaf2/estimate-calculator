@@ -130,6 +130,12 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 .switch input:checked + .sl::after { transform: translateX(16px); background: var(--accent-ink); }
 .switch input:focus-visible + .sl { box-shadow: 0 0 0 3px var(--accent-soft); }
 
+.check-grid { display: grid; gap: 10px 16px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.toggle-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; }
+.pkg-edit { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.pkg-card { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.pkg-card.rec { border-color: rgba(233,181,74,.6); }
+.pkg-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: auto; }
 .check { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text); font-size: 13px; user-select: none; }
 .check input { width: 16px; height: 16px; accent-color: var(--accent); margin: 0; }
 
@@ -293,9 +299,30 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 .doc-totals .tr { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; }
 .doc-totals .tr.grand { border-top: 2px solid #16161a; margin-top: 8px; padding-top: 12px; font-size: 20px; font-weight: 800; }
 .doc-totals .tr.pp { color: #45454c; font-size: 12.5px; }
-.doc-terms { margin-top: 36px; padding-top: 18px; border-top: 1px solid #d9d7d0; color: #45454c; font-size: 12.5px; display: grid; gap: 6px; }
+.doc-block.doc-terms { break-inside: auto; page-break-inside: auto; }
 .doc-terms b { color: #16161a; }
 .doc-notes { white-space: pre-line; }
+.doc-block { margin-top: 30px; break-inside: avoid; page-break-inside: avoid; }
+.doc-block h3 { font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: #8a8a90; font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid #d9d7d0; margin: 0 0 10px; break-after: avoid; }
+.doc-kv { display: grid; grid-template-columns: minmax(140px, auto) 1fr; gap: 6px 20px; margin: 0; font-size: 12.5px; }
+.doc-kv dt { color: #6b6b72; } .doc-kv dd { margin: 0; }
+.doc-small { color: #45454c; font-size: 12px; margin: 10px 0 0; }
+.doc-steps { width: 100%; border-collapse: collapse; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.doc-steps td { padding: 6px 0; border-bottom: 1px solid #e7e5df; }
+.doc-steps td.n { width: 28px; color: #8a8a90; } .doc-steps td.amt { text-align: right; color: #45454c; }
+.doc-terms .term { margin-bottom: 8px; font-size: 12.5px; color: #2c2c32; break-inside: avoid; }
+.pkg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.pkg { position: relative; border: 1px solid #d9d7d0; border-radius: 8px; padding: 16px 14px; font-size: 12.5px; }
+.pkg.rec { border: 2px solid var(--chiefs-red); }
+.pkg-badge { position: absolute; top: -10px; left: 14px; background: var(--chiefs-red); color: #fff; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; font-weight: 700; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.pkg-name { font-weight: 700; font-size: 14px; } .pkg-desc { color: #6b6b72; margin-top: 2px; }
+.pkg-price { font-size: 18px; font-weight: 800; margin: 10px 0 8px; font-variant-numeric: tabular-nums; }
+.pkg ul { margin: 0; padding-left: 16px; } .pkg li { margin: 3px 0; }
+.sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 14px; }
+.sig-who { font-weight: 700; font-size: 12.5px; margin-bottom: 4px; }
+.sig-line { border-bottom: 1px solid #16161a; height: 34px; display: flex; align-items: flex-end; padding-bottom: 3px; }
+.sig-line span { font-size: 10.5px; color: #8a8a90; }
+@media (max-width: 640px) { .pkg-grid { grid-template-columns: 1fr; } .sig-grid { grid-template-columns: 1fr; gap: 16px; } .doc-kv { grid-template-columns: 1fr; gap: 2px; } .doc-kv dd { margin-bottom: 6px; } }
 .doc-foot { margin-top: 28px; color: #8a8a90; font-size: 11px; white-space: pre-line; }
 @media (max-width: 640px) { .doc { padding: 28px 20px; } .doc-contact { text-align: left; } .doc-logo { font-size: 24px; } }
 
@@ -314,9 +341,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   .doc-table td { padding: 5px 0; }
   .doc-totals { margin-top: 14px; }
   .doc-totals .tr { padding: 4px 0; }
-  .doc-terms { margin-top: 18px; padding-top: 12px; }
   .doc-foot { margin-top: 14px; }
-  .doc-table tr, .doc-totals, .doc-terms { break-inside: avoid; }
+  .doc-table tr, .doc-totals { break-inside: avoid; }
+  .doc-table tr.sect-row { break-after: avoid; }
+  .doc-block { margin-top: 18px; }
+  .pkg-grid { grid-template-columns: repeat(3, 1fr) !important; }
 }
 </style>
 </head>
@@ -359,6 +388,20 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     { key: 'delivery',     name: 'Upscale & final delivery',                desc: 'Final upscale, mastering and export' },
     { key: 'direction',    name: 'Creative direction / project management', desc: '' }
   ];
+
+  /* Usage license building blocks. Keys are stable; display texts live in the UI dictionaries. */
+  var LICENSE_MEDIA = ['social', 'ads', 'web', 'ooh', 'tv', 'print', 'events', 'pr'];
+  var LICENSE_TERRITORIES = ['cz', 'eu', 'cis', 'world'];
+  var LICENSE_TERMS = ['6', '12', '24', 'perpetual'];
+  var LICENSE_EXCL = ['none', 'style', 'full'];
+  var LICENSE_PRESETS = {
+    social:   { media: ['social'], territory: 'world', term: '12', excl: 'none' },
+    digital:  { media: ['social', 'ads', 'web'], territory: 'world', term: '12', excl: 'none' },
+    campaign: { media: ['social', 'ads', 'web', 'ooh', 'print'], territory: 'world', term: '24', excl: 'none' },
+    buyout:   { media: LICENSE_MEDIA.slice(), territory: 'world', term: 'perpetual', excl: 'full' }
+  };
+  var PRESET_KEYS = ['social', 'digital', 'campaign', 'buyout'];
+  var TERM_BLOCKS = ['revisions', 'payment', 'sourceFiles', 'client', 'portfolio', 'ai', 'archive', 'signature'];
 
   function uid(prefix) {
     return (prefix || 'id') + '_' + Math.random().toString(36).slice(2, 9) + Date.now().toString(36).slice(-4);
@@ -448,12 +491,26 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       ],
       prepayPct: 50,
       defaultDocLang: 'en',
+      validDays: 14,
+      clientHours: 48,
+      archiveMonths: 6,
+      sourceFilesPrice: 300,
+      // Usage license pricing: every value is a % surcharge on the creative fee (labor + markup).
+      license: {
+        presets: { social: 0, digital: 40, campaign: 80, buyout: 150 },
+        media: { social: 0, ads: 30, web: 10, ooh: 30, tv: 60, print: 20, events: 10, pr: 5 },
+        territory: { cz: -10, eu: -5, cis: -5, world: 0 },
+        term: { '6': -10, '12': 0, '24': 20, perpetual: 50 },
+        excl: { none: 0, style: 25, full: 50 },
+        renewalPct: 40
+      },
+      termsText: { en: {}, ru: {} },
       studio: {
         logoMode: 'builtin', logoImage: '', logo: 'Chiefs',
         tagline: 'AI Production Studio', taglineRu: 'Студия AI-продакшна',
         name: '', email: '', phone: '', website: '', address: '',
-        footer: 'This estimate is valid for 30 days. Prices exclude VAT.',
-        footerRu: 'Смета действительна 30 дней. Цены указаны без НДС.'
+        footer: 'Prices exclude VAT.',
+        footerRu: 'Цены указаны без НДС.'
       }
     };
   }
@@ -483,6 +540,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     if (CURRENCIES.indexOf(out.defaultCurrency) < 0) out.defaultCurrency = 'USD';
     if (LANGS.indexOf(out.defaultDocLang) < 0) out.defaultDocLang = 'en';
     if (['builtin', 'image', 'text'].indexOf(out.studio.logoMode) < 0) out.studio.logoMode = 'builtin';
+    // The validity period is now a field of its own; drop it from the old default footer.
+    if (out.studio.footer === 'This estimate is valid for 30 days. Prices exclude VAT.') out.studio.footer = d.studio.footer;
+    if (out.studio.footerRu === 'Смета действительна 30 дней. Цены указаны без НДС.') out.studio.footerRu = d.studio.footerRu;
+    if (!isObj(out.termsText.en)) out.termsText.en = {};
+    if (!isObj(out.termsText.ru)) out.termsText.ru = {};
     return out;
   }
 
@@ -497,6 +559,43 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   function serviceRate(settings, key) {
     var r = settings.serviceRates ? settings.serviceRates[key] : null;
     return (r === null || r === undefined || r === '') ? num(settings.hourlyRate) : num(r);
+  }
+
+  /** License surcharge in % of the creative fee, from the current settings. Never below 0. */
+  function licensePct(settings, lic) {
+    var L = settings.license;
+    if (lic.mode === 'preset') return num(L.presets[lic.preset]);
+    var pct = (lic.media || []).reduce(function (a, m) { return a + num(L.media[m]); }, 0) +
+      num(L.territory[lic.territory]) + num(L.term[lic.term]) + num(L.excl[lic.excl]);
+    return Math.max(0, pct);
+  }
+  /** Media / territory / term / exclusivity of a license (presets have a fixed scope). */
+  function licenseScope(lic) {
+    var p = lic.mode === 'preset' ? LICENSE_PRESETS[lic.preset] : null;
+    return p ? clone(p) : { media: (lic.media || []).slice(), territory: lic.territory, term: lic.term, excl: lic.excl };
+  }
+  function newLicense(settings, preset) {
+    preset = LICENSE_PRESETS[preset] ? preset : 'social';
+    var lic = Object.assign({ mode: 'preset', preset: preset }, clone(LICENSE_PRESETS[preset]));
+    lic.pct = licensePct(settings, lic);
+    lic.renewalPct = num(settings.license.renewalPct);
+    return lic;
+  }
+  function defaultPackages() {
+    return {
+      enabled: false, recommended: 1,
+      items: [
+        { id: 'pkg_base', name: '', desc: '', features: '', mode: 'pct', value: 70 },
+        { id: 'pkg_optimal', name: '', desc: '', features: '', mode: 'pct', value: 100 },
+        { id: 'pkg_premium', name: '', desc: '', features: '', mode: 'pct', value: 150 }
+      ]
+    };
+  }
+  function defaultTimeline() {
+    return { enabled: false, start: '', stages: [
+      { id: 'st_brief', name: '', days: 2 }, { id: 'st_previz', name: '', days: 3 },
+      { id: 'st_draft', name: '', days: 5 }, { id: 'st_final', name: '', days: 2 }
+    ] };
   }
 
   /* ---------------- Estimate ---------------- */
@@ -531,6 +630,16 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       discount: { type: 'pct', value: 0 },
       markup: { pct: num(settings.markupPct), credits: !!settings.markupOn.credits, labor: !!settings.markupOn.labor, fixed: !!settings.markupOn.fixed },
       prepayPct: num(settings.prepayPct),
+      license: newLicense(settings, 'social'),
+      sourceFiles: { addon: false, price: num(settings.sourceFilesPrice) },
+      validDays: num(settings.validDays),
+      deliverables: { enabled: false, formats: ['16:9'], durations: '30, 15', versions: 1, resolution: '4K', codec: 'ProRes 422 HQ / H.264', subtitles: false, clean: false, notes: '' },
+      timeline: defaultTimeline(),
+      packages: defaultPackages(),
+      terms: { revisions: true, payment: true, sourceFiles: true, client: true, portfolio: true, ai: true, archive: true, signature: true },
+      clientHours: num(settings.clientHours),
+      archiveMonths: num(settings.archiveMonths),
+      portfolio: { nda: false, embargo: '' },
       clientNotes: '', internalNotes: ''
     };
   }
@@ -538,7 +647,17 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
   function normalizeEstimate(e) {
     var d = newEstimate(defaultSettings());
     if (!isObj(e)) return d;
+    var hadLicense = isObj(e.license);
     var out = mergeDefaults(d, e);
+    // Estimates saved before the license module keep their old usage-rights pricing (and total) untouched.
+    if (!hadLicense) out.license = Object.assign(clone(d.license), { mode: 'legacy' });
+    if (['preset', 'custom', 'legacy'].indexOf(out.license.mode) < 0) out.license.mode = 'preset';
+    if (!LICENSE_PRESETS[out.license.preset]) out.license.preset = 'social';
+    if (!Array.isArray(out.license.media)) out.license.media = [];
+    if (!Array.isArray(out.deliverables.formats)) out.deliverables.formats = [];
+    if (!Array.isArray(out.timeline.stages)) out.timeline.stages = defaultTimeline().stages;
+    out.timeline.stages = out.timeline.stages.filter(isObj).map(function (st) { return { id: st.id || uid('st'), name: String(st.name == null ? '' : st.name), days: num(st.days) }; });
+    if (!Array.isArray(out.packages.items) || out.packages.items.length !== 3) out.packages.items = defaultPackages().items;
     out.lines = Array.isArray(e.lines) ? e.lines.filter(isObj).map(function (l) { var x = mergeDefaults(LINE_DEFAULT, l); if (!x.id) x.id = uid('l'); return x; }) : [];
     out.services = Array.isArray(e.services) ? e.services.filter(isObj).map(function (s) { var x = mergeDefaults(SERVICE_DEFAULT, s); if (!x.id) x.id = uid('s'); return x; }) : d.services;
     out.fixedCosts = Array.isArray(e.fixedCosts) ? e.fixedCosts.filter(isObj).map(function (f) { return { id: f.id || uid('f'), name: String(f.name == null ? '' : f.name), amount: num(f.amount) }; }) : [];
@@ -607,6 +726,11 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       if (num(s.rate) !== rate) { note({ type: 'rate', key: s.key, name: s.name, from: num(s.rate), to: rate }); s.rate = rate; }
     });
     if (e.formats && num(e.formats.price) !== num(settings.formatPrice)) { note({ type: 'formatPrice', from: num(e.formats.price), to: num(settings.formatPrice) }); e.formats.price = num(settings.formatPrice); }
+    if (e.sourceFiles && num(e.sourceFiles.price) !== num(settings.sourceFilesPrice)) { note({ type: 'sourcePrice', from: num(e.sourceFiles.price), to: num(settings.sourceFilesPrice) }); e.sourceFiles.price = num(settings.sourceFilesPrice); }
+    if (e.license && e.license.mode !== 'legacy') {
+      var lp = licensePct(settings, e.license);
+      if (num(e.license.pct) !== lp) { note({ type: 'license', from: num(e.license.pct), to: lp }); e.license.pct = lp; }
+    }
     if (e.revisions && num(e.revisions.price) !== num(settings.revisionPrice)) { note({ type: 'revisionPrice', from: num(e.revisions.price), to: num(settings.revisionPrice) }); e.revisions.price = num(settings.revisionPrice); }
     return { estimate: e, changes: changes };
   }
@@ -626,13 +750,15 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
    * Full calculation. All inputs are in USD; all outputs are in the estimate's currency.
    *
    *   AI cost      = credits × creditPrice; waste = AI cost × waste%
-   *   Labor        = services + extra formats + extra revision rounds
+   *   Labor        = services + extra formats + extra revision rounds + source-files add-on
    *   Markup       = markup% × (selected of: AI cost incl. waste, labor, fixed costs)
-   *   Subtotal     = AI + labor + fixed + markup         (sum of rounded client lines)
-   *   Rush fee     = rush% × (labor + markup)            (never on raw credit / fixed costs)
-   *   Usage rights = subtotal × (multiplier − 1)  or a fixed surcharge
+   *   License      = license% × (labor + markup)          (the "creative fee"; a separate client line)
+   *   Subtotal     = AI + labor + fixed + markup + license  (sum of rounded client lines)
+   *   Rush fee     = rush% × (labor + markup)              (never on raw credit / fixed costs)
+   *   Usage rights = legacy estimates only: subtotal × (multiplier − 1) or a fixed surcharge
    *   Discount     = % of (subtotal + rush + usage)  or a fixed amount
    *   Total        = subtotal + rush + usage − discount;  Prepayment = total × prepay%
+   *   Packages     = % of total or a fixed amount each
    *   Real cost    = AI cost incl. waste + fixed costs;  Margin = total − real cost
    */
   function calcEstimate(est) {
@@ -683,6 +809,9 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var rv = est.revisions || {};
     var revisions = cv(num(rv.extra) * num(rv.price));
     if (num(rv.extra) > 0) laborItems.push({ kind: 'revisions', count: num(rv.extra), price: cv(num(rv.price)), amount: revisions });
+    var sf = est.sourceFiles || {};
+    var sourceFiles = sf.addon ? cv(num(sf.price)) : 0;
+    if (sf.addon) laborItems.push({ kind: 'source', amount: sourceFiles });
     var labor = sum(laborItems, 'amount');
 
     // --- Fixed costs
@@ -698,6 +827,14 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var markupBase = (mk.credits ? genCost : 0) + (mk.labor ? labor : 0) + (mk.fixed ? fixed : 0);
     var markupRaw = genCost * mC + labor * mL + fixed * mF;
 
+    // --- Usage license: % of the creative fee (labor + markup)
+    var lic = est.license || { mode: 'legacy' };
+    var legacy = lic.mode === 'legacy';
+    var licensePctV = legacy ? 0 : num(lic.pct);
+    var licenseBase = labor + markupRaw;
+    var license = legacy ? 0 : R(licenseBase * licensePctV / 100);
+    var renewalPct = num(lic.renewalPct);
+
     // --- Client lines (rounded to currency precision; the subtotal is their exact sum).
     // Language-neutral: the UI turns kind/key/name/desc/count into English or Russian text.
     var clientLines = [];
@@ -711,19 +848,20 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       var amt = R(f.amount * (1 + mF));
       if (amt !== 0) clientLines.push({ section: 'third', kind: 'fixed', name: f.name, desc: '', amount: amt });
     });
+    if (!legacy) clientLines.push({ section: 'license', kind: 'license', amount: license });
     var subtotal = R(sum(clientLines, 'amount'));
-    var markup = subtotal - genCost - labor - fixed; // effective markup incl. rounding
+    var markup = subtotal - genCost - labor - fixed - license; // effective markup incl. rounding
 
     // --- Rush fee: on labor + markup only
     var rs = est.rush || {};
     var rushPct = num(rs.pct);
     var rush = R((labor + markupRaw) * rushPct / 100);
 
-    // --- Usage rights
+    // --- Usage rights (old estimates only; new ones use the license line above)
     var us = est.usage || {};
     var usageType = us.type === 'fixed' ? 'fixed' : 'mult';
     var usageValue = num(us.value);
-    var usage = usageType === 'fixed' ? R(cv(usageValue)) : (usageValue > 0 ? R(subtotal * (usageValue - 1)) : 0);
+    var usage = !legacy ? 0 : usageType === 'fixed' ? R(cv(usageValue)) : (usageValue > 0 ? R(subtotal * (usageValue - 1)) : 0);
 
     // --- Discount
     var preDiscount = R(subtotal + rush + usage);
@@ -740,13 +878,21 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     var margin = total - realCost;
     var marginExLabor = margin - labor;
 
+    var pk = est.packages || {};
+    var packages = (pk.items || []).map(function (p) {
+      return { id: p.id, price: p.mode === 'fixed' ? R(cv(num(p.value))) : R(total * num(p.value) / 100) };
+    });
+
     return {
       currency: currency, dp: dp, fx: fx, creditPrice: cp,
       lines: lines, categories: categories,
       rawCredits: rawCredits, wastePct: wastePct, wasteCredits: wasteCredits, totalCredits: totalCredits,
       creditsCost: creditsCost, wasteCost: wasteCost, genCost: genCost,
       services: services, laborItems: laborItems, labor: labor, formats: formats, revisions: revisions,
-      fixedItems: fixedItems, fixed: fixed,
+      fixedItems: fixedItems, fixed: fixed, sourceFiles: sourceFiles,
+      licenseLegacy: legacy, licensePct: licensePctV, licenseBase: licenseBase, license: license,
+      renewalPct: renewalPct, renewal: R(license * renewalPct / 100),
+      packages: packages,
       markupPct: markupPct, markupBase: markupBase, markupRaw: markupRaw, markup: markup,
       clientLines: clientLines, subtotal: subtotal,
       rushPct: rushPct, rushName: String(rs.name || ''), rush: rush,
@@ -768,7 +914,10 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     newEstimate: newEstimate, normalizeEstimate: normalizeEstimate, newCustomService: newCustomService,
     makeLine: makeLine, setLineModel: setLineModel, lineCredits: lineCredits,
     refreshPrices: refreshPrices, duplicateEstimate: duplicateEstimate, modelUsageCount: modelUsageCount,
-    calcEstimate: calcEstimate
+    calcEstimate: calcEstimate,
+    LICENSE_MEDIA: LICENSE_MEDIA, LICENSE_TERRITORIES: LICENSE_TERRITORIES, LICENSE_TERMS: LICENSE_TERMS, LICENSE_EXCL: LICENSE_EXCL,
+    LICENSE_PRESETS: LICENSE_PRESETS, PRESET_KEYS: PRESET_KEYS, TERM_BLOCKS: TERM_BLOCKS,
+    licensePct: licensePct, licenseScope: licenseScope, newLicense: newLicense, defaultTimeline: defaultTimeline
   };
 })(typeof window !== 'undefined' ? window : globalThis);
 </script>
@@ -1024,6 +1173,177 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     }
   };
 
+  /* ---------- License, terms, deliverables, timeline and packages ---------- */
+  Object.assign(I18N.en, {
+    'sec.license': 'Usage license', 'lic.preset': 'License', 'lic.p.custom': 'Custom',
+    'lic.p.social': 'Social', 'lic.p.digital': 'Digital Ads', 'lic.p.campaign': 'Campaign', 'lic.p.buyout': 'Full Buyout',
+    'lic.pd.social': 'Organic social media, worldwide, 12 months',
+    'lic.pd.digital': 'Social + paid digital ads + website, worldwide, 12 months',
+    'lic.pd.campaign': 'All digital + outdoor + print, worldwide, 24 months',
+    'lic.pd.buyout': 'All media, worldwide, perpetual, exclusive',
+    'lic.media': 'Media', 'lic.territory': 'Territory', 'lic.term': 'Term', 'lic.excl': 'Exclusivity',
+    'lic.m.social': 'Organic social media', 'lic.m.ads': 'Paid social & digital ads', 'lic.m.web': 'Website & marketplaces',
+    'lic.m.ooh': 'Outdoor (billboards, screens, transit)', 'lic.m.tv': 'TV & cinema', 'lic.m.print': 'Print (catalogs, packaging, POS)',
+    'lic.m.events': 'Events & retail screens', 'lic.m.pr': 'PR & internal communications',
+    'lic.t.cz': 'Czech Republic', 'lic.t.eu': 'European Union', 'lic.t.cis': 'CIS', 'lic.t.world': 'Worldwide',
+    'lic.term.6': '6 months', 'lic.term.12': '12 months', 'lic.term.24': '24 months', 'lic.term.perpetual': 'Perpetual',
+    'lic.e.none': 'Non-exclusive', 'lic.e.style': 'Exclusive style / character', 'lic.e.full': 'Full exclusivity',
+    'lic.pct': 'License surcharge', 'lic.renewal': 'Renewal', 'lic.amount': 'License fee', 'lic.included': 'Included',
+    'lic.basis': '% of the creative fee (labor + markup): {v}',
+    'lic.legacy': 'This estimate was made before the license module and keeps its old usage-rights pricing ({v}) so its total does not change.',
+    'lic.switch': 'Switch to the license module', 'sum.license': 'Usage license · {n} +{p}',
+    'svc.source': 'Source files (paid add-on)', 'svc.sourceDesc': 'Project files, raw generations, prompts, reference sheets', 'f.price': 'Price',
+    'f.validDays': 'Valid for, days',
+    'sec.deliverables': 'Deliverables', 'dlv.include': 'Show deliverables in the client document', 'dlv.formats': 'Aspect ratios', 'dlv.durations': 'Durations, sec',
+    'dlv.versions': 'Versions', 'dlv.resolution': 'Resolution', 'dlv.codec': 'Codec / format', 'dlv.subtitles': 'Subtitles', 'dlv.clean': 'Clean versions without text', 'dlv.notes': 'Notes',
+    'sec.timeline': 'Stages & timeline', 'tl.include': 'Show the timeline in the client document', 'tl.start': 'Start date', 'tl.days': 'Days', 'tl.addStage': '+ Stage',
+    'tl.stagePh': 'Stage name', 'tl.total': function (v) { return 'Total ' + v.n + ' day' + (v.n === 1 ? '' : 's') + (v.d ? ' · until ' + v.d : ''); },
+    'tl.late': 'ends after the deadline',
+    'stage.st_brief': 'Brief', 'stage.st_previz': 'Previz', 'stage.st_draft': 'Draft', 'stage.st_final': 'Final delivery',
+    'sec.packages': 'Packages', 'pkg.include': 'Offer three packages in the client document', 'pkg.name': 'Name', 'pkg.desc': 'Short description',
+    'pkg.features': 'What’s included (one item per line)', 'pkg.pct': '% of this estimate', 'pkg.recommended': 'Recommended',
+    'pkg.n.pkg_base': 'Base', 'pkg.n.pkg_optimal': 'Optimal', 'pkg.n.pkg_premium': 'Premium',
+    'pkg.hint': 'Prices are calculated from this estimate’s total. The detailed breakdown in the document corresponds to the package priced at 100%.',
+    'sec.terms': 'Terms in the client document', 'terms.hint': 'Texts are edited in Settings → Terms texts.',
+    'term.revisions': 'Revisions', 'term.payment': 'Payment', 'term.sourceFiles': 'Source files', 'term.client': 'Client feedback', 'term.portfolio': 'Portfolio',
+    'term.ai': 'Use of AI', 'term.archive': 'Project archive', 'term.signature': 'Acceptance & signature',
+    'f.clientHours': 'Feedback within, hours', 'f.archiveMonths': 'Archive, months', 'f.nda': 'NDA — never show in portfolio', 'f.embargo': 'Embargo until (optional)',
+    'change.license': 'License surcharge, %', 'change.sourcePrice': 'Source files price',
+    'set.license': 'Usage license pricing', 'set.licenseHint': 'Every value is a % surcharge on the creative fee (labor + markup). A custom license adds up media + territory + term + exclusivity and never goes below 0.',
+    'set.presets': 'Presets', 'f.renewalPct': 'Renewal, % of license fee', 'f.sourcePrice': 'Source files add-on price',
+    'set.termsText': 'Terms texts', 'set.termsHint': 'Words in {braces} are filled in automatically. Clear a field or press Reset to go back to the default text.', 'btn.resetText': 'Reset',
+    'tt.revisions': 'Revisions', 'tt.payment': 'Payment', 'tt.sourceNo': 'Source files — not included', 'tt.sourceYes': 'Source files — paid add-on included',
+    'tt.client': 'Client feedback', 'tt.portfolio': 'Portfolio', 'tt.portfolioNda': 'Portfolio — NDA', 'tt.portfolioEmbargo': 'Portfolio — embargo', 'tt.ai': 'Use of AI', 'tt.archive': 'Project archive',
+    'doc.sec.license': 'Usage license', 'doc.license': 'Usage license — {n}', 'doc.source': 'Source files', 'doc.sourceDetail': 'Project files, raw generations, prompts and reference sheets',
+    'doc.validUntil': 'Valid until', 'doc.licIncluded': 'Included', 'doc.licRenewal': 'Renewal after the term: {p}% of the license fee ({v}).',
+    'doc.licBuyout': 'Exclusive use; the studio will not reuse the delivered materials.',
+    'doc.dlvTitle': 'Deliverables', 'doc.durations': 'Durations', 'u.s': 's', 'doc.yes': 'Yes', 'doc.no': 'No',
+    'doc.tlTitle': 'Stages & timeline', 'doc.days': function (v) { return v.n + ' day' + (v.n === 1 ? '' : 's'); },
+    'doc.pkgTitle': 'Packages', 'doc.pkgNote': 'The detailed breakdown above corresponds to the “{n}” package.',
+    'doc.termsTitle': 'Terms', 'doc.accept': 'Acceptance', 'doc.acceptText': 'By signing, the client accepts this estimate and the terms above.',
+    'doc.forClient': 'Client', 'doc.forStudio': 'Studio', 'doc.sigName': 'Name', 'doc.sigDate': 'Date', 'doc.sigSign': 'Signature'
+  });
+  Object.assign(I18N.ru, {
+    'sec.license': 'Лицензия на использование', 'lic.preset': 'Лицензия', 'lic.p.custom': 'Свои условия',
+    'lic.p.social': 'Соцсети', 'lic.p.digital': 'Digital-реклама', 'lic.p.campaign': 'Кампания', 'lic.p.buyout': 'Полный выкуп',
+    'lic.pd.social': 'Органические соцсети, весь мир, 12 месяцев',
+    'lic.pd.digital': 'Соцсети + платная digital-реклама + сайт, весь мир, 12 месяцев',
+    'lic.pd.campaign': 'Весь digital + наружная реклама + печать, весь мир, 24 месяца',
+    'lic.pd.buyout': 'Все носители, весь мир, бессрочно, эксклюзивно',
+    'lic.media': 'Носители', 'lic.territory': 'Территория', 'lic.term': 'Срок', 'lic.excl': 'Эксклюзивность',
+    'lic.m.social': 'Органические соцсети', 'lic.m.ads': 'Платная реклама в соцсетях и digital', 'lic.m.web': 'Сайт и маркетплейсы',
+    'lic.m.ooh': 'Наружная реклама (билборды, экраны, транспорт)', 'lic.m.tv': 'ТВ и кино', 'lic.m.print': 'Печать (каталоги, упаковка, POS)',
+    'lic.m.events': 'Ивенты и экраны в рознице', 'lic.m.pr': 'PR и внутренние коммуникации',
+    'lic.t.cz': 'Чехия', 'lic.t.eu': 'Европейский союз', 'lic.t.cis': 'СНГ', 'lic.t.world': 'Весь мир',
+    'lic.term.6': '6 месяцев', 'lic.term.12': '12 месяцев', 'lic.term.24': '24 месяца', 'lic.term.perpetual': 'Бессрочно',
+    'lic.e.none': 'Неэксклюзивно', 'lic.e.style': 'Эксклюзивный стиль / персонаж', 'lic.e.full': 'Полная эксклюзивность',
+    'lic.pct': 'Надбавка за лицензию', 'lic.renewal': 'Продление', 'lic.amount': 'Стоимость лицензии', 'lic.included': 'Включено',
+    'lic.basis': '% от творческой части (работа + наценка): {v}',
+    'lic.legacy': 'Эта смета создана до появления модуля лицензий и сохраняет старый расчёт прав использования ({v}), чтобы её сумма не изменилась.',
+    'lic.switch': 'Перейти на модуль лицензий', 'sum.license': 'Лицензия · {n} +{p}',
+    'svc.source': 'Исходники (платная опция)', 'svc.sourceDesc': 'Проектные файлы, исходные генерации, промпты, референс-листы', 'f.price': 'Цена',
+    'f.validDays': 'Действительна, дней',
+    'sec.deliverables': 'Что сдаём', 'dlv.include': 'Показывать в документе для клиента', 'dlv.formats': 'Форматы кадра', 'dlv.durations': 'Хронометраж, сек',
+    'dlv.versions': 'Версий', 'dlv.resolution': 'Разрешение', 'dlv.codec': 'Кодек / формат', 'dlv.subtitles': 'Субтитры', 'dlv.clean': 'Чистые версии без текста', 'dlv.notes': 'Примечания',
+    'sec.timeline': 'Этапы и сроки', 'tl.include': 'Показывать сроки в документе для клиента', 'tl.start': 'Дата начала', 'tl.days': 'Дней', 'tl.addStage': '+ Этап',
+    'tl.stagePh': 'Название этапа', 'tl.total': function (v) { return 'Всего ' + v.n + ' ' + plural('ru', v.n, ['день', 'дня', 'дней']) + (v.d ? ' · до ' + v.d : ''); },
+    'tl.late': 'заканчивается позже дедлайна',
+    'stage.st_brief': 'Бриф', 'stage.st_previz': 'Превиз', 'stage.st_draft': 'Драфт', 'stage.st_final': 'Финальная сдача',
+    'sec.packages': 'Пакеты', 'pkg.include': 'Предложить три пакета в документе для клиента', 'pkg.name': 'Название', 'pkg.desc': 'Краткое описание',
+    'pkg.features': 'Что входит (по пункту в строке)', 'pkg.pct': '% от этой сметы', 'pkg.recommended': 'Рекомендуем',
+    'pkg.n.pkg_base': 'Базовый', 'pkg.n.pkg_optimal': 'Оптимальный', 'pkg.n.pkg_premium': 'Премиум',
+    'pkg.hint': 'Цены считаются от итога этой сметы. Подробная разбивка в документе соответствует пакету со 100%.',
+    'sec.terms': 'Условия в документе для клиента', 'terms.hint': 'Тексты редактируются в «Настройки → Тексты условий».',
+    'term.revisions': 'Правки', 'term.payment': 'Оплата', 'term.sourceFiles': 'Исходники', 'term.client': 'Обратная связь', 'term.portfolio': 'Портфолио',
+    'term.ai': 'Использование AI', 'term.archive': 'Хранение файлов', 'term.signature': 'Согласование и подпись',
+    'f.clientHours': 'Обратная связь в течение, ч', 'f.archiveMonths': 'Хранение, мес.', 'f.nda': 'NDA — не показывать в портфолио', 'f.embargo': 'Эмбарго до (необязательно)',
+    'change.license': 'Надбавка за лицензию, %', 'change.sourcePrice': 'Цена исходников',
+    'set.license': 'Цены лицензий', 'set.licenseHint': 'Все значения — надбавка в % к творческой части (работа + наценка). Своя лицензия складывается из носителей + территории + срока + эксклюзивности и не бывает меньше 0.',
+    'set.presets': 'Готовые варианты', 'f.renewalPct': 'Продление, % от лицензии', 'f.sourcePrice': 'Цена опции «исходники»',
+    'set.termsText': 'Тексты условий', 'set.termsHint': 'Слова в {фигурных скобках} подставляются автоматически. Очистите поле или нажмите «Сбросить», чтобы вернуть текст по умолчанию.', 'btn.resetText': 'Сбросить',
+    'tt.revisions': 'Правки', 'tt.payment': 'Оплата', 'tt.sourceNo': 'Исходники — не входят', 'tt.sourceYes': 'Исходники — платная опция включена',
+    'tt.client': 'Обратная связь', 'tt.portfolio': 'Портфолио', 'tt.portfolioNda': 'Портфолио — NDA', 'tt.portfolioEmbargo': 'Портфолио — эмбарго', 'tt.ai': 'Использование AI', 'tt.archive': 'Хранение файлов',
+    'doc.sec.license': 'Лицензия на использование', 'doc.license': 'Лицензия на использование — {n}', 'doc.source': 'Исходники', 'doc.sourceDetail': 'Проектные файлы, исходные генерации, промпты и референс-листы',
+    'doc.validUntil': 'Действительна до', 'doc.licIncluded': 'Включено', 'doc.licRenewal': 'Продление после окончания срока: {p}% от стоимости лицензии ({v}).',
+    'doc.licBuyout': 'Эксклюзивное использование; студия не использует переданные материалы повторно.',
+    'doc.dlvTitle': 'Что сдаём', 'doc.durations': 'Хронометраж', 'u.s': 'сек', 'doc.yes': 'Да', 'doc.no': 'Нет',
+    'doc.tlTitle': 'Этапы и сроки', 'doc.days': function (v) { return v.n + ' ' + plural('ru', v.n, ['день', 'дня', 'дней']); },
+    'doc.pkgTitle': 'Пакеты', 'doc.pkgNote': 'Подробная разбивка выше соответствует пакету «{n}».',
+    'doc.termsTitle': 'Условия', 'doc.accept': 'Согласование', 'doc.acceptText': 'Подписывая, клиент принимает эту смету и условия выше.',
+    'doc.forClient': 'Клиент', 'doc.forStudio': 'Студия', 'doc.sigName': 'Имя', 'doc.sigDate': 'Дата', 'doc.sigSign': 'Подпись'
+  });
+
+  /*
+   * Default texts of the terms in the client document (editable per language in Settings → Terms texts).
+   * Template texts must be reviewed by a lawyer before use.
+   */
+  var TERMS_TEXT = {
+    en: {
+      revisions: 'Revision rounds included: {included}. A revision is a change within the approved brief; a change of the brief is quoted as new work. Each additional round: {price}.',
+      payment: '{advance}% advance before work starts, {final}% before delivery of the final files. Final files without watermark are delivered after full payment. The advance is non-refundable once work has started.',
+      sourceNo: 'Project files, raw generations, prompts and character reference sheets are not included. They are available as a paid add-on.',
+      sourceYes: 'Project files, raw generations, prompts and character reference sheets are included as a paid add-on (see the estimate).',
+      client: 'The client provides feedback within {hours} hours. Delays in feedback shift the timeline accordingly.',
+      portfolio: 'The studio may show the work in its portfolio and on social media after the client’s release.',
+      portfolioNda: 'The work is covered by an NDA and will not be shown publicly.',
+      portfolioEmbargo: 'The studio may show the work in its portfolio after {date}.',
+      ai: 'Generative AI tools are used under commercial plans. Real people, voices and third-party brands are used only with the client’s consent and client-provided material. Music is licensed separately (stock or client-provided). Labeling of AI-generated content where required (e.g. EU AI Act transparency rules) is the responsibility of the client as the publisher.',
+      archive: 'Project files are kept for {months} months after delivery; longer storage on request.'
+    },
+    ru: {
+      revisions: 'Включено раундов правок: {included}. Правка — изменение в рамках утверждённого брифа; изменение брифа оценивается как новая работа. Каждый дополнительный раунд: {price}.',
+      payment: 'Аванс {advance}% — до начала работ, {final}% — перед передачей финальных файлов. Финальные файлы без водяного знака передаются после полной оплаты. После начала работ аванс не возвращается.',
+      sourceNo: 'Проектные файлы, исходные генерации, промпты и референс-листы персонажей не входят в стоимость. Они доступны как платная опция.',
+      sourceYes: 'Проектные файлы, исходные генерации, промпты и референс-листы персонажей передаются как платная опция (см. смету).',
+      client: 'Клиент даёт обратную связь в течение {hours} часов. При задержке сроки сдвигаются соответственно.',
+      portfolio: 'Студия может показывать работу в портфолио и соцсетях после её публикации клиентом.',
+      portfolioNda: 'Работа под NDA и не будет показываться публично.',
+      portfolioEmbargo: 'Студия может показывать работу в портфолио после {date}.',
+      ai: 'Генеративные AI-инструменты используются по коммерческим тарифам. Реальные люди, голоса и сторонние бренды используются только с согласия клиента и на основе предоставленных им материалов. Музыка лицензируется отдельно (сток или материалы клиента). Маркировка AI-контента там, где она требуется (например, правила прозрачности EU AI Act), — ответственность клиента как публикующей стороны.',
+      archive: 'Файлы проекта хранятся {months} мес. после сдачи; дольше — по запросу.'
+    }
+  };
+  var TERMS_KEYS = Object.keys(TERMS_TEXT.en);
+  function termText(lang, key, vars) {
+    var o = settings.termsText && settings.termsText[lang] && settings.termsText[lang][key];
+    var txt = o && String(o).trim() ? String(o) : TERMS_TEXT[lang][key];
+    return txt.replace(/\{(\w+)\}/g, function (m, k) { return vars && vars[k] != null ? vars[k] : m; });
+  }
+  /** "Organic social media, paid ads" — lower-case every item but the first (keeps "PR", "TV"). */
+  function listText(items) {
+    return items.map(function (x, i) { return i && /^[A-ZА-ЯЁ][a-zа-яё]/.test(x) ? x.charAt(0).toLowerCase() + x.slice(1) : x; }).join(', ');
+  }
+  function licName(lang, lic) { return tr(lang, lic.mode === 'custom' ? 'lic.p.custom' : 'lic.p.' + lic.preset); }
+  function licScopeLine(lang, lic) {
+    var sc = E.licenseScope(lic);
+    var parts = [listText(sc.media.map(function (m) { return tr(lang, 'lic.m.' + m); })), tr(lang, 'lic.t.' + sc.territory), tr(lang, 'lic.term.' + sc.term)];
+    if (sc.excl !== 'none') parts.push(tr(lang, 'lic.e.' + sc.excl));
+    return parts.filter(Boolean).join(' · ');
+  }
+  function isoAddDays(iso, n) {
+    var d = new Date((iso || E.today()) + 'T00:00:00');
+    d.setDate(d.getDate() + n);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  /** Consecutive calendar-day ranges for the timeline stages. */
+  function timelineRows(e) {
+    var tl = e.timeline, cursor = tl.start || e.date || E.today(), total = 0;
+    var rows = tl.stages.map(function (st) {
+      var days = Math.max(0, Math.round(E.num(st.days)));
+      var from = cursor, to = days > 0 ? isoAddDays(cursor, days - 1) : cursor;
+      cursor = isoAddDays(cursor, days); total += days;
+      return { stage: st, days: days, from: from, to: to };
+    });
+    return { rows: rows, total: total, end: rows.length ? rows[rows.length - 1].to : cursor };
+  }
+  function stageName(lang, st) { return st.name && st.name.trim() ? st.name : (I18N.en['stage.' + st.id] ? tr(lang, 'stage.' + st.id) : ''); }
+  function pkgName(lang, p) { return p.name && p.name.trim() ? p.name : tr(lang, 'pkg.n.' + p.id); }
+  function dayMonth(iso, lang) {
+    var d = new Date(iso + 'T00:00:00');
+    return isNaN(d) ? iso : d.toLocaleDateString((lang || ui.lang) === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short' });
+  }
+  function dateRange(a, b, lang) { return a === b ? dayMonth(a, lang) : dayMonth(a, lang) + ' – ' + dayMonth(b, lang); }
+
   /** Built-in service names in both languages (estimates store the English name). */
   var SVC_I18N = {
     preprod: { ru: ['Препродакшн', 'Мудборд, концепт, раскадровка'] },
@@ -1260,6 +1580,14 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     o.discount = c.discount ? '−' + money(c.discount) : '—';
     o.markup = money(c.markupRaw) + ' <small>&nbsp;' + esc(t('markup.on', { v: money(c.markupBase) })) + '</small>';
     o.prepay = money(c.prepay);
+    o.license = c.licenseLegacy ? '' : c.license ? money(c.license) : esc(t('lic.included'));
+    o['lic-base'] = esc(t('lic.basis', { v: money(c.licenseBase) }));
+    o.source = est.sourceFiles.addon ? money(c.sourceFiles) : '';
+    c.packages.forEach(function (p, i) { o['pkg-' + i] = money(p.price); });
+    var tlr = timelineRows(est);
+    tlr.rows.forEach(function (r, i) { o['tl-row-' + i] = esc(dateRange(r.from, r.to)); });
+    var late = est.deadline && tlr.total && tlr.end > est.deadline;
+    o['tl-total'] = esc(t('tl.total', { n: tlr.total, d: tlr.total ? fmtDate(tlr.end) : '' })) + (late ? ' <span class="drift">· ' + esc(t('tl.late')) + '</span>' : '');
     o['fixed-total'] = money(c.fixed);
     o['gen-summary'] = renderGenSummary(c);
     o.summary = renderSummary(c);
@@ -1296,8 +1624,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     h += '<div class="sum-group"><h4>' + t('sum.labor') + '</h4>';
     if (!c.laborItems.length) h += sr('<span class="muted">' + t('sum.noServices') + '</span>', money(0), 'sub');
     c.laborItems.forEach(function (it) {
-      var name = it.kind === 'service' ? svcName(ui.lang, it) : it.kind === 'formats' ? t('svc.formats') : tr(ui.lang, 'doc.revisions');
-      var d = it.kind === 'service' ? (it.mode === 'fixed' ? t('u.fixedWord') : nf(it.hours) + ' ' + t('u.h') + ' × ' + money(it.rate)) : it.count + ' × ' + money(it.price);
+      var name = it.kind === 'service' ? svcName(ui.lang, it) : it.kind === 'formats' ? t('svc.formats') : it.kind === 'source' ? t('doc.source') : tr(ui.lang, 'doc.revisions');
+      var d = it.kind === 'service' ? (it.mode === 'fixed' ? t('u.fixedWord') : nf(it.hours) + ' ' + t('u.h') + ' × ' + money(it.rate)) : it.kind === 'source' ? t('u.fixedWord') : it.count + ' × ' + money(it.price);
       h += sr(esc(name) + ' <span class="muted">· ' + esc(d) + '</span>', money(it.amount), 'sub');
     });
     h += sr(t('sum.laborTotal'), money(c.labor), 'strong') + '</div>';
@@ -1309,6 +1637,7 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
 
     h += '<div class="sum-group"><h4>' + t('sum.pricing') + '</h4>';
     h += sr(esc(t('sum.markup', { p: pct(c.markupPct) })), money(c.markup));
+    if (!c.licenseLegacy) h += sr(esc(t('sum.license', { n: licName(ui.lang, est.license), p: pct(c.licensePct) })), money(c.license));
     h += sr(t('sum.subtotal'), money(c.subtotal), 'strong');
     if (c.rush) h += sr(esc(t('sum.rush', { n: dataName(ui.lang, est.rush.optionId, c.rushName), p: pct(c.rushPct) })), '+' + money(c.rush));
     if (c.usage) h += sr(esc(t('sum.usage', { n: dataName(ui.lang, est.usage.optionId, c.usageName), v: c.usageType === 'mult' ? '×' + nf(c.usageValue, 3) : t('u.fixedWord') })), (c.usage > 0 ? '+' : '') + money(c.usage));
@@ -1402,7 +1731,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       '<div class="grid wide">' + input('name', est.name, { label: t('f.projectName'), ph: t('ph.projectName') }) + input('client', est.client, { label: t('f.client'), ph: t('ph.client') }) + '</div>' +
       '<div class="grid" style="margin-top:12px">' + input('date', est.date, { label: t('f.date'), html: 'date' }) + input('deadline', est.deadline, { label: t('f.deadline'), html: 'date' }) +
       field(t('f.currency'), selectEl('data-bind="currency" data-rerender', curOpts, est.currency)) +
-      field(t('f.docLang'), selectEl('data-bind="docLang"', LANG_OPTS, est.docLang)) + '</div>' +
+      field(t('f.docLang'), selectEl('data-bind="docLang"', LANG_OPTS, est.docLang)) +
+      input('validDays', est.validDays, { label: t('f.validDays'), type: 'int' }) + '</div>' +
       '<div class="rates-row"><div class="grid">' + input('rates.creditPrice', est.rates.creditPrice, { label: t('f.creditPrice'), type: 'num', pre: '$' }) +
       input('rates.EUR', est.rates.EUR, { label: t('f.usdEur'), type: 'num' }) + input('rates.CZK', est.rates.CZK, { label: t('f.usdCzk'), type: 'num' }) + '</div>' +
       '<p class="hint" style="margin:10px 0 0">' + esc(t('hint.rates', { c: est.currency })) + '</p></div>');
@@ -1421,6 +1751,10 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     sv += '<div class="svc' + (f.enabled ? ' on' : '') + '"><div class="svc-head">' + toggle('formats.enabled', f.enabled, t('svc.include', { n: t('svc.formats') })) +
       '<div class="svc-title"><div class="svc-name">' + t('svc.formats') + '</div><div class="svc-desc">' + t('svc.formatsDesc') + '</div></div>' + out('formats', o.formats) + '</div>' +
       (f.enabled ? '<div class="svc-body">' + input('formats.label', f.label, { label: t('f.formats'), ph: '9:16, 1:1', fcls: 'grow' }) + input('formats.count', f.count, { label: t('f.count'), type: 'int' }) + input('formats.price', f.price, { label: t('f.pricePerFormat'), type: 'num', pre: '$' }) + '</div>' : '') + '</div>';
+    var sfo = est.sourceFiles;
+    sv += '<div class="svc' + (sfo.addon ? ' on' : '') + '"><div class="svc-head">' + toggle('sourceFiles.addon', sfo.addon, t('svc.source')) +
+      '<div class="svc-title"><div class="svc-name">' + t('svc.source') + '</div><div class="svc-desc">' + t('svc.sourceDesc') + '</div></div>' + out('source', o.source) + '</div>' +
+      (sfo.addon ? '<div class="svc-body">' + input('sourceFiles.price', sfo.price, { label: t('f.price'), type: 'num', pre: '$' }) + '</div>' : '') + '</div>';
     h += section('03', t('sec.services'), sv + '<div class="add-row"><button class="btn dashed sm" data-action="add-service">' + t('btn.addService') + '</button></div>');
 
     // 4. Fixed costs
@@ -1435,15 +1769,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       input('revisions.extra', est.revisions.extra, { label: t('f.extraRounds'), type: 'int' }) + input('revisions.price', est.revisions.price, { label: t('f.pricePerRound'), type: 'num', pre: '$' }) +
       '<div class="fld"><span class="lbl">' + t('f.extraTotal') + '</span>' + out('revisions', o.revisions, 'snap out') + '</div></div>');
 
-    // 6. Usage rights
-    var uOpts = settings.usageOptions.map(function (u) { return { value: u.id, label: dataName(ui.lang, u.id, u.name) + (u.type === 'mult' ? ' (×' + nf(u.value, 3) + ')' : ' (+$' + nf(u.value) + ')') }; });
-    if (est.usage.optionId !== 'custom' && !settings.usageOptions.some(function (u) { return u.id === est.usage.optionId; })) uOpts.unshift({ value: est.usage.optionId, label: dataName(ui.lang, est.usage.optionId, est.usage.name) + ' ' + t('opt.saved') });
-    uOpts.push({ value: 'custom', label: dataName(ui.lang, 'custom', '') + '…' });
-    h += section('06', t('sec.usage'), '<div class="grid">' + field(t('f.license'), selectEl('data-change="usage-option"', uOpts, est.usage.optionId)) +
-      (est.usage.optionId === 'custom' ? input('usage.name', est.usage.name === 'Custom' ? '' : est.usage.name, { label: t('f.name'), ph: t('ph.usageName') }) : '') +
-      field(t('f.type'), seg('usage.type', est.usage.type, [{ value: 'mult', label: t('seg.mult') }, { value: 'fixed', label: t('seg.fixed') }])) +
-      (est.usage.type === 'mult' ? input('usage.value', est.usage.value, { label: t('f.multiplier'), type: 'num', pre: '×' }) : input('usage.value', est.usage.value, { label: t('f.surcharge'), type: 'num', pre: '$' })) +
-      '<div class="fld"><span class="lbl">' + t('f.usageAmt') + '</span>' + out('usage', o.usage, 'snap out') + '</div></div>');
+    // 6. Usage license
+    h += section('06', t('sec.license'), renderLicenseEditor(o));
 
     // 7. Rush fee
     var rOpts = settings.rushOptions.map(function (r) { return { value: r.id, label: dataName(ui.lang, r.id, r.name) + (E.num(r.pct) ? ' (+' + nf(r.pct) + '%)' : '') }; });
@@ -1466,13 +1793,103 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       '<div class="grid" style="margin-top:12px">' + input('prepayPct', est.prepayPct, { label: t('f.prepay'), type: 'num', suf: '%' }) +
       '<div class="fld"><span class="lbl">' + t('f.prepayAmt') + '</span>' + out('prepay', o.prepay, 'snap out') + '</div></div>');
 
-    // 10. Notes
-    h += section('10', t('sec.notes'), '<div class="grid wide">' +
+    h += section('10', t('sec.deliverables'), renderDeliverablesEditor());
+    h += section('11', t('sec.timeline'), renderTimelineEditor(o));
+    h += section('12', t('sec.packages'), renderPackagesEditor(o));
+    h += section('13', t('sec.terms'), renderTermsEditor());
+
+    // 14. Notes
+    h += section('14', t('sec.notes'), '<div class="grid wide">' +
       field(t('f.clientNotes'), '<textarea data-bind="clientNotes" placeholder="' + esc(t('ph.clientNotes')) + '">' + esc(est.clientNotes) + '</textarea>') +
       field(t('f.internalNotes'), '<textarea data-bind="internalNotes" placeholder="' + esc(t('ph.internalNotes')) + '">' + esc(est.internalNotes) + '</textarea>') + '</div>');
 
     h += '</div><aside class="est-side"><div class="summary" id="summary" data-out="summary">' + o.summary + '</div></aside></div>';
     h += '<div class="mobile-bar"><div><div class="mb-total" data-out="mb-total">' + o['mb-total'] + '</div><div class="mb-sub" data-out="mb-sub">' + o['mb-sub'] + '</div></div><button class="btn sm" data-action="scroll-summary">' + t('mb.breakdown') + '</button></div>';
+    return h;
+  }
+
+  function renderLicenseEditor(o) {
+    var lic = est.license;
+    if (lic.mode === 'legacy') {
+      var u = est.usage || {};
+      var v = dataName(ui.lang, u.optionId, u.name) + ' ' + (u.type === 'fixed' ? '+$' + nf(u.value) : '×' + nf(u.value, 3));
+      return '<div class="notice" style="margin:0"><span>' + esc(t('lic.legacy', { v: v })) + '</span><button class="btn sm" data-action="lic-switch">' + t('lic.switch') + '</button></div>';
+    }
+    var opts = E.PRESET_KEYS.map(function (k) { return { value: k, label: t('lic.p.' + k) + ' (+' + nf(settings.license.presets[k]) + '%)' }; });
+    opts.push({ value: 'custom', label: t('lic.p.custom') + '…' });
+    var h = '<div class="grid">' + field(t('lic.preset'), selectEl('data-change="lic-preset"', opts, lic.mode === 'custom' ? 'custom' : lic.preset)) +
+      input('license.pct', lic.pct, { label: t('lic.pct'), type: 'num', suf: '%' }) +
+      input('license.renewalPct', lic.renewalPct, { label: t('lic.renewal'), type: 'num', suf: '%' }) +
+      '<div class="fld"><span class="lbl">' + t('lic.amount') + '</span>' + out('license', o.license, 'snap out') + '</div></div>' +
+      '<p class="hint" style="margin:10px 0 0"><span data-out="lic-base">' + o['lic-base'] + '</span>' + (lic.mode === 'preset' ? ' · ' + esc(t('lic.pd.' + lic.preset)) : '') + '</p>';
+    if (lic.mode === 'custom') {
+      var L = settings.license;
+      var sel = function (fieldKey, keys, prefix, table) {
+        return field(t('lic.' + fieldKey), selectEl('data-change="lic-field" data-field="' + fieldKey + '"', keys.map(function (k) {
+          var p = E.num(table[k]); return { value: k, label: t(prefix + k) + ' (' + (p >= 0 ? '+' : '') + nf(p) + '%)' };
+        }), lic[fieldKey]));
+      };
+      h += '<div class="sub-title">' + t('lic.media') + '</div><div class="check-grid">' + E.LICENSE_MEDIA.map(function (m) {
+        return '<label class="check"><input type="checkbox" data-change="lic-media" value="' + m + '"' + (lic.media.indexOf(m) >= 0 ? ' checked' : '') + '> ' + esc(t('lic.m.' + m)) + ' <span class="muted">+' + nf(L.media[m]) + '%</span></label>';
+      }).join('') + '</div><div class="grid" style="margin-top:12px">' +
+        sel('territory', E.LICENSE_TERRITORIES, 'lic.t.', L.territory) + sel('term', E.LICENSE_TERMS, 'lic.term.', L.term) + sel('excl', E.LICENSE_EXCL, 'lic.e.', L.excl) + '</div>';
+    }
+    return h;
+  }
+
+  function renderDeliverablesEditor() {
+    var d = est.deliverables;
+    var h = '<div class="toggle-row">' + toggle('deliverables.enabled', d.enabled, t('dlv.include')) + '<span>' + esc(t('dlv.include')) + '</span></div>';
+    if (!d.enabled) return h;
+    h += '<div class="fld"><span class="lbl">' + t('dlv.formats') + '</span><div style="display:flex;gap:14px;flex-wrap:wrap;min-height:40px;align-items:center">' +
+      ['16:9', '9:16', '1:1', '4:5'].map(function (f) { return '<label class="check"><input type="checkbox" data-change="dlv-format" value="' + f + '"' + (d.formats.indexOf(f) >= 0 ? ' checked' : '') + '> ' + f + '</label>'; }).join('') + '</div></div>';
+    h += '<div class="grid" style="margin-top:12px">' + input('deliverables.durations', d.durations, { label: t('dlv.durations'), ph: '60, 30, 15, 6' }) +
+      input('deliverables.versions', d.versions, { label: t('dlv.versions'), type: 'int' }) + input('deliverables.resolution', d.resolution, { label: t('dlv.resolution'), ph: '4K / 1080p' }) +
+      input('deliverables.codec', d.codec, { label: t('dlv.codec') }) + '</div>' +
+      '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:12px">' + checkbox('deliverables.subtitles', d.subtitles, t('dlv.subtitles')) + checkbox('deliverables.clean', d.clean, t('dlv.clean')) + '</div>' +
+      '<div style="margin-top:12px">' + input('deliverables.notes', d.notes, { label: t('dlv.notes') }) + '</div>';
+    return h;
+  }
+
+  function renderTimelineEditor(o) {
+    var tl = est.timeline;
+    var h = '<div class="toggle-row">' + toggle('timeline.enabled', tl.enabled, t('tl.include')) + '<span>' + esc(t('tl.include')) + '</span></div>';
+    if (!tl.enabled) return h;
+    h += '<div class="grid" style="margin-bottom:12px">' + input('timeline.start', tl.start || est.date, { label: t('tl.start'), html: 'date' }) + '</div><div class="rows">';
+    tl.stages.forEach(function (st, i) {
+      h += '<div class="row r4">' + input('timeline.stages.' + i + '.name', st.name, { ph: stageName(ui.lang, st) || t('tl.stagePh'), aria: t('tl.stagePh') }) +
+        input('timeline.stages.' + i + '.days', st.days, { type: 'int', suf: t('tl.days').toLowerCase(), aria: t('tl.days') }) +
+        '<div class="snap out" style="font-weight:500" data-out="tl-row-' + i + '">' + (o['tl-row-' + i] || '') + '</div>' +
+        '<button class="icon-btn del" title="' + esc(t('t.remove')) + '" data-action="stage-del" data-i="' + i + '">✕</button></div>';
+    });
+    return h + '</div><div class="add-row"><button class="btn dashed sm" data-action="stage-add">' + t('tl.addStage') + '</button><span class="hint" style="margin-left:auto" data-out="tl-total">' + o['tl-total'] + '</span></div>';
+  }
+
+  function renderPackagesEditor(o) {
+    var pk = est.packages;
+    var h = '<div class="toggle-row">' + toggle('packages.enabled', pk.enabled, t('pkg.include')) + '<span>' + esc(t('pkg.include')) + '</span></div>';
+    if (!pk.enabled) return h;
+    h += '<p class="hint" style="margin:0 0 12px">' + t('pkg.hint') + '</p><div class="pkg-edit">';
+    pk.items.forEach(function (p, i) {
+      var b = 'packages.items.' + i + '.', rec = String(pk.recommended) === String(i);
+      h += '<div class="pkg-card' + (rec ? ' rec' : '') + '">' + input(b + 'name', p.name, { label: t('pkg.name'), ph: pkgName(ui.lang, p) }) +
+        input(b + 'desc', p.desc, { label: t('pkg.desc') }) +
+        field(t('pkg.features'), '<textarea data-bind="' + b + 'features" rows="4">' + esc(p.features) + '</textarea>') +
+        field(t('f.pricing'), seg(b + 'mode', p.mode, [{ value: 'pct', label: '%' }, { value: 'fixed', label: t('seg.fixed') }])) +
+        (p.mode === 'fixed' ? input(b + 'value', p.value, { label: t('f.price'), type: 'num', pre: '$' }) : input(b + 'value', p.value, { label: t('pkg.pct'), type: 'num', suf: '%' })) +
+        '<div class="pkg-foot">' + out('pkg-' + i, o['pkg-' + i]) +
+        '<button type="button" class="btn sm' + (rec ? ' primary' : '') + '" data-action="set" data-path="packages.recommended" data-value="' + i + '">' + (rec ? '★ ' : '') + t('pkg.recommended') + '</button></div></div>';
+    });
+    return h + '</div>';
+  }
+
+  function renderTermsEditor() {
+    var h = '<div class="check-grid">' + E.TERM_BLOCKS.map(function (k) { return checkbox('terms.' + k, est.terms[k], t('term.' + k), null, true); }).join('') + '</div>';
+    h += '<div class="grid" style="margin-top:14px">' + input('clientHours', est.clientHours, { label: t('f.clientHours'), type: 'int' }) +
+      input('archiveMonths', est.archiveMonths, { label: t('f.archiveMonths'), type: 'int' }) +
+      (est.portfolio.nda ? '' : input('portfolio.embargo', est.portfolio.embargo, { label: t('f.embargo'), html: 'date' })) + '</div>' +
+      '<div style="margin-top:12px">' + checkbox('portfolio.nda', est.portfolio.nda, t('f.nda'), null, true) + '</div>' +
+      '<p class="hint" style="margin:12px 0 0">' + t('terms.hint') + '</p>';
     return h;
   }
 
@@ -1510,28 +1927,16 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
         return { name: tr(lang, 'doc.revisions'), detail: lang === 'ru'
           ? l.count + ' ' + plural('ru', l.count, ['раунд', 'раунда', 'раундов']) + ' сверх включённых'
           : l.count + ' round' + (l.count === 1 ? '' : 's') + ' beyond the included revisions' };
+      case 'source': return { name: tr(lang, 'doc.source'), detail: tr(lang, 'doc.sourceDetail') };
+      case 'license': return { name: tr(lang, 'doc.license', { n: licName(lang, est.license) }), detail: licScopeLine(lang, est.license) };
       default: return { name: l.name || tr(lang, 'doc.fixed'), detail: '' };
     }
   }
-  function revisionTerms(lang, inc, extra) {
-    if (lang === 'ru') {
-      var s = inc ? 'включено ' + inc + ' ' + plural('ru', inc, ['раунд', 'раунда', 'раундов']) + ' правок' : 'раунды правок не включены';
-      if (extra > 0) s += '; ' + extra + ' ' + plural('ru', extra, ['дополнительный раунд учтён', 'дополнительных раунда учтены', 'дополнительных раундов учтены']) + ' выше';
-      return s.charAt(0).toUpperCase() + s.slice(1) + '.';
-    }
-    var e = inc ? inc + ' revision round' + (inc === 1 ? '' : 's') + ' included' : 'No revision rounds included';
-    if (extra > 0) e += '; ' + extra + ' additional round' + (extra === 1 ? '' : 's') + ' priced above';
-    return e + '.';
-  }
-  function timelineTerms(lang, rushName, deadline) {
-    if (lang === 'ru') return 'Срочное производство' + (rushName ? ' (' + rushName + ')' : '') + (deadline ? ', сдача до ' + deadline : '') + '.';
-    return (rushName ? rushName + ' delivery' : 'Rush delivery') + (deadline ? ' by ' + deadline : '') + '.';
-  }
-
   function renderClient() {
     var c = E.calcEstimate(est), s = settings.studio, L = est.docLang === 'ru' ? 'ru' : 'en';
     var T = function (k, v) { return tr(L, k, v); };
     var dm = function (x) { return money(x, L); };
+    var usd = function (x) { return dm(E.num(x) * c.fx); };
     var contact = [s.name, s.address, s.email, s.phone, s.website].filter(function (x) { return x && String(x).trim(); }).map(esc).join('\n');
     var tagline = L === 'ru' ? (s.taglineRu || s.tagline) : s.tagline;
     var footer = L === 'ru' ? (s.footerRu || s.footer) : s.footer;
@@ -1541,9 +1946,10 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       if (!g) groups.push(g = { id: l.section, lines: [] });
       g.lines.push(l);
     });
-    var meta = [[T('doc.client'), est.client], [T('doc.date'), fmtDate(est.date, L, true)], [T('doc.deadline'), fmtDate(est.deadline, L, true)], [T('doc.currency'), est.currency]].filter(function (x) { return x[1]; });
+    var validUntil = E.num(est.validDays) > 0 && est.date ? fmtDate(isoAddDays(est.date, E.num(est.validDays)), L, true) : '';
+    var meta = [[T('doc.client'), est.client], [T('doc.date'), fmtDate(est.date, L, true)], [T('doc.validUntil'), validUntil], [T('doc.deadline'), fmtDate(est.deadline, L, true)], [T('doc.currency'), est.currency]].filter(function (x) { return x[1]; });
     var rushName = est.rush.optionId === 'custom' && !c.rushName ? '' : dataName(L, est.rush.optionId, c.rushName);
-    var usageName = dataName(L, est.usage.optionId, c.usageName);
+    var lic = est.license;
 
     var h = '<div class="client-toolbar no-print"><button class="btn" data-action="back">' + t('client.back') + '</button><span class="hint">' + t('client.hint') + '</span>' +
       '<div class="seg" role="group" aria-label="' + esc(t('client.lang')) + '">' + ['en', 'ru'].map(function (lg) {
@@ -1553,29 +1959,87 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       (contact ? '<div class="doc-contact">' + contact + '</div>' : '') + '</header>';
     h += '<div class="doc-title"><div><div class="k">' + T('doc.estimate') + '</div><h1>' + esc(est.name || T('doc.untitled')) + '</h1></div><dl class="doc-meta">' +
       meta.map(function (m) { return '<dt>' + esc(m[0]) + '</dt><dd>' + esc(m[1]) + '</dd>'; }).join('') + '</dl></div>';
+
+    // Line items
     h += '<table class="doc-table"><tbody>';
     if (!groups.length) h += '<tr><td class="dt">' + T('doc.noItems') + '</td><td></td></tr>';
     groups.forEach(function (g) {
-      h += '<tr><th class="sect" colspan="2">' + esc(T('doc.sec.' + g.id)) + '</th></tr>';
+      h += '<tr class="sect-row"><th class="sect" colspan="2">' + esc(T('doc.sec.' + g.id)) + '</th></tr>';
       g.lines.forEach(function (l) {
         var x = clientLineText(L, l);
-        h += '<tr><td><div class="ln">' + esc(x.name) + '</div>' + (x.detail ? '<div class="dt">' + esc(x.detail) + '</div>' : '') + '</td><td class="amt">' + dm(l.amount) + '</td></tr>';
+        var amt = l.kind === 'license' && !l.amount ? T('doc.licIncluded') : dm(l.amount);
+        h += '<tr><td><div class="ln">' + esc(x.name) + '</div>' + (x.detail ? '<div class="dt">' + esc(x.detail) + '</div>' : '') + '</td><td class="amt">' + amt + '</td></tr>';
       });
     });
     h += '</tbody></table><div class="doc-totals">';
     function trow(label, value, cls) { return '<div class="tr' + (cls ? ' ' + cls : '') + '"><span>' + label + '</span><span>' + value + '</span></div>'; }
     h += trow(T('doc.subtotal'), dm(c.subtotal));
     if (c.rush) h += trow(T('doc.rush') + (rushName ? ' — ' + esc(rushName) : '') + ' (+' + pct(c.rushPct, L) + ')', dm(c.rush));
-    if (c.usage) h += trow(T('doc.usage') + ' — ' + esc(usageName), (c.usage < 0 ? '−' : '') + dm(Math.abs(c.usage)));
+    if (c.usage) h += trow(T('doc.usage') + ' — ' + esc(dataName(L, est.usage.optionId, c.usageName)), (c.usage < 0 ? '−' : '') + dm(Math.abs(c.usage)));
     if (c.discount) h += trow(T('doc.discount') + (c.discountType === 'pct' ? ' (' + pct(c.discountValue, L) + ')' : ''), '−' + dm(c.discount));
     h += trow(T('doc.total'), dm(c.total), 'grand');
     if (c.prepayPct > 0) h += trow(esc(T('doc.prepay', { p: pct(c.prepayPct, L) })), dm(c.prepay), 'pp') + trow(T('doc.balance'), dm(c.balance), 'pp');
-    h += '</div><div class="doc-terms">';
-    h += '<div><b>' + T('doc.revTitle') + '</b> ' + esc(revisionTerms(L, E.num(est.revisions.included), E.num(est.revisions.extra))) + '</div>';
-    h += '<div><b>' + T('doc.usageTerms') + '</b> ' + esc(usageName) + (c.usage ? '' : ' ' + T('doc.included')) + '.</div>';
-    if (c.rush) h += '<div><b>' + T('doc.timelineTitle') + '</b> ' + esc(timelineTerms(L, rushName, fmtDate(est.deadline, L, true))) + '</div>';
-    if (est.clientNotes && est.clientNotes.trim()) h += '<div class="doc-notes">' + esc(est.clientNotes.trim()) + '</div>';
-    h += '</div>' + (footer ? '<div class="doc-foot">' + esc(footer) + '</div>' : '') + '</article>';
+    h += '</div>';
+
+    // Packages
+    if (est.packages.enabled) {
+      var base = est.packages.items.find(function (p) { return p.mode === 'pct' && E.num(p.value) === 100; });
+      h += '<section class="doc-block"><h3>' + T('doc.pkgTitle') + '</h3><div class="pkg-grid">' + est.packages.items.map(function (p, i) {
+        var rec = String(est.packages.recommended) === String(i);
+        var feats = String(p.features || '').split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
+        return '<div class="pkg' + (rec ? ' rec' : '') + '">' + (rec ? '<div class="pkg-badge">' + esc(T('pkg.recommended')) + '</div>' : '') +
+          '<div class="pkg-name">' + esc(pkgName(L, p)) + '</div>' + (p.desc ? '<div class="pkg-desc">' + esc(p.desc) + '</div>' : '') +
+          '<div class="pkg-price">' + dm(c.packages[i].price) + '</div>' + (feats.length ? '<ul>' + feats.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' : '') + '</div>';
+      }).join('') + '</div>' + (base ? '<p class="doc-small">' + esc(T('doc.pkgNote', { n: pkgName(L, base) })) + '</p>' : '') + '</section>';
+    }
+
+    // Deliverables
+    var d = est.deliverables;
+    if (d.enabled) {
+      var durs = String(d.durations || '').split(/[,;]+/).map(function (x) { return x.trim(); }).filter(Boolean).map(function (x) { return /^\d+([.,]\d+)?$/.test(x) ? x + ' ' + T('u.s') : x; });
+      var kv = [[T('dlv.formats'), d.formats.join(', ')], [T('doc.durations'), durs.join(', ')], [T('dlv.versions'), E.num(d.versions) ? String(E.num(d.versions)) : ''],
+        [T('dlv.resolution'), d.resolution], [T('dlv.codec'), d.codec], [T('dlv.subtitles'), d.subtitles ? T('doc.yes') : T('doc.no')], [T('dlv.clean'), d.clean ? T('doc.yes') : T('doc.no')], [T('dlv.notes'), d.notes]];
+      h += '<section class="doc-block"><h3>' + T('doc.dlvTitle') + '</h3><dl class="doc-kv">' + kv.filter(function (x) { return x[1]; }).map(function (x) { return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>'; }).join('') + '</dl></section>';
+    }
+
+    // Timeline
+    if (est.timeline.enabled && est.timeline.stages.length) {
+      var tlr = timelineRows(est);
+      h += '<section class="doc-block"><h3>' + T('doc.tlTitle') + '</h3><table class="doc-steps"><tbody>' + tlr.rows.map(function (r, i) {
+        return '<tr><td class="n">' + (i + 1) + '</td><td>' + esc(stageName(L, r.stage)) + '</td><td>' + esc(dateRange(r.from, r.to, L)) + '</td><td class="amt">' + esc(T('doc.days', { n: r.days })) + '</td></tr>';
+      }).join('') + '</tbody></table></section>';
+    }
+
+    // License details
+    if (lic.mode !== 'legacy') {
+      var sc = E.licenseScope(lic);
+      var lkv = [[T('lic.media'), listText(sc.media.map(function (m) { return T('lic.m.' + m); }))], [T('lic.territory'), T('lic.t.' + sc.territory)], [T('lic.term'), T('lic.term.' + sc.term)], [T('lic.excl'), T('lic.e.' + sc.excl)]];
+      h += '<section class="doc-block"><h3>' + T('doc.license', { n: licName(L, lic) }) + '</h3><dl class="doc-kv">' + lkv.map(function (x) { return '<dt>' + esc(x[0]) + '</dt><dd>' + esc(x[1]) + '</dd>'; }).join('') + '</dl>' +
+        (c.license && sc.term !== 'perpetual' && c.renewalPct > 0 ? '<p class="doc-small">' + esc(T('doc.licRenewal', { p: nf(c.renewalPct, 2, L), v: dm(c.renewal) })) + '</p>' : '') +
+        (sc.excl === 'full' ? '<p class="doc-small">' + esc(T('doc.licBuyout')) + '</p>' : '') + '</section>';
+    }
+
+    // Terms
+    var tm = est.terms, items = [];
+    if (tm.revisions) items.push([T('term.revisions'), termText(L, 'revisions', { included: E.num(est.revisions.included), price: usd(est.revisions.price) })]);
+    if (tm.payment) items.push([T('term.payment'), termText(L, 'payment', { advance: nf(c.prepayPct, 2, L), final: nf(Math.max(0, 100 - c.prepayPct), 2, L) })]);
+    if (tm.sourceFiles) items.push([T('term.sourceFiles'), termText(L, est.sourceFiles.addon ? 'sourceYes' : 'sourceNo')]);
+    if (tm.client) items.push([T('term.client'), termText(L, 'client', { hours: E.num(est.clientHours) })]);
+    if (tm.portfolio) items.push([T('term.portfolio'), est.portfolio.nda ? termText(L, 'portfolioNda') : est.portfolio.embargo ? termText(L, 'portfolioEmbargo', { date: fmtDate(est.portfolio.embargo, L, true) }) : termText(L, 'portfolio')]);
+    if (tm.ai) items.push([T('term.ai'), termText(L, 'ai')]);
+    if (tm.archive) items.push([T('term.archive'), termText(L, 'archive', { months: E.num(est.archiveMonths) })]);
+    if (c.usage) items.push([T('doc.usage'), dataName(L, est.usage.optionId, c.usageName)]);
+    if (items.length || (est.clientNotes && est.clientNotes.trim())) {
+      h += '<section class="doc-block doc-terms"><h3>' + T('doc.termsTitle') + '</h3>' + items.map(function (x) { return '<div class="term"><b>' + esc(x[0]) + '.</b> ' + esc(x[1]) + '</div>'; }).join('') +
+        (est.clientNotes && est.clientNotes.trim() ? '<div class="term doc-notes">' + esc(est.clientNotes.trim()) + '</div>' : '') + '</section>';
+    }
+
+    // Signature
+    if (tm.signature) {
+      var sigCol = function (who) { return '<div class="sig"><div class="sig-who">' + esc(who) + '</div>' + ['doc.sigName', 'doc.sigDate', 'doc.sigSign'].map(function (k) { return '<div class="sig-line"><span>' + esc(T(k)) + '</span></div>'; }).join('') + '</div>'; };
+      h += '<section class="doc-block"><h3>' + T('doc.accept') + '</h3><p class="doc-small" style="margin-top:0">' + esc(T('doc.acceptText')) + '</p><div class="sig-grid">' + sigCol(T('doc.forClient')) + sigCol(T('doc.forStudio')) + '</div></section>';
+    }
+    h += (footer ? '<div class="doc-foot">' + esc(footer) + '</div>' : '') + '</article>';
     return h;
   }
 
@@ -1649,7 +2113,9 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     h += section('D', t('set.defaults'), '<div class="grid">' +
       si('wastePct', settings.wastePct, { label: t('f.waste'), type: 'num', suf: '%' }) + si('markupPct', settings.markupPct, { label: t('f.markup'), type: 'num', suf: '%' }) +
       si('revisionsIncluded', settings.revisionsIncluded, { label: t('f.includedRev'), type: 'int' }) + si('revisionPrice', settings.revisionPrice, { label: t('f.revPrice'), type: 'num', pre: '$' }) +
-      si('formatPrice', settings.formatPrice, { label: t('f.formatPrice'), type: 'num', pre: '$' }) + si('prepayPct', settings.prepayPct, { label: t('f.prepay'), type: 'num', suf: '%' }) + '</div>' +
+      si('formatPrice', settings.formatPrice, { label: t('f.formatPrice'), type: 'num', pre: '$' }) + si('prepayPct', settings.prepayPct, { label: t('f.prepay'), type: 'num', suf: '%' }) +
+      si('sourceFilesPrice', settings.sourceFilesPrice, { label: t('f.sourcePrice'), type: 'num', pre: '$' }) + si('validDays', settings.validDays, { label: t('f.validDays'), type: 'int' }) +
+      si('clientHours', settings.clientHours, { label: t('f.clientHours'), type: 'int' }) + si('archiveMonths', settings.archiveMonths, { label: t('f.archiveMonths'), type: 'int' }) + '</div>' +
       '<div class="sub-title">' + t('f.markupOn') + '</div><div style="display:flex;gap:16px;flex-wrap:wrap">' +
       checkbox('markupOn.credits', settings.markupOn.credits, t('chk.credits'), 'settings') + checkbox('markupOn.fixed', settings.markupOn.fixed, t('chk.fixed'), 'settings') + checkbox('markupOn.labor', settings.markupOn.labor, t('chk.labor'), 'settings') + '</div>');
 
@@ -1659,13 +2125,19 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
     }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="rush-add">' + t('btn.addRush') + '</button></div>';
     h += section('E', t('set.rushOpts'), rush);
 
-    var usage = '<div class="rows">' + settings.usageOptions.map(function (u, i) {
-      return '<div class="row r4">' + si('usageOptions.' + i + '.name', u.name, { aria: t('f.name'), ph: t('f.name') }) +
-        selectEl('data-sbind="usageOptions.' + i + '.type" data-rerender aria-label="' + esc(t('f.type')) + '"', [{ value: 'mult', label: t('opt.multType') }, { value: 'fixed', label: t('opt.fixedType') }], u.type) +
-        si('usageOptions.' + i + '.value', u.value, { type: 'num', pre: u.type === 'mult' ? '×' : '$', aria: t('a.amount') }) +
-        '<button class="icon-btn del" title="' + esc(t('t.remove')) + '" data-action="usage-del" data-i="' + i + '">✕</button></div>';
-    }).join('') + '</div><div class="add-row"><button class="btn dashed sm" data-action="usage-add">' + t('btn.addUsage') + '</button><span class="hint">' + t('set.usageHint') + '</span></div>';
-    h += section('F', t('set.usageOpts'), usage);
+    var LP = settings.license;
+    var lgrid = function (title, table, keys, prefix, path) {
+      return '<div class="sub-title">' + title + '</div><div class="grid">' + keys.map(function (k) {
+        return si('license.' + path + '.' + k, table[k], { label: t(prefix + k), type: 'num', suf: '%' });
+      }).join('') + '</div>';
+    };
+    h += section('F', t('set.license'), '<p class="hint" style="margin-top:0">' + t('set.licenseHint') + '</p>' +
+      lgrid(t('set.presets'), LP.presets, E.PRESET_KEYS, 'lic.p.', 'presets') +
+      lgrid(t('lic.media'), LP.media, E.LICENSE_MEDIA, 'lic.m.', 'media') +
+      lgrid(t('lic.territory'), LP.territory, E.LICENSE_TERRITORIES, 'lic.t.', 'territory') +
+      lgrid(t('lic.term'), LP.term, E.LICENSE_TERMS, 'lic.term.', 'term') +
+      lgrid(t('lic.excl'), LP.excl, E.LICENSE_EXCL, 'lic.e.', 'excl') +
+      '<div class="sub-title"></div><div class="grid">' + si('license.renewalPct', LP.renewalPct, { label: t('f.renewalPct'), type: 'num', suf: '%' }) + '</div>');
 
     var st = settings.studio, mode = st.logoMode;
     var logoCtl = '<div class="logo-setting"><div class="logo-preview">' + docLogo() + '</div><div class="logo-ctl">' +
@@ -1680,7 +2152,14 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       field(t('f.footer'), '<textarea data-sbind="studio.footer">' + esc(st.footer) + '</textarea>') +
       field(t('f.footerRu'), '<textarea data-sbind="studio.footerRu">' + esc(st.footerRu) + '</textarea>') + '</div>');
 
-    h += section('H', t('set.data'), '<p class="hint" style="margin-top:0">' + t('set.dataHint') + '</p>' +
+    h += section('H', t('set.termsText'), '<p class="hint" style="margin-top:0">' + t('set.termsHint') + '</p>' + TERMS_KEYS.map(function (k) {
+      return '<div class="sub-title">' + t('tt.' + k) + '</div><div class="grid wide">' + ['en', 'ru'].map(function (lg) {
+        var ov = settings.termsText[lg][k];
+        return field(lg.toUpperCase(), '<textarea rows="3" data-sbind="termsText.' + lg + '.' + k + '">' + esc(ov && String(ov).trim() ? ov : TERMS_TEXT[lg][k]) + '</textarea>');
+      }).join('') + '</div><div class="add-row" style="margin-top:6px"><button class="btn sm ghost" data-action="term-reset" data-key="' + k + '">' + t('btn.resetText') + '</button></div>';
+    }).join(''));
+
+    h += section('I', t('set.data'), '<p class="hint" style="margin-top:0">' + t('set.dataHint') + '</p>' +
       '<div class="add-row"><button class="btn" data-action="export">' + t('btn.exportJson') + '</button><button class="btn" data-action="import">' + t('btn.importDots') + '</button>' +
       '<button class="btn danger" data-action="reset-settings">' + t('btn.resetSettings') + '</button><button class="btn danger" data-action="wipe">' + t('btn.wipe') + '</button></div>');
     return h;
@@ -1754,6 +2233,8 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       case 'rate': return t('change.rate', { n: svcName(ui.lang, { key: c.key, name: c.name }) }) + ': ' + arrow(c.from, c.to, 2, '$');
       case 'formatPrice': return t('change.formatPrice') + ': ' + arrow(c.from, c.to, 2, '$');
       case 'revisionPrice': return t('change.revisionPrice') + ': ' + arrow(c.from, c.to, 2, '$');
+      case 'sourcePrice': return t('change.sourcePrice') + ': ' + arrow(c.from, c.to, 2, '$');
+      case 'license': return t('change.license') + ': ' + arrow(c.from, c.to, 2);
     }
     return JSON.stringify(c);
   }
@@ -1886,6 +2367,23 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       } else if (el.dataset.change === 'usage-option') {
         if (v === 'custom') est.usage = { optionId: 'custom', name: '', type: est.usage.type, value: est.usage.value };
         else { var u = settings.usageOptions.find(function (x) { return x.id === v; }); if (u) est.usage = { optionId: u.id, name: u.name, type: u.type, value: E.num(u.value) }; }
+      } else if (el.dataset.change === 'lic-preset') {
+        var lic = est.license;
+        if (v === 'custom') Object.assign(lic, E.licenseScope(lic), { mode: 'custom' });
+        else Object.assign(lic, { mode: 'preset', preset: v }, E.LICENSE_PRESETS[v]);
+        lic.pct = E.licensePct(settings, lic);
+      } else if (el.dataset.change === 'lic-media') {
+        var ml = est.license.media.filter(function (m) { return m !== el.value; });
+        if (el.checked) ml.push(el.value);
+        est.license.media = E.LICENSE_MEDIA.filter(function (m) { return ml.indexOf(m) >= 0; });
+        est.license.pct = E.licensePct(settings, est.license);
+      } else if (el.dataset.change === 'lic-field') {
+        est.license[el.dataset.field] = v;
+        est.license.pct = E.licensePct(settings, est.license);
+      } else if (el.dataset.change === 'dlv-format') {
+        var fl = est.deliverables.formats.filter(function (f) { return f !== el.value; });
+        if (el.checked) fl.push(el.value);
+        est.deliverables.formats = ['16:9', '9:16', '1:1', '4:5'].filter(function (f) { return fl.indexOf(f) >= 0; });
       } else if (el.dataset.change === 'rush-option') {
         if (v === 'custom') est.rush = { optionId: 'custom', name: '', pct: est.rush.pct };
         else { var r = settings.rushOptions.find(function (x) { return x.id === v; }); if (r) est.rush = { optionId: r.id, name: r.name, pct: E.num(r.pct) }; }
@@ -1973,6 +2471,12 @@ input[type=date]::-webkit-calendar-picker-indicator { filter: invert(.7); }
       case 'rush-del': settings.rushOptions.splice(i, 1); saveSettings(); render(); break;
       case 'usage-add': settings.usageOptions.push({ id: E.uid('u'), name: '', type: 'mult', value: 1 }); saveSettings(); render(); break;
       case 'usage-del': settings.usageOptions.splice(i, 1); saveSettings(); render(); break;
+      case 'lic-switch': est.license = E.newLicense(settings, 'social'); saveDraft(); render(); break;
+      case 'stage-add': est.timeline.stages.push({ id: E.uid('st'), name: '', days: 1 }); saveDraft(); render(); break;
+      case 'stage-del': est.timeline.stages.splice(i, 1); saveDraft(); render(); break;
+      case 'term-reset':
+        ['en', 'ru'].forEach(function (lg) { delete settings.termsText[lg][b.dataset.key]; });
+        saveSettings(); render(); break;
       case 'reset-settings':
         if (await confirmDialog(t('m.resetTitle'), esc(t('m.resetMsg')), t('m.reset'), true)) {
           settings = E.defaultSettings(); saveSettings(); render(); toast(t('toast.reset'));

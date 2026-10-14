@@ -72,11 +72,53 @@ Each estimate stores its own copy of:
 - the credit price,
 - the exchange rates,
 - the hourly rates,
-- the price per format and per revision round.
+- the price per format, per revision round and for the source-files add-on,
+- the license surcharge %.
 
 Changing Settings therefore never changes a saved estimate. If an estimate's prices differ from current Settings, a banner tells you so. **Refresh prices** lists every value that will change and the new total, and updates them only after you confirm.
 
 A blank, never-saved estimate always follows current Settings. So you can fill in Settings first and then start estimating.
+
+## Usage license
+
+Section **06 Usage license** of an estimate. The license fee is a % surcharge on the **creative fee** (labor + markup), so AI credits and third-party costs are not part of it. On the client document it is a separate line with a plain-language description, followed by a block listing media, territory, term and exclusivity.
+
+| Preset | Scope | Default |
+|---|---|---|
+| Social | organic social media, worldwide, 12 months | +0% (included) |
+| Digital Ads | social + paid digital ads + website, worldwide, 12 months | +40% |
+| Campaign | all digital + outdoor + print, worldwide, 24 months | +80% |
+| Full Buyout | all media, worldwide, perpetual, exclusive | +150% (×2.5) |
+
+**Custom…** lets you tick the media and choose territory, term and exclusivity. Its % is the sum of the chosen surcharges, and it never goes below 0. The default values are:
+
+| Setting | Values |
+|---|---|
+| Media | organic social 0, paid ads +30, website & marketplaces +10, outdoor +30, TV & cinema +60, print +20, events & retail screens +10, PR & internal +5 |
+| Territory | Czech Republic −10, EU −5, CIS −5, worldwide 0 |
+| Term | 6 months −10, 12 months 0, 24 months +20, perpetual +50 |
+| Exclusivity | none 0, style / character +25, full +50 |
+
+You can also type the % for a single estimate. The renewal note (default 40% of the license fee) is shown unless the term is perpetual. All defaults are in **Settings → Usage license pricing**.
+
+Estimates saved before the license module keep their old "usage rights" pricing, so their total does not change. A notice in the section offers **Switch to the license module**.
+
+## Client document sections
+
+Besides the line items and totals, each estimate can add these sections to the client document. Each one is switched on or off per estimate.
+
+- **Deliverables:** aspect ratios, durations, number of versions, resolution, codec, subtitles, clean versions and notes.
+- **Stages & timeline:** stages with a number of days each. Dates are calculated from the start date. The editor warns when the timeline ends after the deadline.
+- **Packages:** Base / Optimal / Premium, side by side. Each package costs a % of this estimate or a fixed amount, and has a description and an "included" list. One package is marked as recommended.
+- **Usage license** details (see above).
+- **Terms:** revisions, payment (the split follows the prepayment %), source files, client feedback time, portfolio (with an NDA or embargo date option), use of AI, and project archive.
+- **Acceptance block:** name, date and signature lines for the client and the studio.
+
+Also new:
+- **Source files add-on:** a toggle under Services that adds a paid line.
+- **Valid until:** a date in the document header (the default validity is 14 days).
+
+The wording of every term is a template with an English and a Russian version, editable in **Settings → Terms texts**. Words in `{braces}` are filled in automatically (for example `{hours}`, `{included}`, `{price}`). **Reset** restores the default text. The default texts have not been reviewed by a lawyer.
 
 ## How the price is calculated
 
@@ -87,13 +129,14 @@ All money inputs are in **USD**. Totals are converted to the estimate's output c
 | Line credits | `credits × generations` (or `credits/sec × seconds × generations`) |
 | AI cost | `total credits × credit price` |
 | Waste buffer | `AI cost × waste %` (editable per estimate) |
-| Labor | enabled services (hours × rate, or a fixed price) + extra formats (count × price) + extra revision rounds (count × price) |
+| Labor | enabled services (hours × rate, or a fixed price) + extra formats (count × price) + extra revision rounds (count × price) + source-files add-on |
 | Markup | `markup % × (whichever you tick: AI cost incl. waste / fixed costs / labor)` |
-| Subtotal | AI + labor + fixed costs + markup |
-| Rush fee | `rush % × (labor + markup)`. It is never applied to raw credit or fixed costs. |
-| Usage rights | `subtotal × (multiplier − 1)`, or a fixed surcharge |
-| Discount | `% of (subtotal + rush + usage)`, or a fixed amount (never more than the price) |
-| **Total** | subtotal + rush + usage − discount |
+| Usage license | `license % × (labor + markup)` |
+| Subtotal | AI + labor + fixed costs + markup + license |
+| Rush fee | `rush % × (labor + markup)`. It is never applied to raw credit costs, fixed costs or the license. |
+| Discount | `% of (subtotal + rush)`, or a fixed amount (never more than the price) |
+| **Total** | subtotal + rush − discount |
+| Packages | each one is `% of total` or a fixed amount |
 | Prepayment | `total × prepayment %` |
 | Real cost | AI cost incl. waste + fixed costs |
 | Margin | `total − real cost`. "Margin excl. your labor" also subtracts labor. |
@@ -102,7 +145,7 @@ The **client version** hides credits, model names, markup and margin:
 
 - All generation appears as one **AI production** line.
 - Markup is folded into the line items it applies to, so the visible lines add up exactly to the subtotal.
-- Rush fee, usage rights and discount are shown as separate lines when they apply.
+- The usage license, rush fee and discount are shown as separate lines when they apply.
 - The document also shows the number of included revision rounds, the prepayment amount and any client notes.
 
 ## Backup and moving between devices
@@ -127,10 +170,12 @@ The tests load the calculation engine straight out of `index.html`, so they chec
 - **Example 1 (USD)**, worked by hand:
   - Lines: Kling 10 cr/sec (4 gens × 5 s) + Nano Banana 2 cr (×20) = 240 cr. Adding a 25 % waste buffer gives 300 cr, which at $0.05 per credit is **$15**.
   - Labor $1,030, fixed costs $200, markup 20 % on credits + fixed = **$43**, so the subtotal is **$1,288**.
+  - The Digital Ads license is 40 % × (1,030 + 43) = **$429.20**, so the subtotal is **$1,717.20**.
   - Rush fee 25 % × (1,030 + 43) = **$268.25**.
-  - Commercial usage ×1.25 adds **$322**.
-  - A 10 % discount of **$187.83** gives a total of **$1,690.42** and a prepayment of **$845.21**.
-- **Example 2 (CZK)**: a custom model, a per-service rate, markup on labor, a fixed usage surcharge and a fixed discount. Total **8,133 CZK**.
+  - A 10 % discount of **$198.55** gives a total of **$1,786.90** and a prepayment of **$893.45**.
+- **Example 2 (CZK)**: a custom model, a per-service rate, markup on labor, a custom license (paid ads, Czech Republic, 6 months, exclusive style = 35 %) and a fixed discount. Total **7,987 CZK**.
+- **Old estimates** saved before the license module keep their exact total ($1,690.42 with "Commercial ×1.25").
+- The source-files add-on, and package prices (% of the total or a fixed amount).
 - **Rush fee** ignores raw credit and fixed costs.
 - **Waste buffer** works per estimate.
 - **Changing model prices in Settings does not change a saved estimate.** Refresh prices then updates it on purpose and leaves the original untouched.
