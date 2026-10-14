@@ -1,7 +1,7 @@
 import { useStore } from '../data/store';
 import type { Status, WorkType, Workspace } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
-import { LangSwitch, newId } from './bits';
+import { LangSwitch, ThemeSwitch, newId } from './bits';
 
 type Ordered = Status | WorkType | Workspace;
 type OrderedTable = 'statuses' | 'work_types' | 'workspaces';
@@ -84,6 +84,8 @@ export function SettingsView() {
       <section className="card-s">
         <h2>{t('set.language')}</h2>
         <LangSwitch />
+        <h2 style={{ marginTop: 16 }}>{t('set.theme')}</h2>
+        <ThemeSwitch />
         <p className="muted" style={{ fontSize: 12.5, marginBottom: 0 }}>{t('set.shortcuts')}</p>
         <p className="muted" style={{ fontSize: 12.5, marginBottom: 0 }}>{t('set.install')}</p>
       </section>

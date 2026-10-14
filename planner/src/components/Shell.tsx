@@ -10,7 +10,7 @@ import { FilterBar } from './FilterBar';
 import { ListView } from './ListView';
 import { SettingsView } from './SettingsView';
 import { TaskDetail } from './TaskDetail';
-import { LangSwitch, newId } from './bits';
+import { LangSwitch, ThemeSwitch, newId } from './bits';
 
 export type View = 'list' | 'board' | 'calendar' | 'settings';
 const VIEWS: View[] = ['list', 'board', 'calendar', 'settings'];
@@ -161,6 +161,7 @@ export function Shell() {
           <div className="side-foot">
             <button className={'btn sm' + (view === 'settings' ? ' on' : '')} onClick={() => { setView('settings'); setMenu(false); }}>⚙ {t('nav.settings')}</button>
             <span className="grow" />
+            <ThemeSwitch compact />
             <LangSwitch />
           </div>
         </aside>

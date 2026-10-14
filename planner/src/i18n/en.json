@@ -136,5 +136,9 @@
  "count.days": {
   "one": "{n} day",
   "other": "{n} days"
- }
+ },
+ "set.theme": "Theme",
+ "theme.auto": "Auto",
+ "theme.light": "Light",
+ "theme.dark": "Dark"
 }

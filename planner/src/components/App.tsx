@@ -6,6 +6,7 @@ import { StoreProvider, useStore } from '../data/store';
 import { useI18n } from '../i18n';
 import { Login } from './Login';
 import { Shell } from './Shell';
+import { ThemeCtx, useTheme } from '../lib/theme';
 
 function makeBackend(): Backend {
   const q = new URLSearchParams(location.search);
@@ -17,18 +18,19 @@ export function App() {
   const backend = useMemo(makeBackend, []);
   const [email, setEmail] = useState<string | null | undefined>(undefined);
   const { t } = useI18n();
+  const theme = useTheme();
 
   useEffect(() => {
     backend.getSessionEmail().then(setEmail);
     return backend.onAuthChange(setEmail);
   }, [backend]);
 
-  if (email === undefined) return <div className="center muted">{t('common.loading')}</div>;
-  if (!email) return <Login backend={backend} />;
   return (
-    <StoreProvider backend={backend} email={email}>
-      <Gate />
-    </StoreProvider>
+    <ThemeCtx.Provider value={theme}>
+      {email === undefined ? <div className="center muted">{t('common.loading')}</div>
+        : !email ? <Login backend={backend} />
+        : <StoreProvider backend={backend} email={email}><Gate /></StoreProvider>}
+    </ThemeCtx.Provider>
   );
 }
 
