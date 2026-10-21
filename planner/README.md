@@ -77,6 +77,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - Every table has Row Level Security. The rule is `private.is_member()`: the signed-in user's email must be in `members`.
   - The `anon` role has no access at all.
   - The `authenticated` role can only select, insert, update and delete, filtered by RLS. `members` is read-only except for your own name, color and language.
+- **Grants are always explicit.** From 30 Oct 2026 Supabase no longer grants API access to new `public` tables automatically, so every migration that creates a table must also `grant` what `authenticated` (and, only where intended, `anon`) may do.
 - **Triggers:** a trigger keeps `updated_at` current, and sets `completed_at` when a task moves to a status marked "counts as done".
 - **To add a team member**, run in the Supabase SQL editor:
 
