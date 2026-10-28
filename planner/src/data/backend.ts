@@ -23,6 +23,15 @@ export interface Backend {
   remove(table: TableName, id: string): Promise<void>;
   /** Web Push (Supabase only). */
   push?: PushApi;
+  /** Files of the production board (private bucket). */
+  files: FilesApi;
+}
+
+export interface FilesApi {
+  upload(path: string, file: Blob, contentType: string): Promise<void>;
+  /** Short-lived URLs to show files, by path. Missing paths are left out. */
+  urls(paths: string[]): Promise<Record<string, string>>;
+  remove(paths: string[]): Promise<void>;
 }
 
 export interface PushApi {

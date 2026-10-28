@@ -34,6 +34,13 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - a client accepting an estimate.
 
   Turn them on per device. Each kind can be switched off, quiet hours can be set in Prague time, and texts follow your interface language. On iPhone, add the app to the Home Screen first (iOS 16.4+).
+- **Production** (🎬 in the menu): a board per project for AI production.
+  - **Structure:** scenes → blocks (script lines/shots) → versions V1, V2… with generations: photos and videos up to 50 MB uploaded, longer videos as Google Drive / Higgsfield / YouTube links with an embedded player.
+  - **Per block:** a status (Not started → In progress → Revisions → Done; click to advance), an assignee, an AI-specialist note, and revisions per version. Revisions take a text and an optional screenshot; they can be ticked off or turned into a planner task in one click.
+  - **Automatic statuses:** a new generation moves a block to "In progress", a new revision to "Revisions".
+  - **Overview:** progress cards, filters by status, search across script, notes and revisions, scene navigation, a trash with restore, and CSV export.
+  - **Paste script** splits a screenplay into scenes ("Сцена 3", "INT. …", "3. Title") and blocks (paragraphs).
+  - **Adding files:** drag and drop, paste with Ctrl+V, or the Upload / Link buttons.
 - **Accepted estimates** from the calculator's client link become a project with tasks automatically (see the main README).
 - **Views:**
   - **List**, like Apple Reminders: quick add, tick to complete, edit the title in place.
@@ -66,6 +73,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
 - **Tables:** `members`, `workspaces`, `projects`, `statuses`, `work_types`, `tasks`.
   - Notifications: `push_subscriptions` (one row per device).
   - Calculator link: `estimates`, `calc_settings`, `estimate_shares`.
+  - Production: `prod_scenes`, `prod_blocks`, `prod_versions`, `prod_media`, `prod_revisions` (plus `projects.production`); files are in the private Storage bucket `prod` (50 MB per file, shown through signed URLs that last 6 hours).
   - Private schema (not reachable through the API): `private.notification_outbox` and `private.push_config` (VAPID keys, dispatcher secret).
 - **Notifications pipeline:**
   - `pg_cron` runs every minute: `private.enqueue_due()` puts due reminders, deadlines and posts into the outbox, respecting each member's switches and quiet hours.
@@ -100,7 +108,7 @@ Both are committed in `.env.production` and `.env.development` on purpose. The p
 cd planner
 npm ci
 npm run dev        # http://localhost:5173/?demo
-npm test           # unit tests: time zones, smart lists, quick add, i18n
+npm test           # unit tests: time zones, smart lists, quick add, script parser, production stats, i18n
 npm run typecheck
 npm run build      # → dist/
 ```

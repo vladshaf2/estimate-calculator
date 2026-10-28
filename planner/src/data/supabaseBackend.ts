@@ -42,13 +42,17 @@ export function createSupabaseBackend(url: string, key: string): Backend {
 
     async loadAll() {
       const snap = emptySnapshot();
-      const results = await Promise.all(TABLES.map((t) => sb.from(t).select('*')));
-      results.forEach((res, i) => {
-        if (res.error) throw res.error;
-        const table = TABLES[i];
+      // The API returns at most 1000 rows per request: page through bigger tables.
+      const PAGE = 1000;
+      await Promise.all(TABLES.map(async (table) => {
         const target = snap[table] as Record<string, unknown>;
-        for (const row of res.data as { id: string }[]) target[row.id] = row;
-      });
+        for (let from = 0; ; from += PAGE) {
+          const res = await sb.from(table).select('*').order('id').range(from, from + PAGE - 1);
+          if (res.error) throw res.error;
+          for (const row of res.data as { id: string }[]) target[row.id] = row;
+          if (res.data.length < PAGE) break;
+        }
+      }));
       return snap as Snapshot;
     },
 
@@ -96,6 +100,26 @@ export function createSupabaseBackend(url: string, key: string): Backend {
     async remove(table, id) {
       const { error } = await sb.from(table).delete().eq('id', id);
       if (error) throw error;
+    },
+
+    files: {
+      async upload(path, file, contentType) {
+        const { error } = await sb.storage.from('prod').upload(path, file, { contentType, upsert: false, cacheControl: '31536000' });
+        if (error) throw error;
+      },
+      async urls(paths) {
+        if (!paths.length) return {};
+        const { data, error } = await sb.storage.from('prod').createSignedUrls(paths, 6 * 3600);
+        if (error) throw error;
+        const out: Record<string, string> = {};
+        for (const x of data || []) if (x.path && x.signedUrl) out[x.path] = x.signedUrl;
+        return out;
+      },
+      async remove(paths) {
+        if (!paths.length) return;
+        const { error } = await sb.storage.from('prod').remove(paths);
+        if (error) throw error;
+      },
     },
 
     push: {
