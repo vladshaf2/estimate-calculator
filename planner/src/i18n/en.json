@@ -338,5 +338,16 @@
  "pshare.fixed": "fixed",
  "pshare.noGens": "No generations yet",
  "pshare.gone": "This link is no longer valid. Please ask the studio for a new one.",
- "pshare.loadErr": "Couldn't load the board. Check the connection and reload the page."
+ "pshare.loadErr": "Couldn't load the board. Check the connection and reload the page.",
+ "prod.deleteProject": "Delete project",
+ "prod.deleteTitle": "Delete “{n}”?",
+ "prod.deleteBoard": "Delete the production board",
+ "prod.deleteBoardHint": "Scenes, blocks, generations with their files, revisions and client links are deleted. The project and its tasks stay in the planner.",
+ "prod.deleteAll": "Delete the whole project",
+ "prod.deleteAllHint": "Everything above plus the planner project and its tasks ({t}).",
+ "prod.deleteSummary": "Will be deleted: {s} scenes, {b} blocks, {g} generations, {r} revisions",
+ "prod.deleteSummaryTasks": "{t} tasks",
+ "prod.deleteWarn": "This can't be undone.",
+ "prod.projectDeleted": "“{n}” deleted",
+ "prod.boardDeleted": "Production board of “{n}” deleted"
 }
