@@ -9,13 +9,16 @@ import { BoardView } from './BoardView';
 import { CalendarView } from './CalendarView';
 import { FilterBar } from './FilterBar';
 import { AddView } from './AddView';
+import { ProdView } from './ProdView';
+import { setFilesApi } from '../lib/files';
 import { ListView } from './ListView';
 import { SettingsView } from './SettingsView';
 import { TaskDetail } from './TaskDetail';
 import { LangSwitch, ThemeSwitch, newId } from './bits';
 
-export type View = 'add' | 'list' | 'board' | 'calendar' | 'settings';
-const VIEWS: View[] = ['add', 'list', 'board', 'calendar', 'settings'];
+export type View = 'add' | 'list' | 'board' | 'calendar' | 'settings' | 'prod';
+const VIEWS: View[] = ['add', 'list', 'board', 'calendar', 'settings', 'prod'];
+export interface ProdRef { project: string | null; scene: string | null }
 const KEY_VIEWS: View[] = ['list', 'board', 'calendar', 'settings'];
 
 interface Ui {
@@ -26,6 +29,8 @@ interface Ui {
   showDone: boolean; setShowDone(v: boolean): void;
   openTask(id: string | null): void;
   openId: string | null;
+  /** Production tab: open project / scene. */
+  prod: ProdRef; setProd(p: ProdRef): void;
   /** Creates a task with defaults that fit the current list, returns it. */
   addTask(title: string, extra?: Partial<Task>): Task | null;
   listTitle: string;
@@ -35,8 +40,12 @@ export function useUi(): Ui { const v = useContext(UiCtx); if (!v) throw new Err
 
 const SMART_ICONS: Record<string, string> = { today: '☀', overdue: '⏰', needs_fix: '🛠', client_review: '⏳', posts_week: '📣', mine: '👤', all: '☰' };
 
-function parseHash(): { view: View; list: ListRef; task: string | null } {
+function parseHash(): { view: View; list: ListRef; task: string | null; prod: ProdRef } {
   const [, v, l, task] = location.hash.split('/');
+  if (v === 'prod') {
+    const dec = (x?: string) => (x && x !== '-' ? decodeURIComponent(x) : null);
+    return { view: 'prod', list: { kind: 'smart', id: 'today' }, task: null, prod: { project: dec(l), scene: dec(task) } };
+  }
   // No hash (opening the app) → the "New task" start screen.
   const view = VIEWS.includes(v as View) ? (v as View) : 'add';
   let list: ListRef = { kind: 'smart', id: 'today' };
@@ -45,7 +54,7 @@ function parseHash(): { view: View; list: ListRef; task: string | null } {
     if (kind === 'smart' && SMART_LISTS.includes(id as never)) list = { kind: 'smart', id: id as never };
     else if ((kind === 'workspace' || kind === 'project') && id) list = { kind, id };
   }
-  return { view, list, task: task ? decodeURIComponent(task) : null };
+  return { view, list, task: task ? decodeURIComponent(task) : null, prod: { project: null, scene: null } };
 }
 
 export function Shell() {
@@ -56,6 +65,8 @@ export function Shell() {
   const [view, setView] = useState<View>(init.view);
   const [list, setListState] = useState<ListRef>(init.list);
   const [openId, setOpenId] = useState<string | null>(init.task);
+  const [prod, setProdState] = useState<ProdRef>(init.prod);
+  useMemo(() => setFilesApi(backend.files), [backend]);
   const [filters, setFilters] = useState<Filters>(NO_FILTERS);
   const [search, setSearch] = useState('');
   const [showDone, setShowDone] = useState(false);
@@ -63,21 +74,24 @@ export function Shell() {
   const searchRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const h = `#/${view}/${encodeURIComponent(list.kind + ':' + list.id)}${openId ? '/' + encodeURIComponent(openId) : ''}`;
+    const h = view === 'prod'
+      ? `#/prod/${prod.project ? encodeURIComponent(prod.project) : '-'}${prod.scene ? '/' + encodeURIComponent(prod.scene) : ''}`
+      : `#/${view}/${encodeURIComponent(list.kind + ':' + list.id)}${openId ? '/' + encodeURIComponent(openId) : ''}`;
     if (location.hash !== h) {
-      const sameScreen = location.hash.split('/').slice(0, 3).join('/') === h.split('/').slice(0, 3).join('/');
+      const sameScreen = view !== 'prod' && location.hash.split('/').slice(0, 3).join('/') === h.split('/').slice(0, 3).join('/');
       if (sameScreen) history.replaceState(null, '', h); else history.pushState(null, '', h);
     }
-  }, [view, list, openId]);
+  }, [view, list, openId, prod]);
 
   // Browser back/forward and edited links.
   useEffect(() => {
-    const onHash = () => { const h = parseHash(); setView(h.view); setListState(h.list); setOpenId(h.task); };
+    const onHash = () => { const h = parseHash(); setView(h.view); if (h.view === 'prod') setProdState(h.prod); else { setListState(h.list); setOpenId(h.task); } };
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
 
-  const setList = useCallback((l: ListRef) => { setListState(l); setMenu(false); setView((v) => (v === 'settings' || v === 'add' ? 'list' : v)); }, []);
+  const setList = useCallback((l: ListRef) => { setListState(l); setMenu(false); setView((v) => (v === 'settings' || v === 'add' || v === 'prod' ? 'list' : v)); }, []);
+  const setProd = useCallback((p: ProdRef) => { setProdState(p); setView('prod'); setMenu(false); }, []);
 
   const listTitle = list.kind === 'smart' ? t(('smart.' + list.id) as TKey)
     : list.kind === 'workspace' ? nm(db.workspaces[list.id]) : (db.projects[list.id]?.name || '');
@@ -132,7 +146,8 @@ export function Shell() {
   }, [openId]);
 
   const ctx = { db, now: new Date(), meId: me?.id || null };
-  const ui: Ui = { view, setView, list, setList, filters, setFilters, search, showDone, setShowDone, openTask: setOpenId, openId, addTask, listTitle };
+  const ui: Ui = { view, setView, list, setList, filters, setFilters, search, showDone, setShowDone, openTask: setOpenId, openId, addTask, listTitle, prod, setProd };
+  const prodProjects = Object.values(db.projects).filter((p) => p.production && !p.archived).sort((a, b) => a.name.localeCompare(b.name));
   const workspaces = Object.values(db.workspaces).sort((a, b) => a.position - b.position);
 
   return (
@@ -145,10 +160,19 @@ export function Shell() {
             <button className={'side-item add-item' + (view === 'add' ? ' on' : '')} onClick={() => { setView('add'); setMenu(false); }} data-nav-add>
               <span className="ic">＋</span>{t('nav.add')}
             </button>
+            <button className={'side-item' + (view === 'prod' && !prod.project ? ' on' : '')} onClick={() => setProd({ project: null, scene: null })} data-nav-prod>
+              <span className="ic">🎬</span>{t('prod.title')}
+              <span className="count">{prodProjects.length || ''}</span>
+            </button>
+            {prodProjects.map((p) => (
+              <button key={p.id} className={'side-item sub' + (view === 'prod' && prod.project === p.id ? ' on' : '')} onClick={() => setProd({ project: p.id, scene: null })}>
+                <span style={{ color: p.color }}>▪</span> {p.name}
+              </button>
+            ))}
             <div className="side-h">{t('side.lists')}</div>
             {SMART_LISTS.map((id) => {
               const n = countList(ctx, { kind: 'smart', id });
-              const on = list.kind === 'smart' && list.id === id && view !== 'settings' && view !== 'add';
+              const on = list.kind === 'smart' && list.id === id && view !== 'settings' && view !== 'add' && view !== 'prod';
               return (
                 <button key={id} className={'side-item' + (on ? ' on' : '')} onClick={() => setList({ kind: 'smart', id })} data-list={id}>
                   <span className="ic">{SMART_ICONS[id]}</span>{t(('smart.' + id) as TKey)}
@@ -159,12 +183,12 @@ export function Shell() {
             <div className="side-h">{t('side.workspaces')}</div>
             {workspaces.map((w) => (
               <div key={w.id}>
-                <button className={'side-item' + (list.kind === 'workspace' && list.id === w.id && view !== 'settings' && view !== 'add' ? ' on' : '')} onClick={() => setList({ kind: 'workspace', id: w.id })}>
+                <button className={'side-item' + (list.kind === 'workspace' && list.id === w.id && view !== 'settings' && view !== 'add' && view !== 'prod' ? ' on' : '')} onClick={() => setList({ kind: 'workspace', id: w.id })}>
                   <span className="ic" style={{ color: w.color }}>●</span>{nm(w)}
                   <span className="count">{countList(ctx, { kind: 'workspace', id: w.id }) || ''}</span>
                 </button>
                 {Object.values(db.projects).filter((p) => p.workspace_id === w.id && !p.archived).sort((a, b) => a.name.localeCompare(b.name)).map((p) => (
-                  <button key={p.id} className={'side-item sub' + (list.kind === 'project' && list.id === p.id && view !== 'settings' && view !== 'add' ? ' on' : '')} onClick={() => setList({ kind: 'project', id: p.id })}>
+                  <button key={p.id} className={'side-item sub' + (list.kind === 'project' && list.id === p.id && view !== 'settings' && view !== 'add' && view !== 'prod' ? ' on' : '')} onClick={() => setList({ kind: 'project', id: p.id })}>
                     <span style={{ color: p.color }}>▪</span> {p.name}
                     <span className="count">{countList(ctx, { kind: 'project', id: p.id }) || ''}</span>
                   </button>
@@ -191,22 +215,23 @@ export function Shell() {
               ))}
             </div>
             <span className="spacer" />
-            <input ref={searchRef} className="search" type="search" placeholder={t('search.ph')} value={search} onChange={(e) => { setSearch(e.target.value); if (view === 'add' || view === 'settings') setView('list'); }} aria-label={t('search.ph')} />
+            <input ref={searchRef} className="search" type="search" placeholder={t('search.ph')} value={search} onChange={(e) => { setSearch(e.target.value); if (view === 'add' || view === 'settings' || view === 'prod') setView('list'); }} aria-label={t('search.ph')} />
           </div>
           <div className="content">
-            {view !== 'settings' && (
+            {view !== 'settings' && view !== 'prod' && (
               <div className="page-h">
                 <h1>{view === 'add' ? t('nav.add') : listTitle}</h1>
               </div>
             )}
-            {view !== 'settings' && view !== 'add' && <FilterBar />}
+            {view !== 'settings' && view !== 'add' && view !== 'prod' && <FilterBar />}
+            {view === 'prod' && <ProdView />}
             {view === 'add' && <AddView />}
             {view === 'list' && <ListView />}
             {view === 'board' && <BoardView />}
             {view === 'calendar' && <CalendarView />}
             {view === 'settings' && <SettingsView />}
           </div>
-          {view !== 'settings' && view !== 'add' && (
+          {view !== 'settings' && view !== 'add' && view !== 'prod' && (
             <button className="fab" aria-label={t('new.task')} onClick={() => { const task = addTask(t('new.task')); if (task) setOpenId(task.id); }}>+</button>
           )}
         </main>

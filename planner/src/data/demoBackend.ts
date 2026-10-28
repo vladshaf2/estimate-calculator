@@ -1,10 +1,11 @@
 // Demo backend: same behaviour as Supabase but stored in this browser (localStorage).
 // Tabs of the same browser sync through BroadcastChannel, which mimics realtime between two users.
 import type { Backend, ChangeHandler } from './backend';
-import { emptySnapshot, type Snapshot, type TableName, type Tables, type Task } from './types';
+import { emptySnapshot, type ProdBlock, type Snapshot, type TableName, type Tables, type Task } from './types';
 import { zonedToUtc, dayKey, addDays, PRAGUE } from '../lib/time';
 
 const KEY = 'planner.demo.v1';
+const demoFiles = new Map<string, string>();
 const MEMBERS = [
   { id: 'demo_vlad', email: 'vlad@demo', name_en: 'Vlad', name_ru: 'Влад', color: '#e9b54a', lang: 'ru' as const },
   { id: 'demo_igor', email: 'igor@demo', name_en: 'Igor', name_ru: 'Игорь', color: '#60a5fa', lang: 'ru' as const },
@@ -37,7 +38,39 @@ export function seed(): Snapshot {
     t('demo_t3', { title: 'Fix lip-sync in shot 4', project_id: 'pr_nova', status_id: 'st_needs_fix', work_type_ids: ['wt_video_editing', 'wt_sound'], assignee_id: 'demo_vlad', priority: 3, due_at: zonedToUtc(addDays(today, -1), '00:00', PRAGUE) }),
     t('demo_t4', { title: 'Battle reel', workspace_id: 'ws_content', project_id: 'pr_reels', status_id: 'st_in_progress', work_type_ids: ['wt_reel', 'wt_video'], assignee_id: 'demo_igor', platform: 'instagram', publish_at: zonedToUtc(addDays(today, 1), '18:00', PRAGUE), hook: 'Two AI directors, one brief', checklist: [{ id: 'c1', text: 'Cut', done: true }, { id: 'c2', text: 'Subtitles', done: false }] }),
   ].forEach((x) => (s.tasks[x.id] = x));
+  seedProduction(s, now);
   return s;
+}
+
+/** A small production board for the demo: frames are generated SVG gradients (no network needed). */
+function frame(a: string, b: string, label: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><text x="24" y="336" font-family="sans-serif" font-size="22" fill="rgba(255,255,255,.85)">${label}</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+function seedProduction(s: Snapshot, now: string) {
+  s.projects.pr_nova.production = true;
+  const P = 'pr_nova';
+  const scenes: [string, string, string][] = [['ps1', 'Rooftop at dawn', 'Opening: the singer alone on a rooftop, city waking up.'], ['ps2', 'Subway chase', 'Fast cuts, neon, handheld feel.']];
+  scenes.forEach(([id, title, description], i) => (s.prod_scenes[id] = { id, project_id: P, position: i, title, description, deleted_at: null, created_at: now, updated_at: now }));
+  const blocks: [string, string, string, ProdBlock['status'], string][] = [
+    ['pb1', 'ps1', 'Wide shot: rooftop, fog, first light behind the skyline.', 'done', 'Kling 2.1, 6 s, seed 4412'],
+    ['pb2', 'ps1', 'Close-up: she opens her eyes, wind in her hair.', 'review', 'Face consistency — use character sheet v3'],
+    ['pb3', 'ps1', 'Drone pull-back revealing the whole city.', 'progress', ''],
+    ['pb4', 'ps2', 'Train doors open, she runs through the crowd.', 'todo', ''],
+    ['pb5', 'ps2', 'POV: tunnel lights streaking past.', 'todo', ''],
+  ];
+  blocks.forEach(([id, scene, text, status, ai_note], i) => (s.prod_blocks[id] = { id, project_id: P, scene_id: scene, position: i, text, status, ai_note, assignee_id: i % 2 ? 'demo_igor' : 'demo_vlad', deleted_at: null, created_at: now, updated_at: now }));
+  const versions: [string, string, number][] = [['pv1', 'pb1', 1], ['pv2', 'pb2', 1], ['pv3', 'pb2', 2], ['pv4', 'pb3', 1]];
+  versions.forEach(([id, block_id, number]) => (s.prod_versions[id] = { id, project_id: P, block_id, number, note: '', created_at: now, updated_at: now }));
+  const media: [string, string, string, string, string][] = [
+    ['pm1', 'pv1', '#f59e0b', '#7c3aed', 'Rooftop A'], ['pm2', 'pv1', '#fb923c', '#1e3a8a', 'Rooftop B'],
+    ['pm3', 'pv2', '#64748b', '#0f172a', 'Eyes v1'], ['pm4', 'pv3', '#f472b6', '#312e81', 'Eyes v2 A'], ['pm5', 'pv3', '#fda4af', '#1e1b4b', 'Eyes v2 B'],
+    ['pm6', 'pv4', '#38bdf8', '#0c4a6e', 'Drone'],
+  ];
+  media.forEach(([id, version_id, a, b, name], i) => (s.prod_media[id] = { id, project_id: P, version_id, kind: 'image', path: null, thumb_path: null, url: frame(a, b, name), name: name + '.png', mime: 'image/svg+xml', size: null, position: i, deleted_at: null, created_at: now, updated_at: now }));
+  s.prod_media.pm7 = { id: 'pm7', project_id: P, version_id: 'pv4', kind: 'link', path: null, thumb_path: null, url: 'https://drive.google.com/file/d/1AbCdEfGhIjKlMnOpQrStUvWxYz/view', name: 'Drone 4K (Drive)', mime: '', size: null, position: 9, deleted_at: null, created_at: now, updated_at: now };
+  s.prod_revisions.pr1 = { id: 'pr1', project_id: P, version_id: 'pv2', text: 'Eyes look different from the character sheet', image_path: null, done: true, author_id: 'demo_vlad', task_id: null, created_at: now, updated_at: now };
+  s.prod_revisions.pr2 = { id: 'pr2', project_id: P, version_id: 'pv3', text: 'Less wind, hair covers the face in the last second', image_path: null, done: false, author_id: 'demo_vlad', task_id: null, created_at: now, updated_at: now };
 }
 
 export function createDemoBackend(asMember = 'demo_vlad'): Backend {
@@ -105,6 +138,12 @@ export function createDemoBackend(asMember = 'demo_vlad'): Backend {
       target[id] = next;
       save(); emit(table, 'upsert', next as { id: string });
       return structuredClone(next) as unknown as Tables[K];
+    },
+    files: {
+      // Demo files live only in this tab's memory (object URLs).
+      async upload(path, file) { demoFiles.set(path, URL.createObjectURL(file)); },
+      async urls(paths) { const out: Record<string, string> = {}; for (const p of paths) { const u = demoFiles.get(p); if (u) out[p] = u; } return out; },
+      async remove(paths) { for (const p of paths) { const u = demoFiles.get(p); if (u) URL.revokeObjectURL(u); demoFiles.delete(p); } },
     },
     async remove(table, id) {
       delete (snap[table] as Record<string, unknown>)[id];
