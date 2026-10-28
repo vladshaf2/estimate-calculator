@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent, type ReactNode } from 'react';
 import { useStore } from '../data/store';
-import { PROD_STATUSES, type ProdBlock, type ProdMedia, type ProdRevision, type ProdScene, type ProdStatus, type ProdVersion, type Project, type Task } from '../data/types';
+import { PROD_STATUSES, type ProdBlock, type ProdMedia, type ProdRevision, type ProdScene, type ProdStatus, type ProdShare, type ProdVersion, type Project, type Task } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
 import { MAX_UPLOAD, extOf, forgetFiles, makeThumb, useFileUrl } from '../lib/files';
 import { NEXT_STATUS, STATUS_COLOR, blockLabels, blocksOf, exportCsv, linkInfo, mediaKindOf, mediaOf, nextPos, projectStats, revisionsOf, scenesOf, unitsOf, versionsOf, type Unit } from '../lib/prod';
@@ -157,7 +157,7 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
   const { setProd } = useUi();
   const [filter, setFilter] = useState<Filter>('all');
   const [q, setQ] = useState('');
-  const [modal, setModal] = useState<'script' | 'trash' | null>(null);
+  const [modal, setModal] = useState<'script' | 'trash' | 'share' | null>(null);
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const sel = useMemo<Sel>(() => ({
     has: (id) => picked.has(id),
@@ -207,6 +207,7 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
         <div className="prod-actions">
           <button className="btn" onClick={() => setModal('trash')} data-prod-trash>🗑 {t('prod.trash')} {trashCount || ''}</button>
           <button className="btn" onClick={doExport} disabled={!stats.blocks}>⤓ {t('prod.export')}</button>
+          <button className="btn" onClick={() => setModal('share')} data-prod-share>🔗 {t('prod.share')}</button>
           <button className="btn" onClick={() => setModal('script')} data-prod-script>📄 {t('prod.pasteScript')}</button>
           <button className="btn primary" onClick={addScene} data-prod-add-scene>＋ {t('prod.scene')}</button>
         </div>
@@ -277,6 +278,7 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
       {picked.size > 0 && <BulkBar project={project} ids={Array.from(picked)} onDone={() => setPicked(new Set())} />}
       {modal === 'script' && <ScriptModal project={project} onClose={() => setModal(null)} />}
       {modal === 'trash' && <TrashModal project={project} onClose={() => setModal(null)} />}
+      {modal === 'share' && <ShareModal project={project} onClose={() => setModal(null)} />}
     </div>
   );
 }
@@ -711,6 +713,7 @@ function RevisionItem({ r, onToggle, onTask, onDelete }: { r: ProdRevision; onTo
     <div className={'rev' + (r.done ? ' done' : '')} data-rev={r.id}>
       <input type="checkbox" checked={r.done} onChange={onToggle} aria-label={t('prod.revDone')} />
       <div className="grow">
+        {r.client_name && <div className="rev-client" data-rev-client>💬 {t('prod.fromClient', { n: r.client_name })}</div>}
         {r.text && <div className="rev-text">{r.text}</div>}
         {src && <img className="rev-img" src={src} alt="" onClick={() => setBig(true)} />}
         <div className="rev-meta faint">
@@ -864,6 +867,45 @@ function TrashModal({ project, onClose }: { project: Project; onClose: () => voi
         </div>
       ))}
       {items.length > 0 && <p className="faint small">{t('prod.trashHint')}</p>}
+    </Modal>
+  );
+}
+
+/** Client link to the board: create, copy, comments on/off, revoke. */
+function ShareModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const { backend, toast } = useStore();
+  const { t, lang } = useI18n();
+  const [shares, setShares] = useState<ProdShare[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const reload = () => backend.prodShares.list(project.id).then(setShares).catch((e) => { setShares([]); toast(String((e as Error).message || e), 'error'); });
+  useEffect(() => { reload(); }, [project.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cur = shares?.find((x) => !x.revoked) || null;
+  const url = cur ? location.origin + location.pathname + '#/share/' + cur.token : '';
+  const run = async (fn: () => Promise<unknown>) => { setBusy(true); try { await fn(); await reload(); } catch (e) { toast(String((e as Error).message || e), 'error'); } finally { setBusy(false); } };
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(url); } catch { document.querySelector<HTMLInputElement>('[data-share-url]')?.select(); document.execCommand('copy'); }
+    toast(t('prod.linkCopied'));
+  };
+  const when = (iso: string | null) => (iso ? new Date(iso).toLocaleString(lang === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '');
+  return (
+    <Modal title={t('prod.shareTitle')} onClose={onClose}
+      actions={cur ? <>
+        <button className="btn sm danger" disabled={busy} onClick={() => window.confirm(t('prod.revokeConfirm')) && run(() => backend.prodShares.update(cur.token, { revoked: true }))} data-share-revoke>{t('prod.revoke')}</button>
+        <span className="grow" />
+        <button className="btn primary" onClick={copy} data-share-copy>{t('prod.copyLink')}</button>
+      </> : <>
+        <button className="btn ghost" onClick={onClose}>{t('prod.cancel')}</button>
+        <button className="btn primary" disabled={busy || shares === null} onClick={() => run(() => backend.prodShares.create(project.id))} data-share-create>{t('prod.createLink')}</button>
+      </>}>
+      <p className="muted small" style={{ marginTop: 0 }}>{t('prod.shareHelp')}</p>
+      {shares === null ? <div className="faint">{t('common.loading')}</div> : cur ? (
+        <>
+          <input type="text" readOnly value={url} onFocus={(e) => e.target.select()} data-share-url />
+          <div className="faint small" style={{ margin: '6px 0 10px' }}>{cur.views ? t('prod.shareViews', { n: cur.views, d: when(cur.last_viewed_at) }) : t('prod.shareNotOpened')}</div>
+          <label className="check-line"><input type="checkbox" checked={cur.allow_comments} disabled={busy} onChange={(e) => run(() => backend.prodShares.update(cur.token, { allow_comments: e.target.checked }))} data-share-comments /> <span>{t('prod.allowComments')}</span></label>
+          {backend.kind === 'demo' && <p className="faint small">{t('prod.shareDemo')}</p>}
+        </>
+      ) : null}
     </Modal>
   );
 }

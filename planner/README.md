@@ -31,6 +31,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - due dates at the due time (all-day tasks at 09:00 Prague);
   - posts 30 minutes before publishing, with Prague and Almaty times;
   - a task assigned to you by someone else;
+  - a revision on the production board (to the block's assignee, or to everyone else when there is none), including the client's;
   - a client accepting an estimate.
 
   Turn them on per device. Each kind can be switched off, quiet hours can be set in Prague time, and texts follow your interface language. On iPhone, add the app to the Home Screen first (iOS 16.4+).
@@ -43,6 +44,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - **Selection:** tick blocks (or a whole scene) for bulk actions: merge, set status or assignee, move to trash.
   - **Merging:** blocks generated with one prompt (e.g. 1.1 + 1.2) become one row with shared status, versions, generations and revisions, and count as one block in the progress. **Split** undoes it; generations stay with the first block.
   - **Trash:** checkboxes, select all, restore or delete the selected items, empty the trash.
+  - **Client link** (🔗 Client): the client opens `…/planner/#/share/<token>` without signing in and sees scenes, statuses, versions and generations (files through 6-hour signed URLs). They can leave revisions with their name: the block moves to "Revisions", the revision shows on the board as "Client · Name", and the team gets a push. AI notes, assignees and team revisions are never sent. A link can be revoked, or have revisions turned off. The page is served by the Edge Function `prod-share` (`supabase/functions/prod-share`), which checks the token.
   - **Adding files:** drag and drop, paste with Ctrl+V, or the Upload / Link buttons.
 - **Accepted estimates** from the calculator's client link become a project with tasks automatically (see the main README).
 - **Views:**
@@ -76,7 +78,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
 - **Tables:** `members`, `workspaces`, `projects`, `statuses`, `work_types`, `tasks`.
   - Notifications: `push_subscriptions` (one row per device).
   - Calculator link: `estimates`, `calc_settings`, `estimate_shares`.
-  - Production: `prod_scenes`, `prod_blocks` (`group_id` = lead block of a merged row), `prod_versions`, `prod_media`, `prod_revisions` (plus `projects.production`); files are in the private Storage bucket `prod` (50 MB per file, shown through signed URLs that last 6 hours).
+  - Production: `prod_scenes`, `prod_blocks` (`group_id` = lead block of a merged row), `prod_shares` (client links), `prod_versions`, `prod_media`, `prod_revisions` (plus `projects.production`); files are in the private Storage bucket `prod` (50 MB per file, shown through signed URLs that last 6 hours).
   - Private schema (not reachable through the API): `private.notification_outbox` and `private.push_config` (VAPID keys, dispatcher secret).
 - **Notifications pipeline:**
   - `pg_cron` runs every minute: `private.enqueue_due()` puts due reminders, deadlines and posts into the outbox, respecting each member's switches and quiet hours.

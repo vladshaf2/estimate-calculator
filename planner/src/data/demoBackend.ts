@@ -1,11 +1,12 @@
 // Demo backend: same behaviour as Supabase but stored in this browser (localStorage).
 // Tabs of the same browser sync through BroadcastChannel, which mimics realtime between two users.
 import type { Backend, ChangeHandler } from './backend';
-import { emptySnapshot, type ProdBlock, type Snapshot, type TableName, type Tables, type Task } from './types';
+import { emptySnapshot, type ProdBlock, type ProdShare, type Snapshot, type TableName, type Tables, type Task } from './types';
 import { zonedToUtc, dayKey, addDays, PRAGUE } from '../lib/time';
 
 const KEY = 'planner.demo.v1';
 const demoFiles = new Map<string, string>();
+const demoShares: ProdShare[] = [];
 const MEMBERS = [
   { id: 'demo_vlad', email: 'vlad@demo', name_en: 'Vlad', name_ru: 'Влад', color: '#e9b54a', lang: 'ru' as const },
   { id: 'demo_igor', email: 'igor@demo', name_en: 'Igor', name_ru: 'Игорь', color: '#60a5fa', lang: 'ru' as const },
@@ -138,6 +139,16 @@ export function createDemoBackend(asMember = 'demo_vlad'): Backend {
       target[id] = next;
       save(); emit(table, 'upsert', next as { id: string });
       return structuredClone(next) as unknown as Tables[K];
+    },
+    prodShares: {
+      // Demo links live in this tab only; the public page needs the real server.
+      async list(projectId) { return demoShares.filter((x) => x.project_id === projectId); },
+      async create(projectId) {
+        const x = { token: Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, '0')).join(''), project_id: projectId, allow_comments: true, revoked: false, views: 0, last_viewed_at: null, created_at: new Date().toISOString() };
+        demoShares.unshift(x);
+        return x;
+      },
+      async update(token, patch) { const x = demoShares.find((y) => y.token === token); if (x) Object.assign(x, patch); },
     },
     files: {
       // Demo files live only in this tab's memory (object URLs).
