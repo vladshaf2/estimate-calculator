@@ -1,14 +1,27 @@
-import { useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent, type ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ClipboardEvent, type DragEvent, type ReactNode } from 'react';
 import { useStore } from '../data/store';
 import { PROD_STATUSES, type ProdBlock, type ProdMedia, type ProdRevision, type ProdScene, type ProdStatus, type ProdVersion, type Project, type Task } from '../data/types';
 import { useI18n, type TKey } from '../i18n';
 import { MAX_UPLOAD, extOf, forgetFiles, makeThumb, useFileUrl } from '../lib/files';
-import { NEXT_STATUS, STATUS_COLOR, blocksOf, exportCsv, linkInfo, mediaKindOf, mediaOf, nextPos, projectStats, revisionsOf, scenesOf, versionsOf } from '../lib/prod';
+import { NEXT_STATUS, STATUS_COLOR, blockLabels, blocksOf, exportCsv, linkInfo, mediaKindOf, mediaOf, nextPos, projectStats, revisionsOf, scenesOf, unitsOf, versionsOf, type Unit } from '../lib/prod';
 import { parseScript } from '../lib/script';
+import { SCRIPT_ACCEPT, readScriptFile } from '../lib/scriptFile';
 import { Avatar, newId } from './bits';
 import { useUi } from './Shell';
 
 const now = () => new Date().toISOString();
+
+/** Ticked rows on the board (lead block ids) and the actions on them. */
+interface Sel { has(id: string): boolean; set(ids: string[], on: boolean): void }
+const SelCtx = createContext<Sel>({ has: () => false, set: () => {} });
+
+const STATUS_RANK: Record<ProdStatus, number> = { todo: 0, progress: 1, review: 2, done: 3 };
+
+type Update = ReturnType<typeof useStore>['update'];
+/** Writes positions 0..n for the given block order, only where they change. */
+function applyOrder(update: Update, order: ProdBlock[]) {
+  order.forEach((b, i) => { if (b.position !== i) update('prod_blocks', b.id, { position: i }); });
+}
 
 /** Production tab: the list of production projects, or one project's board. */
 export function ProdView() {
@@ -145,6 +158,11 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
   const [filter, setFilter] = useState<Filter>('all');
   const [q, setQ] = useState('');
   const [modal, setModal] = useState<'script' | 'trash' | null>(null);
+  const [picked, setPicked] = useState<Set<string>>(new Set());
+  const sel = useMemo<Sel>(() => ({
+    has: (id) => picked.has(id),
+    set: (ids, on) => setPicked((p) => { const n = new Set(p); ids.forEach((id) => (on ? n.add(id) : n.delete(id))); return n; }),
+  }), [picked]);
   const scenes = scenesOf(db, project.id);
   const stats = projectStats(db, project.id);
   const trashCount = scenesOf(db, project.id, true).length
@@ -153,17 +171,18 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
   const shown = sceneId && db.prod_scenes[sceneId] && !db.prod_scenes[sceneId].deleted_at ? scenes.filter((s) => s.id === sceneId) : scenes;
   const query = q.trim().toLowerCase();
 
-  const matches = (b: ProdBlock, s: ProdScene) => {
+  const matches = (u: Unit, s: ProdScene) => {
+    const b = u.lead;
     if (filter !== 'all' && b.status !== filter) return false;
     if (!query) return true;
-    if ((s.title + ' ' + b.text + ' ' + b.ai_note).toLowerCase().includes(query)) return true;
+    if ((s.title + ' ' + u.members.map((m) => m.text).join(' ') + ' ' + b.ai_note).toLowerCase().includes(query)) return true;
     return versionsOf(db, b.id).some((v) => revisionsOf(db, v.id).some((r) => r.text.toLowerCase().includes(query)));
   };
 
   const addScene = () => {
     const id = newId();
     create('prod_scenes', { id, project_id: project.id, position: nextPos(scenes), title: '', description: '', deleted_at: null, created_at: now() });
-    create('prod_blocks', { id: newId(), project_id: project.id, scene_id: id, position: 0, text: '', status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, created_at: now() });
+    create('prod_blocks', { id: newId(), project_id: project.id, scene_id: id, position: 0, text: '', status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, group_id: null, created_at: now() });
     setProd({ project: project.id, scene: null });
     window.setTimeout(() => document.querySelector<HTMLInputElement>(`[data-scene="${id}"] .scene-title`)?.focus(), 60);
   };
@@ -250,9 +269,12 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
               </div>
             </div>
           )}
-          {shown.map((s) => <SceneSection key={s.id} scene={s} n={scenes.indexOf(s) + 1} visible={(b) => matches(b, s)} filtered={filter !== 'all' || !!query} />)}
+          <SelCtx.Provider value={sel}>
+            {shown.map((s) => <SceneSection key={s.id} scene={s} n={scenes.indexOf(s) + 1} visible={(u) => matches(u, s)} filtered={filter !== 'all' || !!query} />)}
+          </SelCtx.Provider>
         </div>
       </div>
+      {picked.size > 0 && <BulkBar project={project} ids={Array.from(picked)} onDone={() => setPicked(new Set())} />}
       {modal === 'script' && <ScriptModal project={project} onClose={() => setModal(null)} />}
       {modal === 'trash' && <TrashModal project={project} onClose={() => setModal(null)} />}
     </div>
@@ -261,20 +283,27 @@ function ProdBoard({ project, sceneId }: { project: Project; sceneId: string | n
 
 /* ---------------------------------------------------------------- scene */
 
-function SceneSection({ scene, n, visible, filtered }: { scene: ProdScene; n: number; visible: (b: ProdBlock) => boolean; filtered: boolean }) {
+function SceneSection({ scene, n, visible, filtered }: { scene: ProdScene; n: number; visible: (u: Unit) => boolean; filtered: boolean }) {
   const { db, create, update, toast } = useStore();
   const { t } = useI18n();
+  const sel = useContext(SelCtx);
   const all = blocksOf(db, scene.id);
-  const blocks = all.filter(visible);
-  if (filtered && !blocks.length) return null;
+  const units = unitsOf(db, scene.id);
+  const shown = units.filter(visible);
+  const labels = blockLabels(db, scene.id, n);
+  if (filtered && !shown.length) return null;
+  const ids = shown.map((u) => u.lead.id);
+  const allOn = ids.length > 0 && ids.every((id) => sel.has(id));
+  const someOn = ids.some((id) => sel.has(id));
   const addBlock = () => {
     const id = newId();
-    create('prod_blocks', { id, project_id: scene.project_id, scene_id: scene.id, position: nextPos(all), text: '', status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, created_at: now() });
+    create('prod_blocks', { id, project_id: scene.project_id, scene_id: scene.id, position: nextPos(all), text: '', status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, group_id: null, created_at: now() });
     window.setTimeout(() => document.querySelector<HTMLTextAreaElement>(`[data-block="${id}"] .block-text`)?.focus(), 60);
   };
   return (
     <section className="scene" data-scene={scene.id}>
       <header className="scene-h">
+        <input type="checkbox" className="pick" checked={allOn} ref={(el) => { if (el) el.indeterminate = !allOn && someOn; }} onChange={() => sel.set(ids, !allOn)} aria-label={t('prod.selectScene')} title={t('prod.selectScene')} data-pick-scene />
         <span className="scene-n">{n}</span>
         <div className="grow">
           <input className="scene-title" value={scene.title} placeholder={t('prod.sceneTitlePh')} aria-label={t('prod.sceneTitlePh')}
@@ -287,10 +316,83 @@ function SceneSection({ scene, n, visible, filtered }: { scene: ProdScene; n: nu
           onClick={() => { if (window.confirm(t('prod.confirmSceneTrash'))) { update('prod_scenes', scene.id, { deleted_at: now() }); toast(t('prod.movedToTrash')); } }}>🗑</button>
       </header>
       <div className="blocks">
-        {blocks.map((b) => <BlockRow key={b.id} block={b} label={`${n}.${all.indexOf(b) + 1}`} siblings={all} />)}
+        {shown.map((u) => <BlockRow key={u.lead.id} unit={u} labels={labels} units={units} />)}
       </div>
       <button className="btn ghost sm add-block" onClick={addBlock} data-add-block>＋ {t('prod.block')}</button>
     </section>
+  );
+}
+
+/* ---------------------------------------------------------------- bulk actions */
+
+function BulkBar({ project, ids, onDone }: { project: Project; ids: string[]; onDone: () => void }) {
+  const { db, update, toast } = useStore();
+  const { t, nm } = useI18n();
+  // Selected rows that still exist, as units of their scenes.
+  const units: Unit[] = [];
+  const scenesTouched = new Set<string>();
+  for (const id of ids) {
+    const b = db.prod_blocks[id];
+    if (!b || b.deleted_at || b.project_id !== project.id) continue;
+    const u = unitsOf(db, b.scene_id).find((x) => x.lead.id === id);
+    if (u) { units.push(u); scenesTouched.add(b.scene_id); }
+  }
+  const leads = units.map((u) => u.lead);
+  const canMerge = units.length >= 2 && scenesTouched.size === 1;
+
+  const merge = () => {
+    if (!canMerge) { toast(t('prod.mergeSameScene'), 'error'); return; }
+    const sceneId = leads[0].scene_id;
+    const sceneUnits = unitsOf(db, sceneId);
+    const chosen = sceneUnits.filter((u) => ids.includes(u.lead.id));
+    const lead = chosen[0].lead;
+    const members = chosen.flatMap((u) => u.members);
+    // Versions of the other rows move to the lead, numbered after its own.
+    let num = Math.max(0, ...versionsOf(db, lead.id).map((v) => v.number));
+    for (const u of chosen.slice(1)) for (const v of versionsOf(db, u.lead.id)) update('prod_versions', v.id, { block_id: lead.id, number: ++num });
+    const others = chosen.slice(1).map((u) => u.lead);
+    const notes = [lead.ai_note, ...others.map((o) => o.ai_note)].map((x) => x.trim()).filter(Boolean);
+    const best = others.reduce((st, o) => (STATUS_RANK[o.status] > STATUS_RANK[st] ? o.status : st), lead.status);
+    update('prod_blocks', lead.id, {
+      group_id: lead.id, ai_note: Array.from(new Set(notes)).join('\n').slice(0, 10000),
+      status: lead.status === 'todo' ? best : lead.status, assignee_id: lead.assignee_id || others.find((o) => o.assignee_id)?.assignee_id || null,
+    });
+    for (const m of members) if (m.id !== lead.id && m.group_id !== lead.id) update('prod_blocks', m.id, { group_id: lead.id });
+    // Keep the merged blocks next to each other, at the lead's place.
+    const order: ProdBlock[] = [];
+    for (const u of sceneUnits) {
+      if (u.lead.id === lead.id) order.push(...[...members].sort((a, b) => a.position - b.position));
+      else if (!chosen.includes(u)) order.push(...u.members);
+    }
+    applyOrder(update, order);
+    const labels = blockLabels(db, sceneId, scenesOf(db, project.id).findIndex((s) => s.id === sceneId) + 1);
+    toast(t('prod.merged', { l: [...members].sort((a, b) => a.position - b.position).map((m) => labels[m.id]).join(' + ') }));
+    onDone();
+  };
+  const setStatus = (st: ProdStatus) => { leads.forEach((b) => b.status !== st && update('prod_blocks', b.id, { status: st })); onDone(); };
+  const setAssignee = (id: string) => { leads.forEach((b) => update('prod_blocks', b.id, { assignee_id: id || null })); onDone(); };
+  const trash = () => {
+    const ts = now();
+    units.forEach((u) => u.members.forEach((m) => update('prod_blocks', m.id, { deleted_at: ts })));
+    toast(t('prod.movedToTrash'));
+    onDone();
+  };
+  return (
+    <div className="bulk-bar" role="toolbar" aria-label={t('prod.selected', { n: units.length })} data-bulk>
+      <b className="nowrap">{t('prod.selected', { n: units.length })}</b>
+      <button className="btn sm primary" onClick={merge} disabled={!canMerge} title={canMerge ? '' : t('prod.mergeSameScene')} data-bulk-merge>⧉ {t('prod.merge')}</button>
+      <select value="" onChange={(e) => e.target.value && setStatus(e.target.value as ProdStatus)} aria-label={t('prod.setStatus')} data-bulk-status>
+        <option value="">{t('prod.setStatus')}</option>
+        {PROD_STATUSES.map((st) => <option key={st} value={st}>{t(('prod.st.' + st) as TKey)}</option>)}
+      </select>
+      <select value="" onChange={(e) => e.target.value && setAssignee(e.target.value === '-' ? '' : e.target.value)} aria-label={t('prod.setAssignee')}>
+        <option value="">{t('prod.setAssignee')}</option>
+        <option value="-">—</option>
+        {Object.values(db.members).map((m) => <option key={m.id} value={m.id}>{nm(m)}</option>)}
+      </select>
+      <button className="btn sm danger" onClick={trash} data-bulk-trash>🗑 {t('prod.toTrash')}</button>
+      <button className="icon-btn" onClick={onDone} aria-label={t('prod.clearSel')} title={t('prod.clearSel')}>✕</button>
+    </div>
   );
 }
 
@@ -298,9 +400,12 @@ function SceneSection({ scene, n, visible, filtered }: { scene: ProdScene; n: nu
 
 interface Uploading { id: string; name: string }
 
-function BlockRow({ block, label, siblings }: { block: ProdBlock; label: string; siblings: ProdBlock[] }) {
+function BlockRow({ unit, labels, units }: { unit: Unit; labels: Record<string, string>; units: Unit[] }) {
   const { db, me, create, update, backend, toast } = useStore();
   const { t, nm } = useI18n();
+  const sel = useContext(SelCtx);
+  const block = unit.lead;
+  const grouped = unit.members.length > 1;
   const versions = versionsOf(db, block.id);
   const [vSel, setVSel] = useState<string | null>(null);
   const version = versions.find((v) => v.id === vSel) || versions[versions.length - 1] || null;
@@ -311,7 +416,7 @@ function BlockRow({ block, label, siblings }: { block: ProdBlock; label: string;
   const [drag, setDrag] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const members = Object.values(db.members);
-  const idx = siblings.indexOf(block);
+  const idx = units.indexOf(unit);
 
   const ensureVersion = (): ProdVersion => {
     if (version) return version;
@@ -382,17 +487,27 @@ function BlockRow({ block, label, siblings }: { block: ProdBlock; label: string;
     if (/^https?:\/\/\S+$/.test(text)) { e.preventDefault(); addLink(text); }
   };
   const move = (dir: -1 | 1) => {
-    const other = siblings[idx + dir];
-    if (!other) return;
-    update('prod_blocks', block.id, { position: other.position });
-    update('prod_blocks', other.id, { position: block.position });
+    if (!units[idx + dir]) return;
+    const order = [...units];
+    [order[idx], order[idx + dir]] = [order[idx + dir], order[idx]];
+    applyOrder(update, order.flatMap((u) => u.members));
+  };
+  const unmerge = () => {
+    unit.members.forEach((m) => update('prod_blocks', m.id, { group_id: null }));
+    toast(t('prod.unmerged'));
+  };
+  const trashUnit = () => {
+    const ts = now();
+    unit.members.forEach((m) => update('prod_blocks', m.id, { deleted_at: ts }));
+    toast(t('prod.movedToTrash'));
   };
 
   return (
-    <div className={'block st-' + block.status} data-block={block.id}>
+    <div className={'block st-' + block.status + (grouped ? ' grouped' : '') + (sel.has(block.id) ? ' picked' : '')} data-block={block.id}>
       <div className="b-text">
         <div className="b-head">
-          <span className="b-label num">{label}</span>
+          <input type="checkbox" className="pick" checked={sel.has(block.id)} onChange={(e) => sel.set([block.id], e.target.checked)} aria-label={t('prod.select')} data-pick />
+          <span className="b-label num">{grouped ? unit.members.map((m) => labels[m.id]).join(' + ') : labels[block.id]}</span>
           <select className="b-assignee" value={block.assignee_id || ''} onChange={(e) => update('prod_blocks', block.id, { assignee_id: e.target.value || null })} aria-label={t('detail.assignee')}>
             <option value="">—</option>
             {members.map((m) => <option key={m.id} value={m.id}>{nm(m)}</option>)}
@@ -400,11 +515,22 @@ function BlockRow({ block, label, siblings }: { block: ProdBlock; label: string;
           {block.assignee_id && <Avatar m={db.members[block.assignee_id]} />}
           <span className="grow" />
           <button className="icon-btn sm" onClick={() => move(-1)} disabled={idx === 0} aria-label={t('prod.up')} title={t('prod.up')}>↑</button>
-          <button className="icon-btn sm" onClick={() => move(1)} disabled={idx === siblings.length - 1} aria-label={t('prod.down')} title={t('prod.down')}>↓</button>
-          <button className="icon-btn sm" onClick={() => { update('prod_blocks', block.id, { deleted_at: now() }); toast(t('prod.movedToTrash')); }} aria-label={t('prod.toTrash')} title={t('prod.toTrash')}>🗑</button>
+          <button className="icon-btn sm" onClick={() => move(1)} disabled={idx === units.length - 1} aria-label={t('prod.down')} title={t('prod.down')}>↓</button>
+          <button className="icon-btn sm" onClick={trashUnit} aria-label={t('prod.toTrash')} title={t('prod.toTrash')}>🗑</button>
         </div>
-        <AutoText className="block-text" value={block.text} placeholder={t('prod.blockTextPh')} max={20000}
-          onChange={(v) => update('prod_blocks', block.id, { text: v }, { debounce: true })} />
+        {grouped && (
+          <div className="group-h" data-group>
+            <span>⧉ {t('prod.mergedTitle', { l: unit.members.map((m) => labels[m.id]).join(' + ') })}</span>
+            <button className="link-btn" onClick={unmerge} data-unmerge>{t('prod.unmerge')}</button>
+          </div>
+        )}
+        {unit.members.map((m) => (
+          <div key={m.id} className={grouped ? 'member' : ''}>
+            {grouped && <span className="m-label num faint">{labels[m.id]}</span>}
+            <AutoText className="block-text" value={m.text} placeholder={t('prod.blockTextPh')} max={20000}
+              onChange={(v) => update('prod_blocks', m.id, { text: v }, { debounce: true })} />
+          </div>
+        ))}
       </div>
 
       <div className="b-status">
@@ -618,18 +744,32 @@ function Modal({ title, onClose, children, actions, wide }: { title: string; onC
 }
 
 function ScriptModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const { db, create } = useStore();
+  const { db, create, toast } = useStore();
   const { t } = useI18n();
   const [text, setText] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const fileRef = useRef<HTMLInputElement>(null);
   const parsed = useMemo(() => parseScript(text), [text]);
   const blocks = parsed.reduce((a, s) => a + s.blocks.length, 0);
+  const load = async (f: File | undefined) => {
+    if (!f) return;
+    setBusy(true);
+    try {
+      const out = await readScriptFile(f);
+      if (!out.trim()) throw new Error('empty');
+      setText(out); setFileName(f.name);
+    } catch (e) {
+      toast(String((e as Error).message) === 'unsupported' ? t('prod.fileUnsupported') : t('prod.fileErr', { n: f.name }), 'error');
+    } finally { setBusy(false); }
+  };
   const submit = () => {
     if (!parsed.length) return;
     let pos = nextPos(scenesOf(db, project.id));
     for (const s of parsed) {
       const sid = newId();
       create('prod_scenes', { id: sid, project_id: project.id, position: pos++, title: s.title.slice(0, 300), description: '', deleted_at: null, created_at: now() });
-      s.blocks.forEach((b, i) => create('prod_blocks', { id: newId(), project_id: project.id, scene_id: sid, position: i, text: b.slice(0, 20000), status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, created_at: now() }));
+      s.blocks.forEach((b, i) => create('prod_blocks', { id: newId(), project_id: project.id, scene_id: sid, position: i, text: b.slice(0, 20000), status: 'todo', ai_note: '', assignee_id: null, deleted_at: null, group_id: null, created_at: now() }));
     }
     onClose();
   };
@@ -637,7 +777,13 @@ function ScriptModal({ project, onClose }: { project: Project; onClose: () => vo
     <Modal title={t('prod.pasteScript')} onClose={onClose} wide
       actions={<><span className="grow muted small" data-script-preview>{t('prod.scriptPreview', { s: parsed.length, b: blocks })}</span><button className="btn ghost" onClick={onClose}>{t('prod.cancel')}</button><button className="btn primary" onClick={submit} disabled={!parsed.length} data-modal-ok>{t('prod.addToProject')}</button></>}>
       <p className="muted small" style={{ marginTop: 0 }}>{t('prod.scriptHelp')}</p>
-      <textarea className="script-input" value={text} onChange={(e) => setText(e.target.value)} placeholder={t('prod.scriptPh')} autoFocus data-script-input />
+      <div className="row" style={{ marginBottom: 8, flexWrap: 'wrap' }}>
+        <button className="btn" onClick={() => fileRef.current?.click()} disabled={busy} data-script-file>📂 {busy ? t('common.loading') : t('prod.openFile')}</button>
+        <span className="faint small">{fileName || t('prod.fileTypes')}</span>
+        <input ref={fileRef} type="file" accept={SCRIPT_ACCEPT} hidden onChange={(e) => { load(e.target.files?.[0]); e.target.value = ''; }} />
+      </div>
+      <textarea className="script-input" value={text} onChange={(e) => setText(e.target.value)} placeholder={t('prod.scriptPh')} autoFocus data-script-input
+        onDragOver={(e) => e.preventDefault()} onDrop={(e) => { const f = e.dataTransfer.files?.[0]; if (f) { e.preventDefault(); load(f); } }} />
       {parsed.length > 0 && (
         <ol className="script-outline">
           {parsed.slice(0, 40).map((s, i) => <li key={i}><b>{s.title || t('prod.untitledScene')}</b> <span className="faint">· {t('prod.blocksCount', { n: s.blocks.length })}</span></li>)}
@@ -647,47 +793,77 @@ function ScriptModal({ project, onClose }: { project: Project; onClose: () => vo
   );
 }
 
-function TrashModal({ project, onClose }: { project: Project; onClose: () => void }) {
-  const { db, update, remove, backend } = useStore();
-  const { t } = useI18n();
-  const scenes = scenesOf(db, project.id, true);
-  const blocks = Object.values(db.prod_blocks).filter((b) => b.project_id === project.id && b.deleted_at && db.prod_scenes[b.scene_id] && !db.prod_scenes[b.scene_id].deleted_at);
-  const media = Object.values(db.prod_media).filter((m) => m.project_id === project.id && m.deleted_at);
+type TrashKind = 'scene' | 'block' | 'media';
+interface TrashItem { key: string; kind: TrashKind; id: string; label: string; sub: string }
 
-  /** Hard delete with children; files go too. */
-  const purgeVersion = (v: ProdVersion, files: string[]) => {
-    Object.values(db.prod_media).filter((m) => m.version_id === v.id).forEach((m) => { files.push(...[m.path, m.thumb_path].filter(Boolean) as string[]); remove('prod_media', m.id); });
-    Object.values(db.prod_revisions).filter((r) => r.version_id === v.id).forEach((r) => { if (r.image_path) files.push(r.image_path); remove('prod_revisions', r.id); });
-    remove('prod_versions', v.id);
-  };
-  const purgeBlock = (b: ProdBlock, files: string[]) => { versionsOf(db, b.id).forEach((v) => purgeVersion(v, files)); remove('prod_blocks', b.id); };
-  const purge = (kind: 'scene' | 'block' | 'media', id: string) => {
-    if (!window.confirm(t('prod.confirmPurge'))) return;
-    const files: string[] = [];
-    if (kind === 'media') { const m = db.prod_media[id]; files.push(...[m.path, m.thumb_path].filter(Boolean) as string[]); remove('prod_media', id); }
-    if (kind === 'block') purgeBlock(db.prod_blocks[id], files);
-    if (kind === 'scene') { Object.values(db.prod_blocks).filter((b) => b.scene_id === id).forEach((b) => purgeBlock(b, files)); remove('prod_scenes', id); }
-    if (files.length) { backend.files.remove(files).catch(() => {}); forgetFiles(files); }
-  };
-  const item = (key: string, label: string, sub: string, onRestore: () => void, onPurge: () => void) => (
-    <div className="trash-item" key={key}>
-      <div className="grow"><div className="ell">{label}</div><div className="faint small">{sub}</div></div>
-      <button className="btn sm" onClick={onRestore} data-restore>{t('prod.restore')}</button>
-      <button className="btn sm danger" onClick={onPurge}>{t('prod.purge')}</button>
-    </div>
-  );
+function TrashModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const { db, update, remove, backend, toast } = useStore();
+  const { t } = useI18n();
+  const [picked, setPicked] = useState<Set<string>>(new Set());
   const sceneName = (id: string) => db.prod_scenes[id]?.title || t('prod.untitledScene');
+  const items: TrashItem[] = [
+    ...scenesOf(db, project.id, true).map((s) => ({ key: 'scene:' + s.id, kind: 'scene' as const, id: s.id, label: s.title || t('prod.untitledScene'), sub: t('prod.trashScene', { n: blocksOf(db, s.id).length }) })),
+    ...Object.values(db.prod_blocks).filter((b) => b.project_id === project.id && b.deleted_at && db.prod_scenes[b.scene_id] && !db.prod_scenes[b.scene_id].deleted_at)
+      .map((b) => ({ key: 'block:' + b.id, kind: 'block' as const, id: b.id, label: b.text.slice(0, 120) || '—', sub: t('prod.trashBlock', { s: sceneName(b.scene_id) }) })),
+    ...Object.values(db.prod_media).filter((m) => m.project_id === project.id && m.deleted_at).map((m) => {
+      const v = db.prod_versions[m.version_id];
+      const b = v && db.prod_blocks[v.block_id];
+      return { key: 'media:' + m.id, kind: 'media' as const, id: m.id, label: m.name || m.url || '—', sub: t('prod.trashMedia', { v: v?.number || '?', b: b?.text.slice(0, 60) || '—' }) };
+    }),
+  ];
+  const chosen = items.filter((x) => picked.has(x.key));
+  const allOn = items.length > 0 && chosen.length === items.length;
+
+  const restore = (list: TrashItem[]) => {
+    for (const x of list) {
+      const table = x.kind === 'scene' ? 'prod_scenes' : x.kind === 'block' ? 'prod_blocks' : 'prod_media';
+      update(table, x.id, { deleted_at: null });
+    }
+    setPicked(new Set());
+    toast(t('prod.restoredN', { n: list.length }));
+  };
+  /** Hard delete with children; files go too. */
+  const purge = (list: TrashItem[]) => {
+    if (!list.length || !window.confirm(t('prod.confirmPurgeN', { n: list.length }))) return;
+    const files: string[] = [];
+    const purgeVersion = (v: ProdVersion) => {
+      Object.values(db.prod_media).filter((m) => m.version_id === v.id).forEach((m) => { files.push(...[m.path, m.thumb_path].filter(Boolean) as string[]); remove('prod_media', m.id); });
+      Object.values(db.prod_revisions).filter((r) => r.version_id === v.id).forEach((r) => { if (r.image_path) files.push(r.image_path); remove('prod_revisions', r.id); });
+      remove('prod_versions', v.id);
+    };
+    const purgeBlock = (b: ProdBlock) => {
+      versionsOf(db, b.id).forEach(purgeVersion);
+      // Members of a merged row that pointed at this block become ordinary blocks.
+      Object.values(db.prod_blocks).filter((x) => x.group_id === b.id && x.id !== b.id).forEach((x) => update('prod_blocks', x.id, { group_id: null }));
+      remove('prod_blocks', b.id);
+    };
+    for (const x of list) {
+      if (x.kind === 'media') { const m = db.prod_media[x.id]; if (m) { files.push(...[m.path, m.thumb_path].filter(Boolean) as string[]); remove('prod_media', x.id); } }
+      if (x.kind === 'block' && db.prod_blocks[x.id]) purgeBlock(db.prod_blocks[x.id]);
+      if (x.kind === 'scene') { Object.values(db.prod_blocks).filter((b) => b.scene_id === x.id).forEach(purgeBlock); remove('prod_scenes', x.id); }
+    }
+    if (files.length) { backend.files.remove(files).catch(() => {}); forgetFiles(files); }
+    setPicked(new Set());
+  };
+  const toggle = (key: string) => setPicked((p) => { const n = new Set(p); if (n.has(key)) n.delete(key); else n.add(key); return n; });
   return (
-    <Modal title={t('prod.trash')} onClose={onClose} wide>
-      {!scenes.length && !blocks.length && !media.length && <div className="empty">{t('prod.trashEmpty')}</div>}
-      {scenes.map((s) => item(s.id, s.title || t('prod.untitledScene'), t('prod.trashScene', { n: blocksOf(db, s.id).length }), () => update('prod_scenes', s.id, { deleted_at: null }), () => purge('scene', s.id)))}
-      {blocks.map((b) => item(b.id, b.text.slice(0, 120) || '—', t('prod.trashBlock', { s: sceneName(b.scene_id) }), () => update('prod_blocks', b.id, { deleted_at: null }), () => purge('block', b.id)))}
-      {media.map((m) => {
-        const v = db.prod_versions[m.version_id];
-        const b = v && db.prod_blocks[v.block_id];
-        return item(m.id, m.name || m.url || '—', t('prod.trashMedia', { v: v?.number || '?', b: b?.text.slice(0, 60) || '—' }), () => update('prod_media', m.id, { deleted_at: null }), () => purge('media', m.id));
-      })}
-      <p className="faint small">{t('prod.trashHint')}</p>
+    <Modal title={t('prod.trash')} onClose={onClose} wide
+      actions={items.length ? <>
+        <label className="check-line grow" style={{ margin: 0 }}><input type="checkbox" checked={allOn} onChange={() => setPicked(allOn ? new Set() : new Set(items.map((x) => x.key)))} data-trash-all /> <span>{t('prod.selectAll')}</span></label>
+        <button className="btn sm" onClick={() => restore(chosen)} disabled={!chosen.length} data-trash-restore>{t('prod.restoreSel', { n: chosen.length })}</button>
+        <button className="btn sm danger" onClick={() => purge(chosen)} disabled={!chosen.length} data-trash-purge>{t('prod.purgeSel', { n: chosen.length })}</button>
+        <button className="btn sm danger" onClick={() => purge(items)} data-trash-empty>{t('prod.emptyTrash')}</button>
+      </> : undefined}>
+      {!items.length && <div className="empty">{t('prod.trashEmpty')}</div>}
+      {items.map((x) => (
+        <div className={'trash-item' + (picked.has(x.key) ? ' on' : '')} key={x.key}>
+          <input type="checkbox" checked={picked.has(x.key)} onChange={() => toggle(x.key)} aria-label={x.label} data-trash-item={x.key} />
+          <div className="grow"><div className="ell">{x.label}</div><div className="faint small">{x.sub}</div></div>
+          <button className="btn sm" onClick={() => restore([x])} data-restore>{t('prod.restore')}</button>
+          <button className="btn sm danger" onClick={() => purge([x])}>{t('prod.purge')}</button>
+        </div>
+      ))}
+      {items.length > 0 && <p className="faint small">{t('prod.trashHint')}</p>}
     </Modal>
   );
 }

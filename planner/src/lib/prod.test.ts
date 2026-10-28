@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { seed } from '../data/demoBackend';
-import { blocksOf, exportCsv, linkInfo, nextPos, projectStats, scenesOf } from './prod';
+import { blockLabels, blocksOf, exportCsv, linkInfo, nextPos, projectStats, scenesOf, unitsOf } from './prod';
 
 describe('production helpers', () => {
   const db = seed();
@@ -34,5 +34,25 @@ describe('production helpers', () => {
     const lines = csv.slice(1).split('\r\n');
     expect(lines).toHaveLength(6);
     expect(lines[2]).toBe('"1";"Rooftop at dawn";"1.2";"Close-up: she opens her eyes, wind in her hair.";"REVIEW";"2";"3";"1";"Face consistency — use character sheet v3"');
+  });
+  it('merged blocks form one unit and count once', () => {
+    const d = structuredClone(db);
+    d.prod_blocks.pb1.group_id = 'pb1';
+    d.prod_blocks.pb2.group_id = 'pb1';
+    const units = unitsOf(d, 'ps1');
+    expect(units.map((u) => [u.lead.id, u.members.map((m) => m.id)])).toEqual([['pb1', ['pb1', 'pb2']], ['pb3', ['pb3']]]);
+    expect(blockLabels(d, 'ps1', 1)).toEqual({ pb1: '1.1', pb2: '1.2', pb3: '1.3' });
+    const s = projectStats(d, 'pr_nova');
+    expect(s.blocks).toBe(4);
+    expect(s.byStatus).toEqual({ todo: 2, progress: 1, review: 0, done: 1 });
+    const csv = exportCsv(d, 'pr_nova', (x) => x, ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']).slice(1).split('\r\n');
+    expect(csv[1].startsWith('"1";"Rooftop at dawn";"1.1 + 1.2";')).toBe(true);
+  });
+  it('a member whose lead is gone is shown on its own', () => {
+    const d = structuredClone(db);
+    d.prod_blocks.pb1.group_id = 'pb1';
+    d.prod_blocks.pb2.group_id = 'pb1';
+    d.prod_blocks.pb1.deleted_at = '2026-01-01T00:00:00Z';
+    expect(unitsOf(d, 'ps1').map((u) => u.lead.id)).toEqual(['pb2', 'pb3']);
   });
 });
