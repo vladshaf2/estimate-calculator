@@ -68,10 +68,13 @@ function initials(name: string) {
 function ProjectCard({ project, n, onOpen }: { project: Project; n: number; onOpen: () => void }) {
   const { db } = useStore();
   const { t } = useI18n();
+  const [deleting, setDeleting] = useState(false);
   const s = projectStats(db, project.id);
   return (
-    <button className="prod-card" onClick={onOpen} data-prod-card={project.id}>
+    <div className="prod-card" role="button" tabIndex={0} onClick={onOpen} onKeyDown={(e) => { if (e.key === 'Enter') onOpen(); }} data-prod-card={project.id}>
       <div className="cover" style={{ ['--c' as string]: project.color }}>
+        <button className="card-del" title={t('prod.deleteProject')} aria-label={t('prod.deleteProject')} data-prod-delete
+          onClick={(e) => { e.stopPropagation(); setDeleting(true); }} onKeyDown={(e) => e.stopPropagation()}>🗑</button>
         <span className="k">PROJECT / {String(n).padStart(2, '0')}</span>
         <span className="big">{initials(project.name)}</span>
         <span className="go">↗</span>
@@ -82,7 +85,70 @@ function ProjectCard({ project, n, onOpen }: { project: Project; n: number; onOp
         <StatusBar counts={s.byStatus} total={s.blocks} />
         <span className="meta muted">{t('prod.cardMeta', { s: s.scenes, b: s.blocks, g: s.generations })}</span>
       </div>
-    </button>
+      {deleting && <div onClick={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}><DeleteProjectModal project={project} onClose={() => setDeleting(false)} /></div>}
+    </div>
+  );
+}
+
+/** Delete a production board (the planner project stays) or the whole project with its tasks. Files are removed too. */
+function DeleteProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const { db, backend, update, remove, reload, toast } = useStore();
+  const { t } = useI18n();
+  const [mode, setMode] = useState<'board' | 'all'>('board');
+  const [busy, setBusy] = useState(false);
+  const pid = project.id;
+  const scenes = Object.values(db.prod_scenes).filter((x) => x.project_id === pid);
+  const blocks = Object.values(db.prod_blocks).filter((x) => x.project_id === pid);
+  const media = Object.values(db.prod_media).filter((x) => x.project_id === pid);
+  const revs = Object.values(db.prod_revisions).filter((x) => x.project_id === pid);
+  const tasks = Object.values(db.tasks).filter((x) => x.project_id === pid);
+  const run = async () => {
+    setBusy(true);
+    try {
+      // Files first: once the rows are gone nothing points at them any more.
+      const files = [...media.flatMap((m) => [m.path, m.thumb_path]), ...revs.map((r) => r.image_path)].filter(Boolean) as string[];
+      for (let i = 0; i < files.length; i += 100) await backend.files.remove(files.slice(i, i + 100)).catch(() => {});
+      forgetFiles(files);
+      if (backend.kind === 'demo') {
+        // The demo store has no cascades: remove the children explicitly.
+        revs.forEach((r) => remove('prod_revisions', r.id));
+        media.forEach((m) => remove('prod_media', m.id));
+        Object.values(db.prod_versions).filter((v) => v.project_id === pid).forEach((v) => remove('prod_versions', v.id));
+        blocks.forEach((b) => remove('prod_blocks', b.id));
+      }
+      // In the database deleting a scene removes its blocks, versions, generations and revisions.
+      scenes.forEach((sc) => remove('prod_scenes', sc.id));
+      const shares = await backend.prodShares.list(pid).catch(() => []);
+      for (const x of shares) if (!x.revoked) await backend.prodShares.update(x.token, { revoked: true }).catch(() => {});
+      if (mode === 'all') {
+        tasks.forEach((x) => remove('tasks', x.id));
+        remove('projects', pid);
+      } else {
+        update('projects', pid, { production: false });
+      }
+      toast(mode === 'all' ? t('prod.projectDeleted', { n: project.name }) : t('prod.boardDeleted', { n: project.name }));
+      onClose();
+      if (backend.kind !== 'demo') window.setTimeout(() => { reload(); }, 800);
+    } catch (e) {
+      toast(String((e as Error).message || e), 'error');
+      setBusy(false);
+    }
+  };
+  return (
+    <Modal title={t('prod.deleteTitle', { n: project.name })} onClose={onClose}
+      actions={<><button className="btn ghost" onClick={onClose} disabled={busy}>{t('prod.cancel')}</button>
+        <button className="btn danger" onClick={run} disabled={busy} data-delete-confirm>{busy ? t('common.loading') : mode === 'all' ? t('prod.deleteAll') : t('prod.deleteBoard')}</button></>}>
+      <label className={'del-opt' + (mode === 'board' ? ' on' : '')}>
+        <input type="radio" name="del-mode" checked={mode === 'board'} onChange={() => setMode('board')} data-del-mode="board" />
+        <span><b>{t('prod.deleteBoard')}</b><br /><span className="muted small">{t('prod.deleteBoardHint')}</span></span>
+      </label>
+      <label className={'del-opt' + (mode === 'all' ? ' on' : '')}>
+        <input type="radio" name="del-mode" checked={mode === 'all'} onChange={() => setMode('all')} data-del-mode="all" />
+        <span><b>{t('prod.deleteAll')}</b><br /><span className="muted small">{t('prod.deleteAllHint', { t: tasks.length })}</span></span>
+      </label>
+      <p className="del-sum small">{t('prod.deleteSummary', { s: scenes.length, b: blocks.length, g: media.length, r: revs.length })}{mode === 'all' ? ' · ' + t('prod.deleteSummaryTasks', { t: tasks.length }) : ''}</p>
+      <p className="danger-text small">{t('prod.deleteWarn')}</p>
+    </Modal>
   );
 }
 
