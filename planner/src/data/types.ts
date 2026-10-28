@@ -112,6 +112,8 @@ export interface ProdScene {
 export interface ProdBlock {
   id: string; project_id: string; scene_id: string; position: number; text: string; status: ProdStatus; ai_note: string;
   assignee_id: string | null; deleted_at: string | null; created_at?: string; updated_at?: string;
+  /** Merged blocks (one prompt): id of the lead block, which holds status, versions and revisions. */
+  group_id?: string | null;
 }
 export interface ProdVersion {
   id: string; project_id: string; block_id: string; number: number; note: string; created_by?: string; created_at?: string; updated_at?: string;

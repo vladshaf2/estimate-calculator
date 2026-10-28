@@ -39,7 +39,10 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
   - **Per block:** a status (Not started → In progress → Revisions → Done; click to advance), an assignee, an AI-specialist note, and revisions per version. Revisions take a text and an optional screenshot; they can be ticked off or turned into a planner task in one click.
   - **Automatic statuses:** a new generation moves a block to "In progress", a new revision to "Revisions".
   - **Overview:** progress cards, filters by status, search across script, notes and revisions, scene navigation, a trash with restore, and CSV export.
-  - **Paste script** splits a screenplay into scenes ("Сцена 3", "INT. …", "3. Title") and blocks (paragraphs).
+  - **Paste script** (or open a file: Word .docx, PDF, Final Draft .fdx, .txt, .md, .fountain) splits a screenplay into scenes and blocks. A scene starts at "Сцена 3", "INT. …", "3. Title" or any Word/markdown heading; paragraphs become blocks. Files are read in the browser.
+  - **Selection:** tick blocks (or a whole scene) for bulk actions: merge, set status or assignee, move to trash.
+  - **Merging:** blocks generated with one prompt (e.g. 1.1 + 1.2) become one row with shared status, versions, generations and revisions, and count as one block in the progress. **Split** undoes it; generations stay with the first block.
+  - **Trash:** checkboxes, select all, restore or delete the selected items, empty the trash.
   - **Adding files:** drag and drop, paste with Ctrl+V, or the Upload / Link buttons.
 - **Accepted estimates** from the calculator's client link become a project with tasks automatically (see the main README).
 - **Views:**
@@ -73,7 +76,7 @@ A shared task and content planner for the Chiefs team (Vlad and Igor), with real
 - **Tables:** `members`, `workspaces`, `projects`, `statuses`, `work_types`, `tasks`.
   - Notifications: `push_subscriptions` (one row per device).
   - Calculator link: `estimates`, `calc_settings`, `estimate_shares`.
-  - Production: `prod_scenes`, `prod_blocks`, `prod_versions`, `prod_media`, `prod_revisions` (plus `projects.production`); files are in the private Storage bucket `prod` (50 MB per file, shown through signed URLs that last 6 hours).
+  - Production: `prod_scenes`, `prod_blocks` (`group_id` = lead block of a merged row), `prod_versions`, `prod_media`, `prod_revisions` (plus `projects.production`); files are in the private Storage bucket `prod` (50 MB per file, shown through signed URLs that last 6 hours).
   - Private schema (not reachable through the API): `private.notification_outbox` and `private.push_config` (VAPID keys, dispatcher secret).
 - **Notifications pipeline:**
   - `pg_cron` runs every minute: `private.enqueue_due()` puts due reminders, deadlines and posts into the outbox, respecting each member's switches and quiet hours.

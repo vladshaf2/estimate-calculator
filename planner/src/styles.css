@@ -410,3 +410,22 @@ input[type=checkbox] { accent-color: var(--accent); width: 16px; height: 16px; m
   .scene-h { padding: 12px; }
   .block { padding: 12px; }
 }
+
+/* Production: selection, bulk actions, merged rows */
+.pick { flex: none; }
+.scene-h .pick { margin-top: 8px; }
+.block.picked { background: var(--accent-soft); }
+.bulk-bar { position: fixed; z-index: 45; left: 50%; transform: translateX(-50%); bottom: calc(18px + var(--safe-b)); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center;
+  max-width: calc(100vw - 24px); padding: 10px 12px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border-strong); box-shadow: 0 20px 60px var(--shadow); }
+.bulk-bar select { width: auto; height: 28px; font-size: 12.5px; padding: 0 8px; }
+@media (min-width: 861px) { .bulk-bar { left: calc(50% + var(--sidebar) / 2); } }
+.group-h { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--accent-text); margin: 2px 0 6px; flex-wrap: wrap; }
+.block.grouped .b-text .member { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 6px; align-items: start; margin-bottom: 6px; }
+.m-label { font-size: 11.5px; padding-top: 9px; text-align: right; }
+.trash-item.on { background: var(--accent-soft); }
+.trash-item input[type=checkbox] { flex: none; }
+@media (max-width: 860px) {
+  .bulk-bar { left: 10px; right: 10px; transform: none; max-width: none; justify-content: flex-start; gap: 6px; padding: 8px 10px; }
+  .bulk-bar b { flex-basis: 100%; font-size: 12.5px; }
+  .bulk-bar select { flex: 1 1 110px; }
+}

@@ -32,6 +32,12 @@ describe('parseScript', () => {
   it('markdown headings and CRLF', () => {
     expect(parseScript('## **Сцена 3** — Финал\r\nКонец.')).toEqual([{ title: 'Финал', blocks: ['Конец.'] }]);
   });
+  it('any markdown heading starts a scene', () => {
+    expect(parseScript('# Rooftop\n\nWide shot\n\n## Subway — night\n\nRun')).toEqual([
+      { title: 'Rooftop', blocks: ['Wide shot'] },
+      { title: 'Subway — night', blocks: ['Run'] },
+    ]);
+  });
   it('empty input', () => {
     expect(parseScript('  \n\n ')).toEqual([]);
   });

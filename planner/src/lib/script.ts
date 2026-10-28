@@ -1,5 +1,5 @@
 // Pasted screenplay → scenes and blocks.
-// A scene starts at a heading line: "Сцена 3", "СЦЕНА 3. Нефть", "Scene 2: Rooftop", "3. Нефть" (numbered, short),
+// A scene starts at a markdown heading ("## Rooftop") or a heading line: "Сцена 3", "СЦЕНА 3. Нефть", "Scene 2: Rooftop", "3. Нефть" (numbered, short),
 // or a slugline ("INT. KITCHEN – NIGHT", "ИНТ. КУХНЯ — НОЧЬ", "НАТ.", "EXT.", "ИНТ/НАТ."). Blocks inside a scene are
 // paragraphs (split by blank lines); when the text has no blank lines at all, every line is a block.
 
@@ -10,9 +10,12 @@ const SLUG = /^(?:int|ext|i\/e|int\/ext|инт|нат|инт\/нат|нат\/и�
 const NUMBERED = /^(\d{1,3})[.)]\s+(.{1,80})$/;
 
 function headingTitle(line: string): string | null {
+  const md = /^#{1,6}\s/.test(line.trim());
   const t = line.trim().replace(/^#+\s*/, '').replace(/\*\*/g, '');
   let m = SCENE_WORD.exec(t);
   if (m) return m[2].trim() || t;
+  // Markdown headings (also what .docx headings and Final Draft scene headings are converted to).
+  if (md) return t;
   if (SLUG.test(t)) return t;
   m = NUMBERED.exec(t);
   // "3. Нефть" is a heading only when short and without sentence punctuation.
