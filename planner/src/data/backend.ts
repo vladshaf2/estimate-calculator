@@ -1,4 +1,4 @@
-import type { Snapshot, TableName, Tables } from './types';
+import type { ProdShare, Snapshot, TableName, Tables } from './types';
 
 export type ChangeType = 'upsert' | 'delete';
 export type ChangeHandler = <K extends TableName>(table: K, type: ChangeType, row: Partial<Tables[K]> & { id: string }) => void;
@@ -25,6 +25,14 @@ export interface Backend {
   push?: PushApi;
   /** Files of the production board (private bucket). */
   files: FilesApi;
+  /** Client links to production boards. */
+  prodShares: ProdSharesApi;
+}
+
+export interface ProdSharesApi {
+  list(projectId: string): Promise<ProdShare[]>;
+  create(projectId: string): Promise<ProdShare>;
+  update(token: string, patch: Partial<Pick<ProdShare, 'allow_comments' | 'revoked'>>): Promise<void>;
 }
 
 export interface FilesApi {

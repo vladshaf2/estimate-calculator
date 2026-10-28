@@ -1,6 +1,6 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 import type { Backend, ChangeHandler } from './backend';
-import { SERVER_FIELDS, TABLES, emptySnapshot, type Snapshot, type TableName, type Tables } from './types';
+import { SERVER_FIELDS, TABLES, emptySnapshot, type ProdShare, type Snapshot, type TableName, type Tables } from './types';
 
 function clean<T extends object>(row: T): Partial<T> {
   const out = { ...row } as Record<string, unknown>;
@@ -100,6 +100,23 @@ export function createSupabaseBackend(url: string, key: string): Backend {
     async remove(table, id) {
       const { error } = await sb.from(table).delete().eq('id', id);
       if (error) throw error;
+    },
+
+    prodShares: {
+      async list(projectId) {
+        const { data, error } = await sb.from('prod_shares').select('*').eq('project_id', projectId).order('created_at', { ascending: false });
+        if (error) throw error;
+        return data as ProdShare[];
+      },
+      async create(projectId) {
+        const { data, error } = await sb.from('prod_shares').insert({ project_id: projectId }).select('*').single();
+        if (error) throw error;
+        return data as ProdShare;
+      },
+      async update(token, patch) {
+        const { error } = await sb.from('prod_shares').update(patch).eq('token', token);
+        if (error) throw error;
+      },
     },
 
     files: {

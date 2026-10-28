@@ -5,6 +5,7 @@ import { createSupabaseBackend } from '../data/supabaseBackend';
 import { StoreProvider, useStore } from '../data/store';
 import { useI18n } from '../i18n';
 import { Login } from './Login';
+import { SharePage } from './SharePage';
 import { Shell } from './Shell';
 import { ThemeCtx, useTheme } from '../lib/theme';
 
@@ -24,6 +25,10 @@ export function App() {
     backend.getSessionEmail().then(setEmail);
     return backend.onAuthChange(setEmail);
   }, [backend]);
+
+  // Public client page of a production board: no sign-in.
+  const shareToken = /^#\/share\/([0-9a-f]{32})$/.exec(location.hash)?.[1];
+  if (shareToken) return <ThemeCtx.Provider value={theme}><SharePage token={shareToken} /></ThemeCtx.Provider>;
 
   return (
     <ThemeCtx.Provider value={theme}>

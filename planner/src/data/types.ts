@@ -15,8 +15,8 @@ export interface Member {
   created_at?: string;
 }
 
-export type NotifyKind = 'remind' | 'due' | 'post' | 'assigned' | 'accepted';
-export const NOTIFY_KINDS: NotifyKind[] = ['remind', 'due', 'post', 'assigned', 'accepted'];
+export type NotifyKind = 'remind' | 'due' | 'post' | 'assigned' | 'revision' | 'accepted';
+export const NOTIFY_KINDS: NotifyKind[] = ['remind', 'due', 'post', 'assigned', 'revision', 'accepted'];
 
 export interface Workspace {
   id: string;
@@ -129,7 +129,12 @@ export interface ProdMedia {
 export interface ProdRevision {
   id: string; project_id: string; version_id: string; text: string; image_path: string | null; done: boolean;
   author_id: string | null; task_id: string | null; created_at?: string; updated_at?: string;
+  /** Set when the revision came from the client share link. */
+  client_name?: string | null;
 }
+
+/** Client link to a production board (served by the prod-share Edge Function). */
+export interface ProdShare { token: string; project_id: string; allow_comments: boolean; revoked: boolean; views: number; last_viewed_at: string | null; created_at: string }
 
 export interface Tables {
   members: Member;
